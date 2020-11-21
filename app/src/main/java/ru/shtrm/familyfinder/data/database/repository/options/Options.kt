@@ -8,15 +8,11 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ru.shtrm.familyfinder.data.database.repository.questions.Question
 
-/**
- * Created by jyotidubey on 03/01/18.
- */
 @Entity(tableName = "options", foreignKeys = [(ForeignKey(entity = Question::class,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("question_id"),
         onDelete = ForeignKey.CASCADE))])
 data class Options(
-
         @PrimaryKey(autoGenerate = true) var id: Long,
 
         @Expose

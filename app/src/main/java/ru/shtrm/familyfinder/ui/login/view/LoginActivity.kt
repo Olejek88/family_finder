@@ -12,9 +12,6 @@ import ru.shtrm.familyfinder.util.AppConstants
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
-/**
- * Created by jyotidubey on 10/01/18.
- */
 class LoginActivity : BaseActivity(), LoginMVPView {
 
     @Inject
@@ -55,7 +52,6 @@ class LoginActivity : BaseActivity(), LoginMVPView {
 
     private fun setOnClickListeners() {
         btnServerLogin.setOnClickListener { presenter.onServerLoginClicked(et_email.text.toString(), et_password.text.toString()) }
-        ibGoogleLogin.setOnClickListener { presenter.onGoogleLoginClicked() }
-        ibFbLogin.setOnClickListener { presenter.onFBLoginClicked() }
+        btnServerRegister.setOnClickListener { presenter.onServerLoginClicked(et_email.text.toString(), et_password.text.toString()) }
     }
 }

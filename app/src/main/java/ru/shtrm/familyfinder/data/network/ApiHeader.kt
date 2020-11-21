@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName
 import ru.shtrm.familyfinder.di.ApiKeyInfo
 import javax.inject.Inject
 
-/**
- * Created by jyotidubey on 11/01/18.
- */
 class ApiHeader @Inject constructor(internal val publicApiHeader: PublicApiHeader, internal val protectedApiHeader: ProtectedApiHeader) {
 
     class PublicApiHeader @Inject constructor(@ApiKeyInfo

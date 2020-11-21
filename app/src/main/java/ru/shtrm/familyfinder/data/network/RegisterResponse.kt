@@ -1,0 +1,34 @@
+package ru.shtrm.familyfinder.data.network
+
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+
+data class RegisterResponse(@Expose
+                            @SerializedName("status_code")
+                            var statusCode: String? = null,
+
+                            @Expose
+                            @SerializedName("user_id")
+                            var userId: Long? = null,
+
+                            @Expose
+                            @SerializedName("access_token")
+                            var accessToken: String? = null,
+
+                            @Expose
+                            @SerializedName("user_name")
+                            var userName: String? = null,
+
+                            @Expose
+                            @SerializedName("email")
+                            var userEmail: String? = null,
+
+                            @Expose
+                            @SerializedName("server_profile_pic_url")
+                            var serverProfilePicUrl: String? = null,
+
+                            @Expose
+                            @SerializedName("message")
+                            var message: String? = null)
+
+

@@ -4,9 +4,6 @@ import com.rx2androidnetworking.Rx2AndroidNetworking
 import io.reactivex.Observable
 import javax.inject.Inject
 
-/**
- * Created by jyotidubey on 04/01/18.
- */
 class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHelper {
 
     override fun performServerLogin(request: LoginRequest.ServerLoginRequest): Observable<LoginResponse> =
@@ -16,19 +13,12 @@ class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHe
                     .build()
                     .getObjectObservable(LoginResponse::class.java)
 
-    override fun performFBLogin(request: LoginRequest.FacebookLoginRequest): Observable<LoginResponse> =
-            Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_FACEBOOK_LOGIN)
+    override fun performServerRegister(request: RegisterRequest.ServerRegisterRequest): Observable<RegisterResponse> =
+            Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_LOGIN)
                     .addHeaders(apiHeader.publicApiHeader)
                     .addBodyParameter(request)
                     .build()
-                    .getObjectObservable(LoginResponse::class.java)
-
-    override fun performGoogleLogin(request: LoginRequest.GoogleLoginRequest): Observable<LoginResponse> =
-            Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_GOOGLE_LOGIN)
-                    .addHeaders(apiHeader.publicApiHeader)
-                    .addBodyParameter(request)
-                    .build()
-                    .getObjectObservable(LoginResponse::class.java)
+                    .getObjectObservable(RegisterResponse::class.java)
 
     override fun performLogoutApiCall(): Observable<LogoutResponse> =
             Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_LOGOUT)

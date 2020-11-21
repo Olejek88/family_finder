@@ -3,25 +3,19 @@ package ru.shtrm.familyfinder.ui.login.interactor
 import ru.shtrm.familyfinder.data.network.ApiHelper
 import ru.shtrm.familyfinder.data.network.LoginRequest
 import ru.shtrm.familyfinder.data.network.LoginResponse
+import ru.shtrm.familyfinder.data.network.RegisterRequest
 import ru.shtrm.familyfinder.data.preferences.PreferenceHelper
 import ru.shtrm.familyfinder.ui.base.interactor.BaseInteractor
 import ru.shtrm.familyfinder.util.AppConstants
 import javax.inject.Inject
 
-/**
- * Created by jyotidubey on 10/01/18.
- */
 class LoginInteractor @Inject internal constructor(preferenceHelper: PreferenceHelper, apiHelper: ApiHelper) : BaseInteractor(preferenceHelper, apiHelper), LoginMVPInteractor {
-
-    override fun doGoogleLoginApiCall() =
-            apiHelper.performGoogleLogin(LoginRequest.GoogleLoginRequest("test1", "test1"))
-
-    override fun doFBLoginApiCall() =
-            apiHelper.performFBLogin(LoginRequest.FacebookLoginRequest("test3", "test4"))
-
 
     override fun doServerLoginApiCall(email: String, password: String) =
             apiHelper.performServerLogin(LoginRequest.ServerLoginRequest(email = email, password = password))
+
+    override fun doServerRegisterApiCall(email: String, password: String) =
+            apiHelper.performServerRegister(RegisterRequest.ServerRegisterRequest(email = email, password = password))
 
 
     override fun updateUserInSharedPref(loginResponse: LoginResponse, loggedInMode: AppConstants.LoggedInMode) =

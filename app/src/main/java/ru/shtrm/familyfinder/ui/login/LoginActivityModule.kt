@@ -8,9 +8,6 @@ import ru.shtrm.familyfinder.ui.login.view.LoginMVPView
 import dagger.Module
 import dagger.Provides
 
-/**
- * Created by jyotidubey on 10/01/18.
- */
 @Module
 class LoginActivityModule {
 

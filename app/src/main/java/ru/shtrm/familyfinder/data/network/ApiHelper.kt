@@ -2,16 +2,11 @@ package ru.shtrm.familyfinder.data.network
 
 import io.reactivex.Observable
 
-/**
- * Created by jyotidubey on 04/01/18.
- */
 interface ApiHelper {
 
     fun performServerLogin(request: LoginRequest.ServerLoginRequest): Observable<LoginResponse>
 
-    fun performFBLogin(request: LoginRequest.FacebookLoginRequest): Observable<LoginResponse>
-
-    fun performGoogleLogin(request: LoginRequest.GoogleLoginRequest): Observable<LoginResponse>
+    fun performServerRegister(request: RegisterRequest.ServerRegisterRequest): Observable<RegisterResponse>
 
     fun performLogoutApiCall(): Observable<LogoutResponse>
 

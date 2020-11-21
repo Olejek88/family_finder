@@ -3,9 +3,6 @@ package ru.shtrm.familyfinder.data.network
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-/**
- * Created by jyotidubey on 11/01/18.
- */
 data class LoginResponse(@Expose
                          @SerializedName("status_code")
                          var statusCode: String? = null,

@@ -4,9 +4,6 @@ import ru.shtrm.familyfinder.data.network.ApiHelper
 import ru.shtrm.familyfinder.data.preferences.PreferenceHelper
 import ru.shtrm.familyfinder.util.AppConstants
 
-/**
- * Created by jyotidubey on 04/01/18.
- */
 open class BaseInteractor() : MVPInteractor {
 
     protected lateinit var preferenceHelper: PreferenceHelper
