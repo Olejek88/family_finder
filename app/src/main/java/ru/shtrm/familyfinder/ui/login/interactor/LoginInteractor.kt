@@ -1,9 +1,6 @@
 package ru.shtrm.familyfinder.ui.login.interactor
 
-import ru.shtrm.familyfinder.data.network.ApiHelper
-import ru.shtrm.familyfinder.data.network.LoginRequest
-import ru.shtrm.familyfinder.data.network.LoginResponse
-import ru.shtrm.familyfinder.data.network.RegisterRequest
+import ru.shtrm.familyfinder.data.network.*
 import ru.shtrm.familyfinder.data.preferences.PreferenceHelper
 import ru.shtrm.familyfinder.ui.base.interactor.BaseInteractor
 import ru.shtrm.familyfinder.util.AppConstants
@@ -14,8 +11,8 @@ class LoginInteractor @Inject internal constructor(preferenceHelper: PreferenceH
     override fun doServerLoginApiCall(email: String, password: String) =
             apiHelper.performServerLogin(LoginRequest.ServerLoginRequest(email = email, password = password))
 
-    override fun doServerRegisterApiCall(email: String, password: String) =
-            apiHelper.performServerRegister(RegisterRequest.ServerRegisterRequest(email = email, password = password))
+    override fun doServerRegisterApiCall(email: String, password: String, username: String) =
+            apiHelper.performServerRegister(RegisterRequest.ServerRegisterRequest(email = email, password = password, username = username))
 
 
     override fun updateUserInSharedPref(loginResponse: LoginResponse, loggedInMode: AppConstants.LoggedInMode) =
@@ -24,4 +21,12 @@ class LoginInteractor @Inject internal constructor(preferenceHelper: PreferenceH
                 it.setAccessToken(loginResponse.accessToken)
                 it.setCurrentUserLoggedInMode(loggedInMode)
             }
+
+    override fun updateRegisterSharedPref(registerResponse: RegisterResponse, loggedInMode: AppConstants.LoggedInMode) =
+            preferenceHelper.let {
+                it.setCurrentUserId(registerResponse.userId)
+                it.setAccessToken(registerResponse.accessToken)
+                it.setCurrentUserLoggedInMode(loggedInMode)
+            }
+
 }

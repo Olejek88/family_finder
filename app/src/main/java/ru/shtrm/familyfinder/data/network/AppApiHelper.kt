@@ -14,7 +14,7 @@ class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHe
                     .getObjectObservable(LoginResponse::class.java)
 
     override fun performServerRegister(request: RegisterRequest.ServerRegisterRequest): Observable<RegisterResponse> =
-            Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_LOGIN)
+            Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_REGISTER)
                     .addHeaders(apiHeader.publicApiHeader)
                     .addBodyParameter(request)
                     .build()

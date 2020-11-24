@@ -8,5 +8,7 @@ class RegisterRequest {
     data class ServerRegisterRequest internal constructor(@Expose
                                                           @SerializedName("email") internal val email: String,
                                                           @Expose
-                                                          @SerializedName("password") internal val password: String)
+                                                          @SerializedName("password") internal val password: String,
+                                                          @Expose
+                                                          @SerializedName("username") internal val username: String)
 }

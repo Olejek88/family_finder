@@ -28,14 +28,6 @@ data class LoginResponse(@Expose
                          var serverProfilePicUrl: String? = null,
 
                          @Expose
-                         @SerializedName("fb_profile_pic_url")
-                         var fbProfilePicUrl: String? = null,
-
-                         @Expose
-                         @SerializedName("google_profile_pic_url")
-                         var googleProfilePicUrl: String? = null,
-
-                         @Expose
                          @SerializedName("message")
                          var message: String? = null)
 

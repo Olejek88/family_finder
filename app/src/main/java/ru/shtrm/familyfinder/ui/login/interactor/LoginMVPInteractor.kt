@@ -10,8 +10,10 @@ interface LoginMVPInteractor : MVPInteractor {
 
     fun doServerLoginApiCall(email: String, password: String): Observable<LoginResponse>
 
-    fun doServerRegisterApiCall(email: String, password: String): Observable<RegisterResponse>
+    fun doServerRegisterApiCall(email: String, password: String, username: String): Observable<RegisterResponse>
 
     fun updateUserInSharedPref(loginResponse: LoginResponse, loggedInMode: AppConstants.LoggedInMode)
+
+    fun updateRegisterSharedPref(registerResponse: RegisterResponse, loggedInMode: AppConstants.LoggedInMode)
 
 }

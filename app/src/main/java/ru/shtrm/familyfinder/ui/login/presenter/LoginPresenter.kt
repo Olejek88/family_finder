@@ -8,6 +8,7 @@ import ru.shtrm.familyfinder.util.AppConstants
 import ru.shtrm.familyfinder.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
+import ru.shtrm.familyfinder.data.network.RegisterResponse
 import javax.inject.Inject
 
 class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal constructor(interactor: I, schedulerProvider: SchedulerProvider, disposable: CompositeDisposable) : BasePresenter<V, I>(interactor = interactor, schedulerProvider = schedulerProvider, compositeDisposable = disposable), LoginMVPPresenter<V, I> {
@@ -32,17 +33,18 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
         }
     }
 
-    override fun onServerRegisterClicked(email: String, password: String) {
+    override fun onServerRegisterClicked(email: String, password: String, username: String) {
         when {
             email.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_EMAIL_ERROR)
             password.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_PASSWORD_ERROR)
+            username.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_NAME_ERROR)
             else -> {
                 getView()?.showProgress()
                 interactor?.let {
-                    compositeDisposable.add(it.doServerLoginApiCall(email, password)
+                    compositeDisposable.add(it.doServerRegisterApiCall(email, password, username)
                             .compose(schedulerProvider.ioToMainObservableScheduler())
-                            .subscribe({ loginResponse ->
-                                updateUserInSharedPref(loginResponse = loginResponse,
+                            .subscribe({ registerResponse ->
+                                updateRegisterSharedPref(registerResponse = registerResponse,
                                         loggedInMode = AppConstants.LoggedInMode.LOGGED_IN_MODE_SERVER)
                                 getView()?.openMainActivity()
                             }, { err -> println(err) }))
@@ -56,5 +58,8 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
                                        loggedInMode: AppConstants.LoggedInMode) =
             interactor?.updateUserInSharedPref(loginResponse, loggedInMode)
 
+    private fun updateRegisterSharedPref(registerResponse: RegisterResponse,
+                                         loggedInMode: AppConstants.LoggedInMode) =
+            interactor?.updateRegisterSharedPref(registerResponse, loggedInMode)
 
 }

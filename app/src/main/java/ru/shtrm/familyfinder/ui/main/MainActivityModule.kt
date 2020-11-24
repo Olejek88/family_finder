@@ -8,9 +8,6 @@ import ru.shtrm.familyfinder.ui.main.view.MainMVPView
 import dagger.Module
 import dagger.Provides
 
-/**
- * Created by jyotidubey on 09/01/18.
- */
 @Module
 class MainActivityModule {
 

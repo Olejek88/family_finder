@@ -3,6 +3,7 @@
     <string name="login_dummy">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="username">User Name</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="empty_email_error_message">Email cannot be blank</string>
@@ -21,7 +22,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_navigation">NavigationActivity</string>
 
-    <string name="project_info">This sample app implements MVP architecture using Dagger2, GreenDao, RxJava, FastAndroidNetworking and PlaceholderView</string>
+    <string name="project_info">This Family app implements MVP architecture using Dagger2, GreenDao, RxJava, FastAndroidNetworking and PlaceholderView</string>
     <string name="link_mvp_blog">1. https://blog.mindorks.com</string>
     <string name="link_mvp_repo">2. https://github.com/MindorksOpenSource/android-mvp-architecture</string>
     <string name="link_mindorks_blog">3. https://blog.mindorks.com</string>
