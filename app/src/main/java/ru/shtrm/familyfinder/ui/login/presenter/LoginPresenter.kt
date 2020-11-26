@@ -1,14 +1,12 @@
 package ru.shtrm.familyfinder.ui.login.presenter
 
+import io.reactivex.disposables.CompositeDisposable
 import ru.shtrm.familyfinder.data.network.LoginResponse
 import ru.shtrm.familyfinder.ui.base.presenter.BasePresenter
 import ru.shtrm.familyfinder.ui.login.interactor.LoginMVPInteractor
 import ru.shtrm.familyfinder.ui.login.view.LoginMVPView
 import ru.shtrm.familyfinder.util.AppConstants
 import ru.shtrm.familyfinder.util.SchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
-import ru.shtrm.familyfinder.data.network.RegisterResponse
 import javax.inject.Inject
 
 class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal constructor(interactor: I, schedulerProvider: SchedulerProvider, disposable: CompositeDisposable) : BasePresenter<V, I>(interactor = interactor, schedulerProvider = schedulerProvider, compositeDisposable = disposable), LoginMVPPresenter<V, I> {
@@ -33,33 +31,9 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
         }
     }
 
-    override fun onServerRegisterClicked(email: String, password: String, username: String) {
-        when {
-            email.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_EMAIL_ERROR)
-            password.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_PASSWORD_ERROR)
-            username.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_NAME_ERROR)
-            else -> {
-                getView()?.showProgress()
-                interactor?.let {
-                    compositeDisposable.add(it.doServerRegisterApiCall(email, password, username)
-                            .compose(schedulerProvider.ioToMainObservableScheduler())
-                            .subscribe({ registerResponse ->
-                                updateRegisterSharedPref(registerResponse = registerResponse,
-                                        loggedInMode = AppConstants.LoggedInMode.LOGGED_IN_MODE_SERVER)
-                                getView()?.openMainActivity()
-                            }, { err -> println(err) }))
-                }
-
-            }
-        }
-    }
+    override fun onServerRegisterClicked() = getView()?.openRegisterActivity()
 
     private fun updateUserInSharedPref(loginResponse: LoginResponse,
                                        loggedInMode: AppConstants.LoggedInMode) =
             interactor?.updateUserInSharedPref(loginResponse, loggedInMode)
-
-    private fun updateRegisterSharedPref(registerResponse: RegisterResponse,
-                                         loggedInMode: AppConstants.LoggedInMode) =
-            interactor?.updateRegisterSharedPref(registerResponse, loggedInMode)
-
 }

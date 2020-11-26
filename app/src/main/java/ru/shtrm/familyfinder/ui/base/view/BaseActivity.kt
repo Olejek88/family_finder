@@ -3,12 +3,9 @@ package ru.shtrm.familyfinder.ui.base.view
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import ru.shtrm.familyfinder.util.CommonUtil
 import dagger.android.AndroidInjection
+import ru.shtrm.familyfinder.util.CommonUtil
 
-/**
- * Created by jyotidubey on 04/01/18.
- */
 abstract class BaseActivity : AppCompatActivity(), MVPView, BaseFragment.CallBack {
 
     private var progressDialog: ProgressDialog? = null

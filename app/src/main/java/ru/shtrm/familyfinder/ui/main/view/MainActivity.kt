@@ -9,6 +9,12 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import com.mindorks.placeholderview.SwipeDecor
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_navigation.*
+import kotlinx.android.synthetic.main.nav_header_navigation.view.*
 import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.ui.about.view.AboutFragment
 import ru.shtrm.familyfinder.ui.base.view.BaseActivity
@@ -21,12 +27,6 @@ import ru.shtrm.familyfinder.ui.rate.view.RateUsDialog
 import ru.shtrm.familyfinder.util.ScreenUtils
 import ru.shtrm.familyfinder.util.extension.addFragment
 import ru.shtrm.familyfinder.util.extension.removeFragment
-import com.mindorks.placeholderview.SwipeDecor
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_navigation.*
-import kotlinx.android.synthetic.main.nav_header_navigation.view.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationItemSelectedListener,

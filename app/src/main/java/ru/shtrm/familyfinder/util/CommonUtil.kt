@@ -3,13 +3,9 @@ package ru.shtrm.familyfinder.util
 import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import androidx.graphics.drawable.toDrawable
 import ru.shtrm.familyfinder.R
 
-/**
- * Created by jyotidubey on 11/01/18.
- */
 object CommonUtil {
 
     fun showLoadingDialog(context: Context?): ProgressDialog {

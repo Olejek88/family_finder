@@ -9,12 +9,16 @@
     <string name="empty_email_error_message">Email cannot be blank</string>
     <string name="invalid_email_error_message">Please Enter a valid email address</string>
     <string name="empty_password_error_message">Password cannot be empty</string>
+    <string name="name_error_message">Name cannot be empty</string>
     <string name="login_failure">Login failed</string>
     <string name="about">About</string>
     <string name="rate_us">Rate Us</string>
     <string name="feed">Feed</string>
     <string name="logout">Logout</string>
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
+
+    <string name="toast_db_actual">Database is actual</string>
+    <string name="toast_db_error">Error initialising database</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

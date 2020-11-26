@@ -1,10 +1,10 @@
-package ru.shtrm.familyfinder.ui.login.view
+package ru.shtrm.familyfinder.ui.register.view
 
 import ru.shtrm.familyfinder.ui.base.view.MVPView
 
-interface LoginMVPView : MVPView {
+interface RegisterMVPView : MVPView {
 
     fun showValidationMessage(errorCode: Int)
     fun openMainActivity()
-    fun openRegisterActivity()
+    fun openLoginActivity()
 }
