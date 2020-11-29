@@ -24,10 +24,6 @@ data class RegisterResponse(@Expose
                             var userEmail: String? = null,
 
                             @Expose
-                            @SerializedName("server_profile_pic_url")
-                            var serverProfilePicUrl: String? = null,
-
-                            @Expose
                             @SerializedName("message")
                             var message: String? = null)
 

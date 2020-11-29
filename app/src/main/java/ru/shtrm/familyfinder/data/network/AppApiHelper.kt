@@ -1,21 +1,26 @@
 package ru.shtrm.familyfinder.data.network
 
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONArrayRequestListener
+import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.rx2androidnetworking.Rx2AndroidNetworking
 import io.reactivex.Observable
+import org.json.JSONObject
 import javax.inject.Inject
 
 class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHelper {
-
     override fun performServerLogin(request: LoginRequest.ServerLoginRequest): Observable<LoginResponse> =
             Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_LOGIN)
                     .addHeaders(apiHeader.publicApiHeader)
                     .addBodyParameter(request)
+                    .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
                     .build()
                     .getObjectObservable(LoginResponse::class.java)
 
     override fun performServerRegister(request: RegisterRequest.ServerRegisterRequest): Observable<RegisterResponse> =
             Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_REGISTER)
                     .addHeaders(apiHeader.publicApiHeader)
+                    .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
                     .addBodyParameter(request)
                     .build()
                     .getObjectObservable(RegisterResponse::class.java)

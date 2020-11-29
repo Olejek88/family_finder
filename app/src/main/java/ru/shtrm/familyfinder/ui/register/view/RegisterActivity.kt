@@ -60,6 +60,6 @@ class RegisterActivity : BaseActivity(), RegisterMVPView {
 
     private fun setOnClickListeners() {
         btnServerLoginLink.setOnClickListener { presenter.onServerLoginClicked() }
-        btnServerRegister.setOnClickListener { presenter.onServerRegisterClicked(etr_email.text.toString(), etr_password.text.toString(), etr_username.text.toString()) }
+        btnServerRegister.setOnClickListener { presenter.onServerRegisterClicked(etr_email.text.toString(), etr_password.text.toString(), etr_username.text.toString(), this) }
     }
 }

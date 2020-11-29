@@ -41,15 +41,17 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setUpDrawerMenu()
-        setupCardContainerView()
+        //setUpDrawerMenu()
+        //setupCardContainerView()
         presenter.onAttach(this)
     }
 
     override fun onBackPressed() {
+/*
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         }
+*/
         val fragment = supportFragmentManager.findFragmentByTag(AboutFragment.TAG)
         fragment?.let { onFragmentDetached(AboutFragment.TAG) } ?: super.onBackPressed()
     }
@@ -82,10 +84,11 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
                 presenter.onDrawerOptionLogoutClick()
             }
         }
-        drawerLayout.closeDrawer(GravityCompat.START)
+        //drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
+/*
     override fun lockDrawer() = drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
     override fun unlockDrawer() = drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -100,6 +103,7 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
         navView.getHeaderView(0).nav_name.text = userDetails.first
         navView.getHeaderView(0).nav_email.text = userDetails.second
     }
+*/
 
     override fun openLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)
@@ -123,6 +127,7 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
 
+/*
     private fun setUpDrawerMenu() {
         setSupportActionBar(toolbar)
         val toggle = ActionBarDrawerToggle(
@@ -153,4 +158,5 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
             }
         }
     }
+*/
 }
