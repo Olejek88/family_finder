@@ -3,6 +3,9 @@ package ru.shtrm.familyfinder.di.module
 import android.app.Application
 import android.arch.persistence.room.Room
 import android.content.Context
+import dagger.Module
+import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 import ru.shtrm.familyfinder.BuildConfig
 import ru.shtrm.familyfinder.data.database.AppDatabase
 import ru.shtrm.familyfinder.data.database.repository.options.OptionsRepo
@@ -18,14 +21,8 @@ import ru.shtrm.familyfinder.di.ApiKeyInfo
 import ru.shtrm.familyfinder.di.PreferenceInfo
 import ru.shtrm.familyfinder.util.AppConstants
 import ru.shtrm.familyfinder.util.SchedulerProvider
-import dagger.Module
-import dagger.Provides
-import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Singleton
 
-/**
- * Created by jyotidubey on 05/01/18.
- */
 @Module
 class AppModule {
 

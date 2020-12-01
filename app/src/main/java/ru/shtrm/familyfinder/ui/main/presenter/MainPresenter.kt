@@ -12,10 +12,7 @@ class MainPresenter<V : MainMVPView, I : MainMVPInteractor> @Inject internal con
     override fun onAttach(view: V?) {
         super.onAttach(view)
         getUserData()
-        getQuestionCards()
     }
-
-    override fun refreshQuestionCards() = getQuestionCards()
 
     override fun onDrawerOptionRateUsClick() = getView()?.openRateUsDialog()
 
@@ -39,18 +36,6 @@ class MainPresenter<V : MainMVPView, I : MainMVPInteractor> @Inject internal con
         }
 
     }
-
-    private fun getQuestionCards() = interactor?.let {
-        compositeDisposable.add(it.getQuestionCardData()
-                .compose(schedulerProvider.ioToMainSingleScheduler())
-                .subscribe({ questionCard ->
-                    getView()?.let {
-                        if (questionCard.isEmpty()) return@subscribe
-                        else it.displayQuestionCard(questionCard)
-                    }
-                }, { err -> println(err) }))
-    }
-
 
     private fun getUserData() = interactor?.let {
         val userData = it.getUserDetails()

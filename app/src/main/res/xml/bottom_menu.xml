@@ -1,14 +1,14 @@
-<tabs xmlns:android="http://schemas.android.com/apk/res/android">
+<tabs>
     <tab
         id="@+id/menu_map"
         icon="@drawable/baseline_person_pin_black_24"
-        title="" />
+        title="@string/map" />
     <tab
         id="@+id/menu_family"
         icon="@drawable/baseline_group_24"
-        title="" />
+        title="@string/family" />
     <tab
         id="@+id/menu_profile"
         icon="@drawable/baseline_person_24"
-        title="" />
+        title="@string/profile" />
 </tabs>

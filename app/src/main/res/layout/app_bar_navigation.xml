@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="top"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.mindorks.framework.mvp.ui.main.view.MainActivity">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -19,6 +19,21 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+    <FrameLayout                                                                                                                                                                                            
+            android:id="@+id/frame_container"
+            android:layout_below="@id/appbar_layout"
+            android:gravity="top"                                                                                                                                                                           
+            android:paddingTop="0dp"                                                                                                                                                                        
+            android:layout_width="match_parent"                                                                                                                                                             
+            android:layout_height="match_parent" />
 
-
-</android.support.design.widget.CoordinatorLayout>
+    <com.roughike.bottombar.BottomBar
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:bb_activeTabColor="@color/white"
+        app:bb_inActiveTabColor="@color/white"
+        app:bb_tabXmlResource="@xml/bottom_menu" />
+</RelativeLayout>

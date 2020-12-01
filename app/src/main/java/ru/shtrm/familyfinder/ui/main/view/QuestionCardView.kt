@@ -4,13 +4,10 @@ import android.graphics.Color
 import android.widget.Button
 import android.widget.TextView
 import com.androidnetworking.widget.ANImageView
+import com.mindorks.placeholderview.annotations.*
 import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.ui.main.interactor.QuestionCardData
-import com.mindorks.placeholderview.annotations.*
 
-/**
- * Created by jyotidubey on 09/01/18.
- */
 @NonReusable
 @Layout(R.layout.card_layout)
 class QuestionCard(private val mQuestion: QuestionCardData) {

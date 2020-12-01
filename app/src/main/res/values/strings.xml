@@ -16,10 +16,14 @@
     <string name="feed">Feed</string>
     <string name="logout">Logout</string>
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
+    <string name="image_description"></string>
+    <string name="current_location">Current position</string>
 
     <string name="map">Map</string>
     <string name="family">Family</string>
     <string name="profile">Profile</string>
+
+    <string name="icon_map_marker">ic_map_marker</string>
 
     <string name="toast_db_actual">Database is actual</string>
     <string name="toast_db_error">Error initialising database</string>
