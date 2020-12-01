@@ -14,11 +14,13 @@ class MainPresenter<V : MainMVPView, I : MainMVPInteractor> @Inject internal con
         getUserData()
     }
 
-    override fun onDrawerOptionRateUsClick() = getView()?.openRateUsDialog()
-
-    override fun onDrawerOptionFeedClick() = getView()?.openFeedActivity()
-
     override fun onDrawerOptionAboutClick() = getView()?.openAboutFragment()
+
+    override fun onDrawerOptionMapClick() = getView()?.openMapFragment()
+
+    override fun onDrawerOptionProfileClick() = getView()?.openProfileFragment()
+
+    override fun onDrawerOptionFamilyClick() = getView()?.openFamilyFragment()
 
     override fun onDrawerOptionLogoutClick() {
         getView()?.showProgress()

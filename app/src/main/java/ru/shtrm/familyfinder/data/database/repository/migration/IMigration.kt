@@ -2,6 +2,6 @@ package ru.shtrm.familyfinder.data.database.repository.migration
 
 import io.realm.DynamicRealm
 
-interface IToirMigration {
+interface IMigration {
     fun migration(realm: DynamicRealm)
 }

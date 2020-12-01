@@ -7,8 +7,9 @@ import ru.shtrm.familyfinder.ui.main.view.MainMVPView
 interface MainMVPPresenter<V : MainMVPView, I : MainMVPInteractor> : MVPPresenter<V, I> {
 
     fun onDrawerOptionAboutClick(): Unit?
-    fun onDrawerOptionRateUsClick(): Unit?
-    fun onDrawerOptionFeedClick(): Unit?
+    fun onDrawerOptionProfileClick(): Unit?
+    fun onDrawerOptionMapClick(): Unit?
+    fun onDrawerOptionFamilyClick(): Unit?
     fun onDrawerOptionLogoutClick()
 
 }

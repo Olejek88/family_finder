@@ -7,9 +7,6 @@ import ru.shtrm.familyfinder.di.PreferenceInfo
 import ru.shtrm.familyfinder.util.AppConstants
 import javax.inject.Inject
 
-/**
- * Created by jyotidubey on 04/01/18.
- */
 class AppPreferenceHelper @Inject constructor(context: Context,
                                               @PreferenceInfo private val prefFileName: String) : PreferenceHelper {
     companion object {

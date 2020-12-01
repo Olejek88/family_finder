@@ -9,6 +9,8 @@ interface MainMVPView : MVPView {
     fun openFeedActivity()
     fun openAboutFragment()
     fun openProfileFragment()
+    fun openMapFragment()
+    fun openFamilyFragment()
     fun openRateUsDialog(): Unit?
     fun lockDrawer(): Unit?
     fun unlockDrawer(): Unit?

@@ -64,16 +64,19 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.navItemAbout -> {
+            R.id.nav_profile -> {
+                presenter.onDrawerOptionProfileClick()
+            }
+            R.id.nav_map -> {
+                presenter.onDrawerOptionMapClick()
+            }
+            R.id.nav_family -> {
+                presenter.onDrawerOptionFamilyClick()
+            }
+            R.id.nav_about -> {
                 presenter.onDrawerOptionAboutClick()
             }
-            R.id.navItemRateUs -> {
-                presenter.onDrawerOptionRateUsClick()
-            }
-            R.id.navItemFeed -> {
-                presenter.onDrawerOptionFeedClick()
-            }
-            R.id.navItemLogout -> {
+            R.id.nav_logout -> {
                 presenter.onDrawerOptionLogoutClick()
             }
         }
@@ -97,6 +100,16 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
     }
 
     override fun openProfileFragment() {
+        lockDrawer()
+        //supportFragmentManager.addFragment(R.id.frame_container, AboutFragment.newInstance(), AboutFragment.TAG)
+    }
+
+    override fun openMapFragment() {
+        lockDrawer()
+        //supportFragmentManager.addFragment(R.id.frame_container, AboutFragment.newInstance(), AboutFragment.TAG)
+    }
+
+    override fun openFamilyFragment() {
         lockDrawer()
         //supportFragmentManager.addFragment(R.id.frame_container, AboutFragment.newInstance(), AboutFragment.TAG)
     }

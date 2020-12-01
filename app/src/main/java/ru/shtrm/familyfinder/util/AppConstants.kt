@@ -3,10 +3,8 @@ package ru.shtrm.familyfinder.util
 
 object AppConstants {
 
-    internal val APP_DB_NAME = "mindorks_mvp.db"
-    internal val PREF_NAME = "mindorks_pref"
-    internal val SEED_DATABASE_QUESTIONS = "seed/questions.json"
-    internal val SEED_DATABASE_OPTIONS = "seed/options.json"
+    internal val APP_DB_NAME = "family.db"
+    internal val PREF_NAME = "family_pref"
     internal val EMPTY_EMAIL_ERROR = 1001
     internal val INVALID_EMAIL_ERROR = 1002
     internal val EMPTY_PASSWORD_ERROR = 1003
