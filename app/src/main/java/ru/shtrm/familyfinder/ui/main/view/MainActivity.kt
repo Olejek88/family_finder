@@ -1,8 +1,12 @@
 package ru.shtrm.familyfinder.ui.main.view
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
@@ -40,9 +44,20 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
         setContentView(R.layout.activity_main)
         setUpDrawerMenu()
         setUpBottomBar()
+        checkpermission()
+        supportFragmentManager.addFragment(R.id.frame_container, MapFragment.newInstance(), MapFragment.TAG)
         presenter.onAttach(this)
     }
 
+    fun checkpermission() {
+        val EXTERNAL_STORAGE_ACCESS = 102
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (applicationContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION), EXTERNAL_STORAGE_ACCESS)
+                return
+            }
+        }
+    }
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)

@@ -10,10 +10,12 @@ import ru.shtrm.familyfinder.ui.map.view.MapMVPView
 
 @Module
 abstract class MapActivityModule {
+/*
     @Provides
     internal fun provideMapInteractor(mapInteractor: MapInteractor): MapMVPInteractor = mapInteractor
 
     @Provides
     internal fun provideMapPresenter(mapPresenter: MapPresenter<MapMVPView, MapMVPInteractor>)
             : MapMVPPresenter<MapMVPView, MapMVPInteractor> = mapPresenter
+*/
 }
