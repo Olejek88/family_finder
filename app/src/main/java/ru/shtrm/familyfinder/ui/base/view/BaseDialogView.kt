@@ -5,13 +5,10 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
-import ru.shtrm.familyfinder.util.CommonUtil
 import dagger.android.support.AndroidSupportInjection
+import ru.shtrm.familyfinder.util.CommonUtil
 
 
-/**
- * Created by jyotidubey on 14/01/18.
- */
 abstract class BaseDialogView : DialogFragment(), DialogMVPView {
 
     private var parentActivity: BaseActivity? = null

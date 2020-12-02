@@ -20,6 +20,7 @@ import ru.shtrm.familyfinder.ui.feed.view.FeedActivity
 import ru.shtrm.familyfinder.ui.login.view.LoginActivity
 import ru.shtrm.familyfinder.ui.main.interactor.MainMVPInteractor
 import ru.shtrm.familyfinder.ui.main.presenter.MainMVPPresenter
+import ru.shtrm.familyfinder.ui.map.view.MapFragment
 import ru.shtrm.familyfinder.ui.rate.view.RateUsDialog
 import ru.shtrm.familyfinder.util.extension.addFragment
 import ru.shtrm.familyfinder.util.extension.removeFragment
@@ -38,6 +39,7 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setUpDrawerMenu()
+        setUpBottomBar()
         presenter.onAttach(this)
     }
 
@@ -100,22 +102,18 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
     }
 
     override fun openProfileFragment() {
-        lockDrawer()
         //supportFragmentManager.addFragment(R.id.frame_container, AboutFragment.newInstance(), AboutFragment.TAG)
     }
 
     override fun openMapFragment() {
-        lockDrawer()
-        //supportFragmentManager.addFragment(R.id.frame_container, AboutFragment.newInstance(), AboutFragment.TAG)
+        supportFragmentManager.addFragment(R.id.frame_container, MapFragment.newInstance(), MapFragment.TAG)
     }
 
     override fun openFamilyFragment() {
-        lockDrawer()
         //supportFragmentManager.addFragment(R.id.frame_container, AboutFragment.newInstance(), AboutFragment.TAG)
     }
 
     override fun openAboutFragment() {
-        lockDrawer()
         supportFragmentManager.addFragment(R.id.frame_container, AboutFragment.newInstance(), AboutFragment.TAG)
     }
 
@@ -139,5 +137,23 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
 
+    }
+
+    private fun setUpBottomBar() {
+        bottomBar.setOnTabSelectListener({ tabId ->
+            val tr = supportFragmentManager.beginTransaction()
+            when (tabId) {
+                R.id.menu_map -> {
+                    presenter.onDrawerOptionMapClick()
+                }
+                R.id.menu_family -> {
+                    presenter.onDrawerOptionFamilyClick()
+                }
+                R.id.menu_profile -> {
+                    presenter.onDrawerOptionProfileClick()
+                }
+            }
+            tr.commit()
+        })
     }
 }

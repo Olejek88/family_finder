@@ -1,12 +1,9 @@
 package ru.shtrm.familyfinder.ui.rate
 
-import ru.shtrm.familyfinder.ui.rate.view.RateUsDialog
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import ru.shtrm.familyfinder.ui.rate.view.RateUsDialog
 
-/**
- * Created by jyotidubey on 15/01/18.
- */
 @Module
 abstract class RateUsDialogFragmentProvider {
 

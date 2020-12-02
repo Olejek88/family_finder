@@ -5,13 +5,9 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.View
-import ru.shtrm.familyfinder.util.CommonUtil
 import dagger.android.support.AndroidSupportInjection
+import ru.shtrm.familyfinder.util.CommonUtil
 
-
-/**
- * Created by jyotidubey on 12/01/18.
- */
 abstract class BaseFragment : Fragment(), MVPView {
 
     private var parentActivity: BaseActivity? = null

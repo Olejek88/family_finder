@@ -4,13 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_about.*
 import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.ui.base.view.BaseFragment
-import kotlinx.android.synthetic.main.fragment_about.*
 
-/**
- * Created by jyotidubey on 12/01/18.
- */
 class AboutFragment : BaseFragment() {
 
     companion object {
