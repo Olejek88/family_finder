@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_about.*
 import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.ui.base.view.BaseFragment
 
@@ -23,6 +22,7 @@ class AboutFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(R.layout.fragment_about, container, false)
 
-    override fun setUp() = navBackBtn.setOnClickListener { getBaseActivity()?.onFragmentDetached(TAG) }
+    override fun setUp() {
 
+    }
 }

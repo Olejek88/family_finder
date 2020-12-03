@@ -11,7 +11,7 @@ import ru.shtrm.familyfinder.ui.login.view.LoginActivity
 import ru.shtrm.familyfinder.ui.main.MainActivityModule
 import ru.shtrm.familyfinder.ui.main.view.MainActivity
 import ru.shtrm.familyfinder.ui.map.MapFragmentProvider
-import ru.shtrm.familyfinder.ui.rate.RateUsDialogFragmentProvider
+import ru.shtrm.familyfinder.ui.profile.ProfileFragmentProvider
 import ru.shtrm.familyfinder.ui.register.RegisterActivityModule
 import ru.shtrm.familyfinder.ui.register.view.RegisterActivity
 import ru.shtrm.familyfinder.ui.splash.SplashActivityModule
@@ -23,7 +23,7 @@ abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = [(SplashActivityModule::class)])
     abstract fun bindSplashActivity(): SplashMVPActivity
 
-    @ContributesAndroidInjector(modules = [(MainActivityModule::class), (RateUsDialogFragmentProvider::class), (AboutFragmentProvider::class), (MapFragmentProvider::class)])
+    @ContributesAndroidInjector(modules = [(MainActivityModule::class), (ProfileFragmentProvider::class), (AboutFragmentProvider::class), (MapFragmentProvider::class)])
     abstract fun bindMainActivity(): MainActivity
 
     @ContributesAndroidInjector(modules = [(LoginActivityModule::class)])

@@ -20,6 +20,9 @@ class LoginActivity : BaseActivity(), LoginMVPView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val str: String? = presenter.getUserName()
+        if (presenter.getUserName()!=null)
+            openMainActivity()
         setContentView(R.layout.activity_login)
         presenter.onAttach(this)
         setOnClickListeners()

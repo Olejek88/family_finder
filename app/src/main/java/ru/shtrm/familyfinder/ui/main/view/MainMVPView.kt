@@ -11,7 +11,6 @@ interface MainMVPView : MVPView {
     fun openProfileFragment()
     fun openMapFragment()
     fun openFamilyFragment()
-    fun openRateUsDialog(): Unit?
     fun lockDrawer(): Unit?
     fun unlockDrawer(): Unit?
 }

@@ -11,4 +11,5 @@ interface LoginMVPInteractor : MVPInteractor {
 
     fun updateUserInSharedPref(loginResponse: LoginResponse, loggedInMode: AppConstants.LoggedInMode)
 
+    fun getUserName(): String
 }

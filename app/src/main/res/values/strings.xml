@@ -23,8 +23,6 @@
     <string name="family">Family</string>
     <string name="profile">Profile</string>
 
-    <string name="icon_map_marker">ic_map_marker</string>
-
     <string name="toast_db_actual">Database is actual</string>
     <string name="toast_db_error">Error initialising database</string>
 

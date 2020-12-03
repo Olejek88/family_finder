@@ -19,4 +19,8 @@ class LoginInteractor @Inject internal constructor(preferenceHelper: PreferenceH
                 it.setAccessToken(loginResponse.accessToken)
                 it.setCurrentUserLoggedInMode(loggedInMode)
             }
+
+    override fun getUserName(): String {
+        return preferenceHelper.getCurrentUserName()
+    }
 }

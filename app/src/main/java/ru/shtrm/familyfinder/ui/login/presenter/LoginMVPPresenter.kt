@@ -8,5 +8,6 @@ interface LoginMVPPresenter<V : LoginMVPView, I : LoginMVPInteractor> : MVPPrese
 
     fun onServerLoginClicked(email: String, password: String)
     fun onServerRegisterClicked(): Unit?
-
+    fun checkUserLogin(): Boolean
+    fun getUserName(): String?
 }

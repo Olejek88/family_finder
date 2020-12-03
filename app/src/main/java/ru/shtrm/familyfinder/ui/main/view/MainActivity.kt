@@ -25,7 +25,7 @@ import ru.shtrm.familyfinder.ui.login.view.LoginActivity
 import ru.shtrm.familyfinder.ui.main.interactor.MainMVPInteractor
 import ru.shtrm.familyfinder.ui.main.presenter.MainMVPPresenter
 import ru.shtrm.familyfinder.ui.map.view.MapFragment
-import ru.shtrm.familyfinder.ui.rate.view.RateUsDialog
+import ru.shtrm.familyfinder.ui.profile.view.ProfileFragment
 import ru.shtrm.familyfinder.util.extension.addFragment
 import ru.shtrm.familyfinder.util.extension.removeFragment
 import javax.inject.Inject
@@ -49,7 +49,7 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
         presenter.onAttach(this)
     }
 
-    fun checkpermission() {
+    private fun checkpermission() {
         val EXTERNAL_STORAGE_ACCESS = 102
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (applicationContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -117,7 +117,12 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
     }
 
     override fun openProfileFragment() {
-        //supportFragmentManager.addFragment(R.id.frame_container, AboutFragment.newInstance(), AboutFragment.TAG)
+/*
+        ProfileDialog.newInstance().let {
+            it?.show(supportFragmentManager)
+        }
+*/
+        supportFragmentManager.addFragment(R.id.frame_container, ProfileFragment.newInstance(), ProfileFragment.TAG)
     }
 
     override fun openMapFragment() {
@@ -135,10 +140,6 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
     override fun openFeedActivity() {
         val intent = Intent(this, FeedActivity::class.java)
         startActivity(intent)
-    }
-
-    override fun openRateUsDialog() = RateUsDialog.newInstance().let {
-        it?.show(supportFragmentManager)
     }
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector

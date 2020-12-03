@@ -1,6 +1,9 @@
 package ru.shtrm.familyfinder.ui.login.presenter
 
 import io.reactivex.disposables.CompositeDisposable
+import io.realm.Realm
+import ru.shtrm.familyfinder.data.database.AuthorizedUser
+import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.data.network.LoginResponse
 import ru.shtrm.familyfinder.ui.base.presenter.BasePresenter
 import ru.shtrm.familyfinder.ui.login.interactor.LoginMVPInteractor
@@ -31,9 +34,56 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
         }
     }
 
+    override fun checkUserLogin(): Boolean {
+        val authUser = AuthorizedUser.instance;
+        val realm = Realm.getDefaultInstance()
+        val user = realm.where(User::class.java).findFirst()
+        if (user != null) {
+            authUser.login = user.login
+            authUser.username = user.username
+            authUser.token = ""
+            authUser._id = user._id
+            authUser.image = user.image
+            return true
+        }
+        return false
+    }
+
+    override fun getUserName(): String? {
+        return interactor?.getUserName()
+    }
+
     override fun onServerRegisterClicked() = getView()?.openRegisterActivity()
 
     private fun updateUserInSharedPref(loginResponse: LoginResponse,
-                                       loggedInMode: AppConstants.LoggedInMode) =
-            interactor?.updateUserInSharedPref(loginResponse, loggedInMode)
+                                       loggedInMode: AppConstants.LoggedInMode) {
+        val authUser = AuthorizedUser.instance;
+        authUser.login = loginResponse.userEmail
+        authUser.username = loginResponse.userName
+        authUser.token = loginResponse.accessToken
+        authUser._id = loginResponse.userId
+        authUser.image = loginResponse.serverProfilePicUrl
+        interactor?.updateUserInSharedPref(loginResponse, loggedInMode)
+
+        val realm = Realm.getDefaultInstance()
+        val user = realm.where(User::class.java).equalTo("login", authUser.login).findFirst()
+        if (user == null) {
+            realm.executeTransaction {
+                val user_new = realm.createObject(User::class.java)
+                user_new.login = loginResponse.userEmail.toString()
+                user_new.username = loginResponse.userName!!
+                user_new._id = loginResponse.userId!!
+                user_new.image = loginResponse.serverProfilePicUrl!!
+            }
+        } else {
+            realm.executeTransaction {
+                user.login = loginResponse.userEmail.toString()
+                user.username = loginResponse.userName!!
+                user._id = loginResponse.userId!!
+                user.image = loginResponse.serverProfilePicUrl!!
+            }
+        }
+        realm.close()
+        interactor?.updateUserInSharedPref(loginResponse, loggedInMode)
+    }
 }
