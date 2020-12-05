@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.nav_header_navigation.view.*
 import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.ui.about.view.AboutFragment
 import ru.shtrm.familyfinder.ui.base.view.BaseActivity
+import ru.shtrm.familyfinder.ui.family.view.FamilyFragment
 import ru.shtrm.familyfinder.ui.feed.view.FeedActivity
 import ru.shtrm.familyfinder.ui.login.view.LoginActivity
 import ru.shtrm.familyfinder.ui.main.interactor.MainMVPInteractor
@@ -32,6 +33,12 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationItemSelectedListener,
         HasSupportFragmentInjector {
+    private var aboutFragment: AboutFragment? = null
+    private var mapFragment: MapFragment? = null
+    private var familyFragment: FamilyFragment? = null
+    private var profileFragment: ProfileFragment? = null
+    private var selectedNavItem = 0
+    private val KEY_NAV_ITEM = "CURRENT_NAV_ITEM"
 
     @Inject
     internal lateinit var presenter: MainMVPPresenter<MainMVPView, MainMVPInteractor>
@@ -45,7 +52,32 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
         setUpDrawerMenu()
         setUpBottomBar()
         checkpermission()
-        supportFragmentManager.addFragment(R.id.frame_container, MapFragment.newInstance(), MapFragment.TAG)
+
+        if (savedInstanceState != null) {
+            mapFragment = supportFragmentManager.getFragment(savedInstanceState, "MapFragment") as MapFragment
+            familyFragment = supportFragmentManager.getFragment(savedInstanceState, "FamilyFragment") as FamilyFragment
+            profileFragment = supportFragmentManager.getFragment(savedInstanceState, "ProfileFragment") as ProfileFragment
+            aboutFragment = supportFragmentManager.getFragment(savedInstanceState, "AboutFragment") as AboutFragment
+            selectedNavItem = savedInstanceState.getInt(KEY_NAV_ITEM)
+        } else {
+            mapFragment = supportFragmentManager.findFragmentById(R.id.frame_container) as MapFragment?
+            if (mapFragment == null) {
+                mapFragment = MapFragment.newInstance()
+            }
+            familyFragment = supportFragmentManager.findFragmentById(R.id.frame_container) as FamilyFragment?
+            if (familyFragment == null) {
+                familyFragment = FamilyFragment.newInstance()
+            }
+            profileFragment = supportFragmentManager.findFragmentById(R.id.frame_container) as ProfileFragment?
+            if (profileFragment == null) {
+                profileFragment = ProfileFragment.newInstance()
+            }
+            aboutFragment = supportFragmentManager.findFragmentById(R.id.frame_container) as AboutFragment?
+            if (aboutFragment == null) {
+                aboutFragment = AboutFragment.newInstance()
+            }
+        }
+        supportFragmentManager.addFragment(R.id.frame_container, FamilyFragment.newInstance(), FamilyFragment.TAG)
         presenter.onAttach(this)
     }
 
@@ -117,12 +149,9 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
     }
 
     override fun openProfileFragment() {
-/*
-        ProfileDialog.newInstance().let {
-            it?.show(supportFragmentManager)
-        }
-*/
-        supportFragmentManager.addFragment(R.id.frame_container, ProfileFragment.newInstance(), ProfileFragment.TAG)
+        //supportFragmentManager.addFragment(R.id.frame_container, profileFragment, ProfileFragment.TAG)
+        changeFragment("profileFragment")
+        toolbar.title = resources.getString(R.string.profile)
     }
 
     override fun openMapFragment() {
@@ -130,7 +159,7 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
     }
 
     override fun openFamilyFragment() {
-        //supportFragmentManager.addFragment(R.id.frame_container, AboutFragment.newInstance(), AboutFragment.TAG)
+        supportFragmentManager.addFragment(R.id.frame_container, FamilyFragment.newInstance(), FamilyFragment.TAG)
     }
 
     override fun openAboutFragment() {
@@ -171,5 +200,23 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
             }
             tr.commit()
         })
+    }
+
+    internal fun changeFragment(selectedFragment: String) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.hide(aboutFragment)
+        fragmentTransaction.hide(familyFragment)
+        fragmentTransaction.hide(mapFragment)
+        fragmentTransaction.hide(profileFragment)
+
+        if (selectedFragment === "aboutFragment")
+            fragmentTransaction.show(aboutFragment)
+        if (selectedFragment === "familyFragment")
+            fragmentTransaction.show(familyFragment)
+        if (selectedFragment === "mapFragment")
+            fragmentTransaction.show(mapFragment)
+        if (selectedFragment === "profileFragment")
+            fragmentTransaction.show(profileFragment)
+        fragmentTransaction.commit()
     }
 }

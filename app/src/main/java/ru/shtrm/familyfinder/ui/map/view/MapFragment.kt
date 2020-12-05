@@ -8,13 +8,10 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_about.*
-import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_map.view.*
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -26,12 +23,9 @@ import org.osmdroid.views.overlay.compass.CompassOverlay
 import ru.shtrm.familyfinder.BuildConfig
 import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.ui.base.view.BaseFragment
-import ru.shtrm.familyfinder.ui.map.interactor.MapMVPInteractor
-import ru.shtrm.familyfinder.ui.map.presenter.MapMVPPresenter
 import java.util.*
-import javax.inject.Inject
 
-class MapFragment : BaseFragment() {
+class MapFragment : BaseFragment(), MapMVPView {
 
     companion object {
 

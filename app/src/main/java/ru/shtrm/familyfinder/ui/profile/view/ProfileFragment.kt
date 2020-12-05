@@ -35,10 +35,10 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.onAttach(this)
         val authUser = AuthorizedUser.instance;
         view.email_text.text = authUser.login
         view.user_text_name.text = authUser.username
+        presenter.onAttach(this)
     }
 
     override fun onDestroyView() {
