@@ -4,9 +4,6 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import ru.shtrm.familyfinder.ui.about.AboutFragmentProvider
 import ru.shtrm.familyfinder.ui.family.FamilyFragmentProvider
-import ru.shtrm.familyfinder.ui.feed.blog.BlogFragmentProvider
-import ru.shtrm.familyfinder.ui.feed.opensource.OpenSourceFragmentProvider
-import ru.shtrm.familyfinder.ui.feed.view.FeedActivity
 import ru.shtrm.familyfinder.ui.login.LoginActivityModule
 import ru.shtrm.familyfinder.ui.login.view.LoginActivity
 import ru.shtrm.familyfinder.ui.main.MainActivityModule
@@ -32,8 +29,5 @@ abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = [(RegisterActivityModule::class)])
     abstract fun bindRegisterActivity(): RegisterActivity
-
-    @ContributesAndroidInjector(modules = [(BlogFragmentProvider::class), (OpenSourceFragmentProvider::class)])
-    abstract fun bindFeedActivity(): FeedActivity
 
 }

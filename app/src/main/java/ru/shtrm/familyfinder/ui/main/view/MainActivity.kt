@@ -21,7 +21,6 @@ import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.ui.about.view.AboutFragment
 import ru.shtrm.familyfinder.ui.base.view.BaseActivity
 import ru.shtrm.familyfinder.ui.family.view.FamilyFragment
-import ru.shtrm.familyfinder.ui.feed.view.FeedActivity
 import ru.shtrm.familyfinder.ui.login.view.LoginActivity
 import ru.shtrm.familyfinder.ui.main.interactor.MainMVPInteractor
 import ru.shtrm.familyfinder.ui.main.presenter.MainMVPPresenter
@@ -126,7 +125,7 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
                 presenter.onDrawerOptionAboutClick()
             }
             R.id.nav_logout -> {
-                presenter.onDrawerOptionLogoutClick()
+                presenter.onDrawerOptionLogoutClick(this)
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -164,11 +163,6 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
 
     override fun openAboutFragment() {
         supportFragmentManager.addFragment(R.id.frame_container, AboutFragment.newInstance(), AboutFragment.TAG)
-    }
-
-    override fun openFeedActivity() {
-        val intent = Intent(this, FeedActivity::class.java)
-        startActivity(intent)
     }
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector

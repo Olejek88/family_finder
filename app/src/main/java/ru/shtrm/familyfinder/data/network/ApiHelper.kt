@@ -10,8 +10,4 @@ interface ApiHelper {
 
     fun performLogoutApiCall(): Observable<LogoutResponse>
 
-    fun getBlogApiCall(): Observable<BlogResponse>
-
-    fun getOpenSourceApiCall(): Observable<OpenSourceResponse>
-
 }

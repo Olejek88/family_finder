@@ -1,5 +1,9 @@
 package ru.shtrm.familyfinder.ui.main.presenter
 
+import android.content.Context
+import android.util.Log
+import android.view.Gravity
+import android.widget.Toast
 import io.reactivex.disposables.CompositeDisposable
 import ru.shtrm.familyfinder.ui.base.presenter.BasePresenter
 import ru.shtrm.familyfinder.ui.main.interactor.MainMVPInteractor
@@ -22,17 +26,30 @@ class MainPresenter<V : MainMVPView, I : MainMVPInteractor> @Inject internal con
 
     override fun onDrawerOptionFamilyClick() = getView()?.openFamilyFragment()
 
-    override fun onDrawerOptionLogoutClick() {
+    override fun onDrawerOptionLogoutClick(context: Context) {
         getView()?.showProgress()
         interactor?.let {
             compositeDisposable.add(
                     it.makeLogoutApiCall()
                             .compose(schedulerProvider.ioToMainObservableScheduler())
-                            .subscribe({
-                                interactor?.performUserLogout()
-                                getView()?.let {
-                                    it.hideProgress()
-                                    it.openLoginActivity()
+                            .doOnError {
+                                t: Throwable -> Log.e("performApiCall", t.message)
+                                getView()?.hideProgress()
+                                val toast = Toast.makeText(context, t.message, Toast.LENGTH_LONG)
+                                toast.setGravity(Gravity.BOTTOM, 0, 0)
+                                toast.show()
+                            }
+                            .subscribe({logoutResponse ->
+                                if (logoutResponse.statusCode === "0") {
+                                    interactor?.performUserLogout()
+                                    getView()?.let {
+                                        it.hideProgress()
+                                        it.openLoginActivity()
+                                    }
+                                } else {
+                                    val toast = Toast.makeText(context, "Logout error: "+logoutResponse.message, Toast.LENGTH_LONG)
+                                    toast.setGravity(Gravity.BOTTOM, 0, 0)
+                                    toast.show()
                                 }
                             }, { err -> println(err) }))
         }

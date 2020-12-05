@@ -1,11 +1,7 @@
 package ru.shtrm.familyfinder.data.network
 
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONArrayRequestListener
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.rx2androidnetworking.Rx2AndroidNetworking
 import io.reactivex.Observable
-import org.json.JSONObject
 import javax.inject.Inject
 
 class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHelper {
@@ -28,19 +24,8 @@ class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHe
     override fun performLogoutApiCall(): Observable<LogoutResponse> =
             Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_LOGOUT)
                     .addHeaders(apiHeader.protectedApiHeader)
+                    .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
                     .build()
                     .getObjectObservable(LogoutResponse::class.java)
-
-    override fun getBlogApiCall(): Observable<BlogResponse> =
-            Rx2AndroidNetworking.get(ApiEndPoint.ENDPOINT_BLOG)
-                    .addHeaders(apiHeader.protectedApiHeader)
-                    .build()
-                    .getObjectObservable(BlogResponse::class.java)
-
-    override fun getOpenSourceApiCall(): Observable<OpenSourceResponse> =
-            Rx2AndroidNetworking.get(ApiEndPoint.ENDPOINT_OPEN_SOURCE)
-                    .addHeaders(apiHeader.protectedApiHeader)
-                    .build()
-                    .getObjectObservable(OpenSourceResponse::class.java)
 
 }
