@@ -62,21 +62,25 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
             mapFragment = supportFragmentManager.findFragmentById(R.id.frame_container) as MapFragment?
             if (mapFragment == null) {
                 mapFragment = MapFragment.newInstance()
+                supportFragmentManager.addFragment(R.id.frame_container, mapFragment!!, ProfileFragment.TAG)
             }
             familyFragment = supportFragmentManager.findFragmentById(R.id.frame_container) as FamilyFragment?
             if (familyFragment == null) {
                 familyFragment = FamilyFragment.newInstance()
+                supportFragmentManager.addFragment(R.id.frame_container, familyFragment!!, ProfileFragment.TAG)
             }
             profileFragment = supportFragmentManager.findFragmentById(R.id.frame_container) as ProfileFragment?
             if (profileFragment == null) {
                 profileFragment = ProfileFragment.newInstance()
+                supportFragmentManager.addFragment(R.id.frame_container, profileFragment!!, ProfileFragment.TAG)
             }
             aboutFragment = supportFragmentManager.findFragmentById(R.id.frame_container) as AboutFragment?
             if (aboutFragment == null) {
                 aboutFragment = AboutFragment.newInstance()
+                supportFragmentManager.addFragment(R.id.frame_container, aboutFragment!!, ProfileFragment.TAG)
             }
         }
-        supportFragmentManager.addFragment(R.id.frame_container, FamilyFragment.newInstance(), FamilyFragment.TAG)
+        changeFragment("mapFragment")
         presenter.onAttach(this)
     }
 
@@ -148,21 +152,23 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
     }
 
     override fun openProfileFragment() {
-        //supportFragmentManager.addFragment(R.id.frame_container, profileFragment, ProfileFragment.TAG)
         changeFragment("profileFragment")
         toolbar.title = resources.getString(R.string.profile)
     }
 
     override fun openMapFragment() {
-        supportFragmentManager.addFragment(R.id.frame_container, MapFragment.newInstance(), MapFragment.TAG)
+        changeFragment("mapFragment")
+        toolbar.title = resources.getString(R.string.map)
     }
 
     override fun openFamilyFragment() {
-        supportFragmentManager.addFragment(R.id.frame_container, FamilyFragment.newInstance(), FamilyFragment.TAG)
+        changeFragment("familyFragment")
+        toolbar.title = resources.getString(R.string.family)
     }
 
     override fun openAboutFragment() {
-        supportFragmentManager.addFragment(R.id.frame_container, AboutFragment.newInstance(), AboutFragment.TAG)
+        changeFragment("aboutFragment")
+        toolbar.title = resources.getString(R.string.about)
     }
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
@@ -209,8 +215,10 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
             fragmentTransaction.show(familyFragment)
         if (selectedFragment === "mapFragment")
             fragmentTransaction.show(mapFragment)
-        if (selectedFragment === "profileFragment")
+        if (selectedFragment === "profileFragment") {
+
             fragmentTransaction.show(profileFragment)
+        }
         fragmentTransaction.commit()
     }
 }
