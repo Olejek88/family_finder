@@ -53,10 +53,10 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
         checkpermission()
 
         if (savedInstanceState != null) {
-            mapFragment = supportFragmentManager.getFragment(savedInstanceState, "MapFragment") as MapFragment
-            familyFragment = supportFragmentManager.getFragment(savedInstanceState, "FamilyFragment") as FamilyFragment
-            profileFragment = supportFragmentManager.getFragment(savedInstanceState, "ProfileFragment") as ProfileFragment
-            aboutFragment = supportFragmentManager.getFragment(savedInstanceState, "AboutFragment") as AboutFragment
+            mapFragment = supportFragmentManager.getFragment(savedInstanceState, "MapFragment")!! as MapFragment
+            familyFragment = supportFragmentManager.getFragment(savedInstanceState, "FamilyFragment")!! as FamilyFragment
+            profileFragment = supportFragmentManager.getFragment(savedInstanceState, "ProfileFragment")!! as ProfileFragment
+            aboutFragment = supportFragmentManager.getFragment(savedInstanceState, "AboutFragment")!! as AboutFragment
             selectedNavItem = savedInstanceState.getInt(KEY_NAV_ITEM)
         } else {
             mapFragment = supportFragmentManager.findFragmentById(R.id.frame_container) as MapFragment?

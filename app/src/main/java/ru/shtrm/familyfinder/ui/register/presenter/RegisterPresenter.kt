@@ -36,12 +36,16 @@ class RegisterPresenter<V : RegisterMVPView, I : RegisterMVPInteractor> @Inject 
                                         toast.show()
                                     }
                             .subscribe({
-                                registerResponse -> updateRegisterSharedPref(registerResponse = registerResponse,
-                                loggedInMode = AppConstants.LoggedInMode.LOGGED_IN_MODE_SERVER)
-                                if (registerResponse.statusCode === "0") getView()?.openMainActivity()
+                                registerResponse ->
+                                if (registerResponse.statusCode === "0") {
+                                    updateRegisterSharedPref(registerResponse = registerResponse,
+                                            loggedInMode = AppConstants.LoggedInMode.LOGGED_IN_MODE_SERVER)
+                                    getView()?.openMainActivity()
+                                }
                                 val toast = Toast.makeText(context, registerResponse.message, Toast.LENGTH_LONG)
                                 toast.setGravity(Gravity.BOTTOM, 0, 0)
                                 toast.show()
+                                getView()?.hideProgress()
                             }, { err -> println(err) }))
                 }
 

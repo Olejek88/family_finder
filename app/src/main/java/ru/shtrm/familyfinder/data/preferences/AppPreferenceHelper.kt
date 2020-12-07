@@ -50,5 +50,4 @@ class AppPreferenceHelper @Inject constructor(context: Context,
         mPrefs.edit { putInt(PREF_KEY_USER_LOGGED_IN_MODE, mode.type) }
     }
 
-
 }

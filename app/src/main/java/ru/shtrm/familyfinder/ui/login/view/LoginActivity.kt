@@ -21,7 +21,7 @@ class LoginActivity : BaseActivity(), LoginMVPView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val str: String? = presenter.getUserName()
-        if (presenter.getUserName()!=null)
+        if (presenter.checkUserLogin())
             openMainActivity()
         setContentView(R.layout.activity_login)
         presenter.onAttach(this)
@@ -61,7 +61,7 @@ class LoginActivity : BaseActivity(), LoginMVPView {
     }
 
     private fun setOnClickListeners() {
-        btnServerLogin.setOnClickListener { presenter.onServerLoginClicked(et_email.text.toString(), et_password.text.toString()) }
+        btnServerLogin.setOnClickListener { presenter.onServerLoginClicked(et_email.text.toString(), et_password.text.toString(), this) }
         btnServerRegisterLink.setOnClickListener { presenter.onServerRegisterClicked() }
     }
 }

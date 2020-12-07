@@ -1,5 +1,9 @@
 package ru.shtrm.familyfinder.ui.login.presenter
 
+import android.content.Context
+import android.util.Log
+import android.view.Gravity
+import android.widget.Toast
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
@@ -14,7 +18,7 @@ import javax.inject.Inject
 
 class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal constructor(interactor: I, schedulerProvider: SchedulerProvider, disposable: CompositeDisposable) : BasePresenter<V, I>(interactor = interactor, schedulerProvider = schedulerProvider, compositeDisposable = disposable), LoginMVPPresenter<V, I> {
 
-    override fun onServerLoginClicked(email: String, password: String) {
+    override fun onServerLoginClicked(email: String, password: String, context: Context) {
         when {
             email.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_EMAIL_ERROR)
             password.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_PASSWORD_ERROR)
@@ -23,22 +27,34 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
                 interactor?.let {
                     compositeDisposable.add(it.doServerLoginApiCall(email, password)
                             .compose(schedulerProvider.ioToMainObservableScheduler())
+                            .doOnError {
+                                t: Throwable -> Log.e("performApiCall", t.message)
+                                getView()?.hideProgress()
+                                val toast = Toast.makeText(context, t.message, Toast.LENGTH_LONG)
+                                toast.setGravity(Gravity.BOTTOM, 0, 0)
+                                toast.show()
+                            }
                             .subscribe({ loginResponse ->
-                                updateUserInSharedPref(loginResponse = loginResponse,
-                                        loggedInMode = AppConstants.LoggedInMode.LOGGED_IN_MODE_SERVER)
-                                getView()?.openMainActivity()
+                                if (loginResponse.statusCode === "0") {
+                                    updateUserInSharedPref(loginResponse = loginResponse,
+                                            loggedInMode = AppConstants.LoggedInMode.LOGGED_IN_MODE_SERVER)
+                                    getView()?.openMainActivity()
+                                }
+                                val toast = Toast.makeText(context, loginResponse.message, Toast.LENGTH_LONG)
+                                toast.setGravity(Gravity.BOTTOM, 0, 0)
+                                toast.show()
+                                getView()?.hideProgress()
                             }, { err -> println(err) }))
                 }
-
             }
         }
     }
 
     override fun checkUserLogin(): Boolean {
-        val authUser = AuthorizedUser.instance;
+        val authUser = AuthorizedUser.instance
         val realm = Realm.getDefaultInstance()
         val user = realm.where(User::class.java).findFirst()
-        if (user != null) {
+        if (user != null && authUser.login!=="") {
             authUser.login = user.login
             authUser.username = user.username
             authUser.token = ""
@@ -53,6 +69,7 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
         return interactor?.getUserName()
     }
 
+
     override fun onServerRegisterClicked() = getView()?.openRegisterActivity()
 
     private fun updateUserInSharedPref(loginResponse: LoginResponse,
@@ -63,18 +80,23 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
         authUser.token = loginResponse.accessToken
         authUser._id = loginResponse.userId
         authUser.image = loginResponse.serverProfilePicUrl
-        interactor?.updateUserInSharedPref(loginResponse, loggedInMode)
 
         val realm = Realm.getDefaultInstance()
         val user = realm.where(User::class.java).equalTo("login", authUser.login).findFirst()
         if (user == null) {
-            realm.executeTransaction {
-                val user_new = realm.createObject(User::class.java)
+            realm.executeTransactionAsync({realmBg ->
+                val user_new = realmBg.createObject<User>(User::class.java,User.getLastId())
                 user_new.login = loginResponse.userEmail.toString()
                 user_new.username = loginResponse.userName!!
-                user_new._id = loginResponse.userId!!
-                user_new.image = loginResponse.serverProfilePicUrl!!
-            }
+                user_new.image = ""
+                //user_new._id = loginResponse.userId!!
+                if (loginResponse.serverProfilePicUrl!=null) {
+                    //user_new.image = loginResponse.serverProfilePicUrl
+                }
+            }, {
+            }, { error ->
+                Log.d("user",error.message)
+            })
         } else {
             realm.executeTransaction {
                 user.login = loginResponse.userEmail.toString()
@@ -84,6 +106,5 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
             }
         }
         realm.close()
-        interactor?.updateUserInSharedPref(loginResponse, loggedInMode)
     }
 }

@@ -12,14 +12,9 @@ import ru.shtrm.familyfinder.ui.map.MapFragmentProvider
 import ru.shtrm.familyfinder.ui.profile.ProfileFragmentProvider
 import ru.shtrm.familyfinder.ui.register.RegisterActivityModule
 import ru.shtrm.familyfinder.ui.register.view.RegisterActivity
-import ru.shtrm.familyfinder.ui.splash.SplashActivityModule
-import ru.shtrm.familyfinder.ui.splash.view.SplashMVPActivity
 
 @Module
 abstract class ActivityBuilder {
-
-    @ContributesAndroidInjector(modules = [(SplashActivityModule::class)])
-    abstract fun bindSplashActivity(): SplashMVPActivity
 
     @ContributesAndroidInjector(modules = [(MainActivityModule::class), (FamilyFragmentProvider::class), (ProfileFragmentProvider::class), (AboutFragmentProvider::class), (MapFragmentProvider::class)])
     abstract fun bindMainActivity(): MainActivity
