@@ -1,6 +1,7 @@
 package ru.shtrm.familyfinder.ui.family
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Typeface
 import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.RecyclerView
@@ -13,6 +14,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.interfaces.OnRecyclerViewItemClickListener
+import ru.shtrm.familyfinder.util.FileUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,9 +38,20 @@ class FamilyAdapter internal constructor(private val context: Context, private v
         val pvh = holder as UserViewHolder
         val sDate = SimpleDateFormat("dd.MM.yy HH:mm", Locale.US).format(item.changedAt)
         pvh.textViewTime.setText(sDate)
+        pvh.textViewName.setText(item.username)
         pvh.textViewName.setTypeface(null, Typeface.BOLD)
         pvh.textViewDistance.setText("5.3km")
-        pvh.textViewImageText.setText(item.username.substring(0, 1))
+        if (item.image!=null && item.image != "") {
+            val path = FileUtils.getPicturesDirectory(this.context)
+            val userBitmap: Bitmap? = FileUtils.getBitmapByPath(path, item.image)
+            if (userBitmap!=null) {
+                pvh.circleImageView.setImageBitmap(FileUtils.getBitmapByPath(path, item.image))
+            } else {
+                pvh.textViewImageText.text = item.username.substring(0, 1)
+            }
+        } else {
+            pvh.textViewImageText.text = item.username.substring(0, 1)
+        }
     }
 
     override fun getItemCount(): Int {

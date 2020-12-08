@@ -93,6 +93,7 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
             }
         }
     }
+
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)

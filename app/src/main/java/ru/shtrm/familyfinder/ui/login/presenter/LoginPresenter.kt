@@ -54,7 +54,7 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
         val authUser = AuthorizedUser.instance
         val realm = Realm.getDefaultInstance()
         val user = realm.where(User::class.java).findFirst()
-        if (user != null && authUser.login!=="") {
+        if (user != null) {
             authUser.login = user.login
             authUser.username = user.username
             authUser.token = ""
