@@ -5,6 +5,7 @@ import android.util.Log
 
 import io.realm.DynamicRealm
 import io.realm.RealmMigration
+import ru.shtrm.familyfinder.data.database.repository.migration.Migration1
 
 internal class FamilyRealmMigration(private val context: Context) : RealmMigration {
     private val TAG = "realm"
@@ -18,11 +19,9 @@ internal class FamilyRealmMigration(private val context: Context) : RealmMigrati
         if (oldVersion == newVersion) {
             return
         }
-/*
         if (oldVersion == 0L) {
-            toVersion1(realm)
+            Migration1().migration(realm)
             oldVersion++
         }
-*/
     }
 }

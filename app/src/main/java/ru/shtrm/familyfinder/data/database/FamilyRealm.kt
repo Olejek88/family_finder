@@ -11,7 +11,7 @@ import io.realm.RealmConfiguration
 import ru.shtrm.familyfinder.R
 
 object FamilyRealm {
-    private val VERSION: Long = 0
+    private val VERSION: Long = 1
 
     fun init(context: Context, dbName: String = "family.realm"): Boolean {
         var success = false
@@ -21,6 +21,9 @@ object FamilyRealm {
                 .name(dbName)
                 .schemaVersion(VERSION)
                 .build()
+
+        if (VERSION>0) Realm.migrateRealm(realmConfig, FamilyRealmMigration(context));
+        Realm.setDefaultConfiguration(realmConfig);
         try {
             realmDB = Realm.getDefaultInstance()
             Log.d("realm", "Realm DB schema version = " + realmDB.getVersion())
@@ -41,9 +44,6 @@ object FamilyRealm {
             success = false
             return success
         }
-
-        if (VERSION>0) Realm.migrateRealm(realmConfig, FamilyRealmMigration(context));
-        Realm.setDefaultConfiguration(realmConfig);
 
         // инициализируем интерфейс для отладки через Google Chrome
         Stetho.initialize(

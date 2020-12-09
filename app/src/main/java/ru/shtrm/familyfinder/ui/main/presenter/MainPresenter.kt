@@ -60,5 +60,4 @@ class MainPresenter<V : MainMVPView, I : MainMVPInteractor> @Inject internal con
         val userData = it.getUserDetails()
         getView()?.inflateUserDetails(userData)
     }
-
 }

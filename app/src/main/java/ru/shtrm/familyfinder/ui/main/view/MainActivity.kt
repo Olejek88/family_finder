@@ -1,23 +1,30 @@
 package ru.shtrm.familyfinder.ui.main.view
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import android.widget.Toast
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_navigation.*
 import kotlinx.android.synthetic.main.nav_header_navigation.view.*
 import ru.shtrm.familyfinder.R
+import ru.shtrm.familyfinder.data.database.AuthorizedUser
+import ru.shtrm.familyfinder.gps.GPSListener
 import ru.shtrm.familyfinder.ui.about.view.AboutFragment
 import ru.shtrm.familyfinder.ui.base.view.BaseActivity
 import ru.shtrm.familyfinder.ui.family.view.FamilyFragment
@@ -26,6 +33,7 @@ import ru.shtrm.familyfinder.ui.main.interactor.MainMVPInteractor
 import ru.shtrm.familyfinder.ui.main.presenter.MainMVPPresenter
 import ru.shtrm.familyfinder.ui.map.view.MapFragment
 import ru.shtrm.familyfinder.ui.profile.view.ProfileFragment
+import ru.shtrm.familyfinder.util.FileUtils
 import ru.shtrm.familyfinder.util.extension.addFragment
 import ru.shtrm.familyfinder.util.extension.removeFragment
 import javax.inject.Inject
@@ -38,6 +46,9 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
     private var profileFragment: ProfileFragment? = null
     private var selectedNavItem = 0
     private val KEY_NAV_ITEM = "CURRENT_NAV_ITEM"
+    private var GPSPresent = false
+    private var _locationManager: LocationManager? = null
+    private var _gpsListener: GPSListener? = null
 
     @Inject
     internal lateinit var presenter: MainMVPPresenter<MainMVPView, MainMVPInteractor>
@@ -53,10 +64,10 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
         checkpermission()
 
         if (savedInstanceState != null) {
-            mapFragment = supportFragmentManager.getFragment(savedInstanceState, "MapFragment")!! as MapFragment
-            familyFragment = supportFragmentManager.getFragment(savedInstanceState, "FamilyFragment")!! as FamilyFragment
-            profileFragment = supportFragmentManager.getFragment(savedInstanceState, "ProfileFragment")!! as ProfileFragment
-            aboutFragment = supportFragmentManager.getFragment(savedInstanceState, "AboutFragment")!! as AboutFragment
+            mapFragment = supportFragmentManager.getFragment(savedInstanceState, "MapFragment")!! as MapFragment?
+            familyFragment = supportFragmentManager.getFragment(savedInstanceState, "FamilyFragment")!! as FamilyFragment?
+            profileFragment = supportFragmentManager.getFragment(savedInstanceState, "ProfileFragment")!! as ProfileFragment?
+            aboutFragment = supportFragmentManager.getFragment(savedInstanceState, "AboutFragment")!! as AboutFragment?
             selectedNavItem = savedInstanceState.getInt(KEY_NAV_ITEM)
         } else {
             mapFragment = supportFragmentManager.findFragmentById(R.id.frame_container) as MapFragment?
@@ -180,9 +191,15 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
                 this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawerLayout.addDrawerListener(toggle)
+        if (AuthorizedUser.instance.image!=null && AuthorizedUser.instance.image != "") {
+            val path = FileUtils.getPicturesDirectory(this)
+            val userBitmap: Bitmap? = FileUtils.getBitmapByPath(path, AuthorizedUser.instance.image.toString())
+            if (userBitmap != null) {
+                this.navView.getHeaderView(0).user_image.setImageBitmap(userBitmap)
+            }
+        }
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
-
     }
 
     private fun setUpBottomBar() {
@@ -221,5 +238,47 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
             fragmentTransaction.show(profileFragment)
         }
         fragmentTransaction.commit()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        _locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (_locationManager != null && permission == PackageManager.PERMISSION_GRANTED) {
+            _gpsListener = GPSListener()
+            try {
+                _locationManager!!.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10.toFloat(), _gpsListener)
+                GPSPresent = true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                GPSPresent = false
+            }
+
+            if (!GPSPresent) {
+                Toast.makeText(this, getString(R.string.device_has_no_gps), Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    /**
+     * Store the state when the activity may be recycled.
+     * @param outState The state data.
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Store the fragments' states.
+        if (familyFragment!!.isAdded) {
+            supportFragmentManager.putFragment(outState, "FamilyFragment", familyFragment)
+        }
+        if (profileFragment!!.isAdded) {
+            supportFragmentManager.putFragment(outState, "ProfileFragment", profileFragment)
+        }
+        if (aboutFragment!!.isAdded) {
+            supportFragmentManager.putFragment(outState, "AboutFragment", aboutFragment)
+        }
+        if (mapFragment!!.isAdded) {
+            supportFragmentManager.putFragment(outState, "MapFragment", mapFragment)
+        }
     }
 }

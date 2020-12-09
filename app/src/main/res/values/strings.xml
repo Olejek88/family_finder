@@ -18,6 +18,7 @@
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
     <string name="image_description"></string>
     <string name="current_location">Current position</string>
+    <string name="device_has_no_gps">Device has no GPS</string>
 
     <string name="map">Map</string>
     <string name="family">Family</string>

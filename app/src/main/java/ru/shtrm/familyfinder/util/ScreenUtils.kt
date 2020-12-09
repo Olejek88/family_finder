@@ -4,9 +4,6 @@ import android.content.Context
 import android.util.DisplayMetrics
 import android.view.WindowManager
 
-/**
- * Created by jyotidubey on 09/01/18.
- */
 object ScreenUtils {
 
     fun getScreenWidth(context: Context): Int {
