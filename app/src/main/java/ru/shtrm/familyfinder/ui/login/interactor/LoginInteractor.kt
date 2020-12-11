@@ -1,8 +1,7 @@
 package ru.shtrm.familyfinder.ui.login.interactor
 
-import ru.shtrm.familyfinder.data.network.ApiHelper
-import ru.shtrm.familyfinder.data.network.LoginRequest
-import ru.shtrm.familyfinder.data.network.LoginResponse
+import io.reactivex.Observable
+import ru.shtrm.familyfinder.data.network.*
 import ru.shtrm.familyfinder.data.preferences.PreferenceHelper
 import ru.shtrm.familyfinder.ui.base.interactor.BaseInteractor
 import ru.shtrm.familyfinder.util.AppConstants
@@ -23,4 +22,8 @@ class LoginInteractor @Inject internal constructor(preferenceHelper: PreferenceH
     override fun getUserName(): String {
         return preferenceHelper.getCurrentUserName()
     }
+
+    override fun makeTokenApiCall(userId: String): Observable<TokenResponse> =
+            apiHelper.performTokenRequest(TokenRequest.SendTokenRequest(userId = userId))
+
 }

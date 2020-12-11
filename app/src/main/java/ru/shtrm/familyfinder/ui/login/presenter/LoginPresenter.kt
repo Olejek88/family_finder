@@ -27,8 +27,8 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
                 interactor?.let {
                     compositeDisposable.add(it.doServerLoginApiCall(email, password)
                             .compose(schedulerProvider.ioToMainObservableScheduler())
-                            .doOnError {
-                                t: Throwable -> Log.e("performApiCall", t.message)
+                            .doOnError { t: Throwable ->
+                                Log.e("performApiCall", t.message)
                                 getView()?.hideProgress()
                                 val toast = Toast.makeText(context, t.message, Toast.LENGTH_LONG)
                                 toast.setGravity(Gravity.BOTTOM, 0, 0)
@@ -50,6 +50,23 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
         }
     }
 
+    override fun sendTokenRequest(userId: Long) {
+        interactor?.let {
+            compositeDisposable.add(it.makeTokenApiCall(userId.toString())
+                    .compose(schedulerProvider.ioToMainObservableScheduler())
+                    .doOnError { t: Throwable ->
+                        Log.e("performApiCall", t.message)
+                    }
+                    .subscribe({ tokenResponse ->
+                        if (tokenResponse.statusCode === "0") {
+                            Log.e("token", tokenResponse.token)
+                            val authUser = AuthorizedUser.instance;
+                            authUser.token = tokenResponse.token
+                        }
+                    }, { err -> println(err) }))
+            }
+    }
+
     override fun checkUserLogin(): Boolean {
         val authUser = AuthorizedUser.instance
         val realm = Realm.getDefaultInstance()
@@ -60,6 +77,8 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
             authUser.token = ""
             authUser._id = user._id
             authUser.image = user.image
+
+            sendTokenRequest(user._id)
             return true
         }
         return false
@@ -84,18 +103,18 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
         val realm = Realm.getDefaultInstance()
         val user = realm.where(User::class.java).equalTo("login", authUser.login).findFirst()
         if (user == null) {
-            realm.executeTransactionAsync({realmBg ->
-                val user_new = realmBg.createObject<User>(User::class.java,User.getLastId())
+            realm.executeTransactionAsync({ realmBg ->
+                val user_new = realmBg.createObject<User>(User::class.java, User.getLastId())
                 user_new.login = loginResponse.userEmail.toString()
                 user_new.username = loginResponse.userName!!
                 user_new.image = ""
                 //user_new._id = loginResponse.userId!!
-                if (loginResponse.serverProfilePicUrl!=null) {
+                if (loginResponse.serverProfilePicUrl != null) {
                     //user_new.image = loginResponse.serverProfilePicUrl
                 }
             }, {
             }, { error ->
-                Log.d("user",error.message)
+                Log.d("user", error.message)
             })
         } else {
             realm.executeTransaction {

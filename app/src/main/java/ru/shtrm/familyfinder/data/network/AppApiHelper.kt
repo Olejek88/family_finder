@@ -28,11 +28,20 @@ class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHe
                     .build()
                     .getObjectObservable(LogoutResponse::class.java)
 
-    override fun performSendRoutes(request: SendRoutesRequest.SendRoutesRequest): Observable<SendResponse> =
-            Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_ROUTES_SEND)
+    override fun performSendRoutes(request: SendRoutesRequest.SendRoutesRequest, bearer: String): Observable<SendResponse> =
+        Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_ROUTES_SEND)
                     .addHeaders(apiHeader.publicApiHeader)
                     .addBodyParameter(request)
+                    .addHeaders("Authorization", bearer)
                     .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
                     .build()
                     .getObjectObservable(SendResponse::class.java)
+
+    override fun performTokenRequest(request: TokenRequest.SendTokenRequest): Observable<TokenResponse> =
+            Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_TOKEN)
+                    .addHeaders(apiHeader.protectedApiHeader)
+                    .addBodyParameter(request)
+                    .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
+                    .build()
+                    .getObjectObservable(TokenResponse::class.java)
 }

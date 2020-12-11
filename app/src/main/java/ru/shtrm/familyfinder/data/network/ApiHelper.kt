@@ -10,6 +10,7 @@ interface ApiHelper {
 
     fun performLogoutApiCall(): Observable<LogoutResponse>
 
-    fun performSendRoutes(request: SendRoutesRequest.SendRoutesRequest): Observable<SendResponse>
+    fun performSendRoutes(request: SendRoutesRequest.SendRoutesRequest, bearer: String): Observable<SendResponse>
 
+    fun performTokenRequest(request: TokenRequest.SendTokenRequest): Observable<TokenResponse>
 }

@@ -31,7 +31,7 @@ class SendGPSService : Service() {
         }
 
         apiHelper = AppApiHelper(ApiHeader(ApiHeader.PublicApiHeader(BuildConfig.API_KEY),ApiHeader.ProtectedApiHeader(BuildConfig.API_KEY,user._id,user.token)))
-        apiHelper!!.performSendRoutes(SendRoutesRequest.SendRoutesRequest(id = user._id!!, routes = routes))
+        apiHelper!!.performSendRoutes(SendRoutesRequest.SendRoutesRequest(id = user._id!!, routes = routes),"bearer ".plus(user.token))
                 .doOnError { t: Throwable ->
                     Log.e("performApiCall", t.message)
                 }
@@ -44,7 +44,7 @@ class SendGPSService : Service() {
                     }
                 }, { err -> println(err) })
         realm.close()
-        //stopSelf()
+        stopSelf()
     }
 
     override fun onCreate() {
