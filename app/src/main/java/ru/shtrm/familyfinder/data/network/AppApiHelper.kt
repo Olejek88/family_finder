@@ -28,4 +28,11 @@ class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHe
                     .build()
                     .getObjectObservable(LogoutResponse::class.java)
 
+    override fun performSendRoutes(request: SendRoutesRequest.SendRoutesRequest): Observable<SendResponse> =
+            Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_ROUTES_SEND)
+                    .addHeaders(apiHeader.publicApiHeader)
+                    .addBodyParameter(request)
+                    .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
+                    .build()
+                    .getObjectObservable(SendResponse::class.java)
 }

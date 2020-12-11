@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.nav_header_navigation.view.*
 import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
 import ru.shtrm.familyfinder.gps.GPSListener
+import ru.shtrm.familyfinder.services.ForegroundService
 import ru.shtrm.familyfinder.ui.about.view.AboutFragment
 import ru.shtrm.familyfinder.ui.base.view.BaseActivity
 import ru.shtrm.familyfinder.ui.family.view.FamilyFragment
@@ -92,6 +93,10 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
             }
         }
         changeFragment("mapFragment")
+
+        val intent = Intent(this, ForegroundService::class.java)
+        startService(intent)
+
         presenter.onAttach(this)
     }
 
@@ -203,7 +208,7 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
     }
 
     private fun setUpBottomBar() {
-        bottomBar.setOnTabSelectListener({ tabId ->
+        bottomBar.setOnTabSelectListener { tabId ->
             val tr = supportFragmentManager.beginTransaction()
             when (tabId) {
                 R.id.menu_map -> {
@@ -217,7 +222,7 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
                 }
             }
             tr.commit()
-        })
+        }
     }
 
     internal fun changeFragment(selectedFragment: String) {
@@ -281,4 +286,5 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
             supportFragmentManager.putFragment(outState, "MapFragment", mapFragment)
         }
     }
+
 }

@@ -8,4 +8,5 @@ interface MainMVPInteractor : MVPInteractor {
 
     fun getUserDetails(): Pair<String?, String?>
     fun makeLogoutApiCall(): Observable<LogoutResponse>
+
 }

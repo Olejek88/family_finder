@@ -10,7 +10,6 @@ class MainInteractor @Inject internal constructor(preferenceHelper: PreferenceHe
             preferenceHelper.getCurrentUserEmail())
 
     override fun makeLogoutApiCall() = apiHelper.performLogoutApiCall()
-
 }
 
 
