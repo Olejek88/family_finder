@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import io.realm.Realm
+import io.realm.Sort
 import ru.shtrm.familyfinder.BuildConfig
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
 import ru.shtrm.familyfinder.data.database.repository.route.Route
@@ -23,7 +24,7 @@ class SendGPSService : Service() {
         if (user._id == 0.toLong()) {
         }
 
-        val items = realm.copyFromRealm(realm.where(Route::class.java).equalTo("isSent", false).limit(10).findAll())
+        val items = realm.copyFromRealm(realm.where(Route::class.java).equalTo("isSent", false).sort("date",Sort.ASCENDING).limit(10).findAll())
         val routes = arrayListOf<Route>()
         for (i in items.indices) {
             val route = items[i]
@@ -31,7 +32,7 @@ class SendGPSService : Service() {
         }
 
         apiHelper = AppApiHelper(ApiHeader(ApiHeader.PublicApiHeader(BuildConfig.API_KEY),ApiHeader.ProtectedApiHeader(BuildConfig.API_KEY,user._id,user.token)))
-        apiHelper!!.performSendRoutes(SendRoutesRequest.SendRoutesRequest(id = user._id!!, routes = routes),"bearer ".plus(user.token))
+        apiHelper!!.performSendRoutes(SendRoutesRequest.SendRoutesRequest(userId = user._id.toString(), routes = routes),"bearer ".plus(user.token))
                 .doOnError { t: Throwable ->
                     Log.e("performApiCall", t.message)
                 }
@@ -39,7 +40,7 @@ class SendGPSService : Service() {
                     if (sendResponse.statusCode === "0") {
                         realm.beginTransaction()
                         //realm.where(Route::class.java).equalTo("sent", false).findAll().deleteAllFromRealm()
-                        realm.where(Route::class.java).equalTo("sent", false).findAll().setBoolean("sent", true)
+                        realm.where(Route::class.java).equalTo("isSent", false).sort("date",Sort.ASCENDING).limit(10).findAll().setBoolean("isSent", true)
                         realm.commitTransaction()
                     }
                 }, { err -> println(err) })

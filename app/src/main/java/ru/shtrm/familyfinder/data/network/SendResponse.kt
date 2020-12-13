@@ -4,7 +4,10 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class SendResponse(@Expose
-                         @SerializedName("status_code")
-                         var statusCode: String? = null)
+                        @SerializedName("status_code")
+                        var statusCode: String? = null,
+                        @Expose
+                        @SerializedName("message")
+                        var message: String? = null)
 
 

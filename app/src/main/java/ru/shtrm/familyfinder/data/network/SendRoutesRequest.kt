@@ -7,7 +7,7 @@ import ru.shtrm.familyfinder.data.database.repository.route.Route
 class SendRoutesRequest {
 
     data class SendRoutesRequest internal constructor(@Expose
-                                                      @SerializedName("userId") internal val id: Long,
+                                                      @SerializedName("userId") internal val userId: String,
                                                       @Expose
-                                                      @SerializedName("routes") internal val routes: ArrayList<Route>)
+                                                      @SerializedName("routes") internal val routes: List<Route>)
 }
