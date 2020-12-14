@@ -24,16 +24,6 @@ class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inj
         //it.dismissDialog()
     }
 
-    override fun onSubmitClicked() = interactor?.let {
-/*
-        it.submitRating()
-        getView()?.let {
-            it.showRatingSubmissionSuccessMessage()
-            it.dismissDialog()
-        }
-*/
-    }
-
     override fun storeImage(context: Context, data: Intent?): Bitmap? {
         if (data != null && data.data != null) {
             val inputStream: InputStream?
@@ -50,6 +40,7 @@ class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inj
                     realm.executeTransaction { realmB ->
                         val user = realmB.where(User::class.java).equalTo("login", authUser.login).findFirst()
                         user!!.image = imageName
+                        sendUserImageRequest(user, context)
                         Log.d("user",user.image)
                     }
                     return userBitmap
@@ -59,5 +50,23 @@ class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inj
             }
         }
         return null
+    }
+
+    override fun sendUserRequest(user: User) {
+        interactor?.let {
+            compositeDisposable.add(it.alterInfo(user)
+                    .compose(schedulerProvider.ioToMainObservableScheduler())
+                    .doOnError { t: Throwable ->
+                        Log.e("performApiCall", t.message)
+                    }
+                    .subscribe({ tokenResponse ->
+                        if (tokenResponse.statusCode === "0") {
+                        }
+                    }, { err -> println(err) }))
+        }
+    }
+
+    override fun sendUserImageRequest(user: User, context: Context) {
+        interactor?.alterImage(user, context)
     }
 }

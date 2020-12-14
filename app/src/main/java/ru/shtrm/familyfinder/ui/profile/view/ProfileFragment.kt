@@ -10,12 +10,16 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.NonNull
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
+import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.ui.base.view.BaseFragment
 import ru.shtrm.familyfinder.ui.profile.interactor.ProfileMVPInterator
 import ru.shtrm.familyfinder.ui.profile.presenter.ProfileMVPPresenter
@@ -33,7 +37,6 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
         fun newInstance(): ProfileFragment {
             return ProfileFragment()
         }
-
     }
 
     @Inject
@@ -50,15 +53,36 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
         super.onViewCreated(view, savedInstanceState)
         mainContext = this.context
         val authUser = AuthorizedUser.instance
-        view.email_text.text = authUser.login
-        view.user_text_name.text = authUser.username
+        view.email_text.setText(authUser.login)
+        view.user_text_name.setText(authUser.username)
 
         val path = FileUtils.getPicturesDirectory(this.context!!)
         val avatar = authUser.image
         if (avatar!=null && avatar != "") {
             view.user_image.setImageBitmap(FileUtils.getBitmapByPath(path, avatar))
         }
-        view.user_image.setOnClickListener({ checkPermissionCamera(this.context!!) })
+        view.user_image.setOnClickListener { checkPermissionCamera(this.context!!) }
+
+        view.user_text_name.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                authUser.username = s.toString()
+                val realm = Realm.getDefaultInstance()
+                realm.executeTransaction { realmB ->
+                    val user = realmB.where(User::class.java).equalTo("login", authUser.login).findFirst()
+                    if (user != null) {
+                        user.username = s.toString()
+                        presenter.sendUserRequest(user)
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
         presenter.onAttach(this)
     }
 

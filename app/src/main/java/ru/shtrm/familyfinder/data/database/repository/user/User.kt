@@ -25,10 +25,6 @@ open class User : RealmObject() {
             return dir
         }
 
-    fun getImageFileUrl(userName: String): String {
-        return "/storage/$userName/$imageFilePath"
-    }
-
     companion object {
 
         fun getLastId(): Long {

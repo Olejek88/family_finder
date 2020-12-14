@@ -1,5 +1,6 @@
 package ru.shtrm.familyfinder.data.network
 
+import android.content.Context
 import io.reactivex.Observable
 
 interface ApiHelper {
@@ -13,4 +14,8 @@ interface ApiHelper {
     fun performSendRoutes(request: SendRoutesRequest.SendRoutesRequest, bearer: String): Observable<SendResponse>
 
     fun performTokenRequest(request: TokenRequest.SendTokenRequest): Observable<TokenResponse>
+
+    fun performUserSendRequest(request: UserRequest.SendUserRequest): Observable<SendResponse>
+
+    fun performUserImageSendRequest(request: UserRequest.SendImageRequest, context: Context)
 }
