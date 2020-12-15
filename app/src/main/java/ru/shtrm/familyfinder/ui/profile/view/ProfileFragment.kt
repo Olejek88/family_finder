@@ -71,8 +71,11 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
                     val user = realmB.where(User::class.java).equalTo("login", authUser.login).findFirst()
                     if (user != null) {
                         user.username = s.toString()
-                        presenter.sendUserRequest(user)
                     }
+                }
+                val user = realm.where(User::class.java).equalTo("login", authUser.login).findFirst()
+                if (user != null) {
+                    presenter.sendUserRequest(realm.copyFromRealm(user), "bearer ".plus(authUser.token))
                 }
             }
 

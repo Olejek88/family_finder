@@ -1,12 +1,9 @@
 package ru.shtrm.familyfinder.data.network
 
 import android.content.Context
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.androidnetworking.interfaces.UploadProgressListener
 import com.rx2androidnetworking.Rx2AndroidNetworking
 import io.reactivex.Observable
-import org.json.JSONObject
 import ru.shtrm.familyfinder.util.FileUtils
 import java.io.File
 import javax.inject.Inject
@@ -53,33 +50,28 @@ class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHe
                     .build()
                     .getObjectObservable(TokenResponse::class.java)
 
-    override fun performUserSendRequest(request: UserRequest.SendUserRequest): Observable<SendResponse> =
+    override fun performUserSendRequest(request: UserRequest.SendUserRequest, bearer: String): Observable<SendResponse> =
             Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_USER_SEND)
-                        .addHeaders(apiHeader.protectedApiHeader)
-                        .addBodyParameter(request)
-                        .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
-                        .build()
-                        .getObjectObservable(SendResponse::class.java)
-
-    override fun performUserImageSendRequest(request: UserRequest.SendImageRequest, context: Context) {
-        if (request.user.image!="") {
-            val path = FileUtils.getPicturesDirectory(context)
-            val file = File(path.plus("/").plus(request.user.image))
-            Rx2AndroidNetworking.upload(ApiEndPoint.ENDPOINT_SERVER_USER_IMAGE_SEND)
-                    .addMultipartFile("image", file)
-                    .addMultipartParameter("key", "value")
+                    .addHeaders(apiHeader.protectedApiHeader)
+                    .addHeaders("Authorization", bearer)
+                    .addApplicationJsonBody(request)
+                    .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
                     .build()
-                    .setUploadProgressListener(UploadProgressListener { bytesUploaded, totalBytes ->
-                        // do anything with progress
-                    })
-                    .getAsJSONObject(object : JSONObjectRequestListener {
-                        override fun onResponse(response: JSONObject) {
-                            // do anything with response
-                        }
-                        override fun onError(error: ANError) {
-                            // handle error
-                        }
-                    })
-        }
+                    .getObjectObservable(SendResponse::class.java)
+
+    override fun performUserImageSendRequest(request: UserRequest.SendImageRequest, context: Context, bearer: String): Observable<SendResponse> {
+        val path = FileUtils.getPicturesDirectory(context)
+        val file = File(path.plus("/").plus(request.user.image))
+        return Rx2AndroidNetworking.upload(ApiEndPoint.ENDPOINT_SERVER_USER_IMAGE_SEND)
+                .addHeaders(apiHeader.protectedApiHeader)
+                .addHeaders("Authorization", bearer)
+                .addMultipartFile("image", file)
+                .addMultipartParameter("userId",request.user._id.toString())
+                .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
+                .build()
+                .setUploadProgressListener(UploadProgressListener { bytesUploaded, totalBytes ->
+                    // do anything with progress
+                })
+                .getObjectObservable(SendResponse::class.java)
     }
 }

@@ -16,7 +16,9 @@ import ru.shtrm.familyfinder.util.FileUtils
 import ru.shtrm.familyfinder.util.SchedulerProvider
 import java.io.FileNotFoundException
 import java.io.InputStream
+import java.util.*
 import javax.inject.Inject
+import kotlin.concurrent.schedule
 
 class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inject internal constructor(interator: I, schedulerProvider: SchedulerProvider, compositeDisposable: CompositeDisposable) : BasePresenter<V, I>(interactor = interator, schedulerProvider = schedulerProvider, compositeDisposable = compositeDisposable), ProfileMVPPresenter<V, I> {
 
@@ -39,9 +41,10 @@ class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inj
                     val realm = Realm.getDefaultInstance()
                     realm.executeTransaction { realmB ->
                         val user = realmB.where(User::class.java).equalTo("login", authUser.login).findFirst()
-                        user!!.image = imageName
-                        sendUserImageRequest(user, context)
-                        Log.d("user",user.image)
+                        if (user != null) {
+                            user.image = imageName
+                            sendUserImageRequest(user, context, "bearer ".plus(authUser.token))
+                        }
                     }
                     return userBitmap
                 }
@@ -52,21 +55,37 @@ class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inj
         return null
     }
 
-    override fun sendUserRequest(user: User) {
+    override fun sendUserRequest(user: User, bearer: String) {
         interactor?.let {
-            compositeDisposable.add(it.alterInfo(user)
+            compositeDisposable.add(it.alterInfo(user, bearer)
                     .compose(schedulerProvider.ioToMainObservableScheduler())
                     .doOnError { t: Throwable ->
                         Log.e("performApiCall", t.message)
                     }
                     .subscribe({ tokenResponse ->
                         if (tokenResponse.statusCode === "0") {
+                            // TODO change user here!
                         }
                     }, { err -> println(err) }))
         }
     }
 
-    override fun sendUserImageRequest(user: User, context: Context) {
-        interactor?.alterImage(user, context)
+    override fun sendUserImageRequest(user: User, context: Context, bearer: String) {
+        interactor?.let {
+            compositeDisposable.add(it.alterImage(user, context, bearer)
+                    .compose(schedulerProvider.ioToMainObservableScheduler())
+                    .doOnError { t: Throwable ->
+                        Log.e("performApiCall", t.message)
+                    }
+                    .subscribe({ tokenResponse ->
+                        if (tokenResponse.statusCode === "0") {
+                            // TODO change user here!
+                        } else {
+                            Timer().schedule(60000) {
+                                sendUserImageRequest(user,context, bearer)
+                            }
+                        }
+                    }, { err -> println(err) }))
+        }
     }
 }

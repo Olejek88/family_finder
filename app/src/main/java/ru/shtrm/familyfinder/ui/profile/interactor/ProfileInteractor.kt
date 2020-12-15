@@ -12,10 +12,10 @@ import javax.inject.Inject
 
 class ProfileInteractor @Inject internal constructor(apiHelper: ApiHelper, preferenceHelper: PreferenceHelper) : BaseInteractor(apiHelper = apiHelper, preferenceHelper = preferenceHelper), ProfileMVPInterator {
 
-    override fun alterInfo(user: User): Observable<SendResponse> =
-            apiHelper.performUserSendRequest(UserRequest.SendUserRequest(user = user))
+    override fun alterInfo(user: User, bearer: String): Observable<SendResponse> =
+            apiHelper.performUserSendRequest(UserRequest.SendUserRequest(user = user), bearer = bearer)
 
-    override fun alterImage(user: User, context: Context) =
-            apiHelper.performUserImageSendRequest(UserRequest.SendImageRequest(user = user), context = context)
+    override fun alterImage(user: User, context: Context, bearer: String) =
+            apiHelper.performUserImageSendRequest(UserRequest.SendImageRequest(user = user), context = context, bearer = bearer)
 
 }

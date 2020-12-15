@@ -15,7 +15,7 @@ interface ApiHelper {
 
     fun performTokenRequest(request: TokenRequest.SendTokenRequest): Observable<TokenResponse>
 
-    fun performUserSendRequest(request: UserRequest.SendUserRequest): Observable<SendResponse>
+    fun performUserSendRequest(request: UserRequest.SendUserRequest, bearer: String): Observable<SendResponse>
 
-    fun performUserImageSendRequest(request: UserRequest.SendImageRequest, context: Context)
+    fun performUserImageSendRequest(request: UserRequest.SendImageRequest, context: Context, bearer: String): Observable<SendResponse>
 }
