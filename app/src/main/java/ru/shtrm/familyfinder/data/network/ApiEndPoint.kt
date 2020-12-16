@@ -13,4 +13,5 @@ object ApiEndPoint {
     val ENDPOINT_SERVER_USER_IMAGE_SEND = BuildConfig.BASE_URL + "user/image"
     val ENDPOINT_SERVER_COORDINATES = BuildConfig.BASE_URL + "routes/coordinates"
 
+    val NOMINATIM = "https://nominatim.openstreetmap.org/reverse.php?zoom=18&format=jsonv2&"
 }

@@ -32,6 +32,7 @@
 
         <service android:name=".services.SendGPSService" />
         <service android:name=".services.ForegroundService" />
+        <service android:name=".services.ReceiveLocationsService" />
     </application>
 
 </manifest>

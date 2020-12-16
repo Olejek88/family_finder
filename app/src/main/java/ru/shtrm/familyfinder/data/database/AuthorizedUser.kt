@@ -6,6 +6,7 @@ class AuthorizedUser {
     var login: String? = ""
     var password: String = ""
     var image: String? = ""
+    var location: String? = ""
 
     var token: String? = null
 

@@ -4,9 +4,16 @@ import android.location.Location
 import android.location.LocationListener
 import android.os.Bundle
 import android.util.Log
+import com.rx2androidnetworking.Rx2AndroidNetworking
 import io.realm.Realm
+import ru.shtrm.familyfinder.BuildConfig
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
 import ru.shtrm.familyfinder.data.database.repository.route.Route
+import ru.shtrm.familyfinder.data.database.repository.user.User
+import ru.shtrm.familyfinder.data.network.ApiEndPoint
+import ru.shtrm.familyfinder.data.network.ApiHeader
+import ru.shtrm.familyfinder.data.network.SendResponse
+import ru.shtrm.familyfinder.data.network.UserRequest
 import java.lang.Math.abs
 import java.util.*
 
@@ -52,6 +59,22 @@ class GPSListener : LocationListener {
                 }, { error ->
                     Log.d("route", error.message)
                 })
+
+                val userR = realm.where(User::class.java).equalTo("login", user.login).findFirst()
+                if (userR != null) {
+                    realm.executeTransaction {
+                        userR.lastLatitude = Latitude
+                        userR.lastLongitude = Longitude
+                    }
+                    val userC = realm.copyFromRealm(userR)
+                    Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_USER_SEND)
+                            .addHeaders(ApiHeader.ProtectedApiHeader(BuildConfig.API_KEY,user._id,user.token))
+                            .addHeaders("Authorization", "bearer ".plus(user.token))
+                            .addApplicationJsonBody(UserRequest.SendUserRequest(userC))
+                            .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
+                            .build()
+                            .getObjectObservable(SendResponse::class.java)
+                }
             }
         }
     }

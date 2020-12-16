@@ -62,7 +62,7 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
             view.user_image.setImageBitmap(FileUtils.getBitmapByPath(path, avatar))
         }
         view.user_image.setOnClickListener { checkPermissionCamera(this.context!!) }
-
+        view.user_text_location.text = authUser.location
         view.user_text_name.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 authUser.username = s.toString()

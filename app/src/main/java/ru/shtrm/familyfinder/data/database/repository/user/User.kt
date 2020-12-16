@@ -12,6 +12,9 @@ open class User : RealmObject() {
     var login: String = ""
     var password: String = ""
     var image: String = ""
+    var location: String? = ""
+    var lastLatitude: Double = 0.0
+    var lastLongitude: Double = 0.0
     var createdAt: Date = Date()
     var changedAt: Date = Date()
 

@@ -11,7 +11,7 @@ import io.realm.RealmConfiguration
 import ru.shtrm.familyfinder.R
 
 object FamilyRealm {
-    private val VERSION: Long = 1
+    private val VERSION: Long = 2
 
     fun init(context: Context, dbName: String = "family.realm"): Boolean {
         var success = false
