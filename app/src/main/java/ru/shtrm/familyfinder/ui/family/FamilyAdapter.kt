@@ -40,7 +40,7 @@ class FamilyAdapter internal constructor(private val context: Context, private v
         pvh.textViewTime.setText(sDate)
         pvh.textViewName.setText(item.username)
         pvh.textViewName.setTypeface(null, Typeface.BOLD)
-        pvh.textViewDistance.setText("5.3km")
+        pvh.textViewDistance.setText(item.location)
         if (item.image!=null && item.image != "") {
             val path = FileUtils.getPicturesDirectory(this.context)
             val userBitmap: Bitmap? = FileUtils.getBitmapByPath(path, item.image)

@@ -55,6 +55,6 @@ class ForegroundService : Service() {
     companion object {
         private val TAG = ForegroundService::class.java.simpleName
         private const val START_INTERVAL: Long = 60000
-        private const val RECEIVE_INTERVAL: Long = 600000
+        private const val RECEIVE_INTERVAL: Long = 60000
     }
 }

@@ -77,6 +77,7 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
             authUser.token = ""
             authUser._id = user._id
             authUser.image = user.image
+            authUser.location = user.location
 
             sendTokenRequest(user._id)
             return true

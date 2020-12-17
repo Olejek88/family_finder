@@ -55,6 +55,7 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
         val authUser = AuthorizedUser.instance
         view.email_text.setText(authUser.login)
         view.user_text_name.setText(authUser.username)
+        view.user_text_location.setText(authUser.location)
 
         val path = FileUtils.getPicturesDirectory(this.context!!)
         val avatar = authUser.image
@@ -62,7 +63,6 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
             view.user_image.setImageBitmap(FileUtils.getBitmapByPath(path, avatar))
         }
         view.user_image.setOnClickListener { checkPermissionCamera(this.context!!) }
-        view.user_text_location.text = authUser.location
         view.user_text_name.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 authUser.username = s.toString()

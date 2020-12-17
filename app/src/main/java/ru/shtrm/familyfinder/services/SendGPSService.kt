@@ -44,6 +44,7 @@ class SendGPSService : Service() {
                         realm.commitTransaction()
                     }
                 }, { err -> println(err) })
+
         realm.close()
         stopSelf()
     }

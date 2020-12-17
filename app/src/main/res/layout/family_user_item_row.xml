@@ -51,6 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/card_user_name"
             android:layout_toEndOf="@id/framelayout_image"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:padding="1dp"
             android:textColor="@color/colorPrimary" />
 

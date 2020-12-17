@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import javax.inject.Inject
 
 
 class FamilyFragment : BaseFragment(), FamilyFragmentMVPView {
+    private var mContext: Context? = null
 
     companion object {
         internal val TAG = "FamilyFragment"
@@ -38,12 +40,14 @@ class FamilyFragment : BaseFragment(), FamilyFragmentMVPView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_family, container, false)
+        Log.d("Family","onCreateView")
         initView(view.context, view)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("Family","onViewCreated")
         presenter.onAttach(this)
     }
 
@@ -54,11 +58,23 @@ class FamilyFragment : BaseFragment(), FamilyFragmentMVPView {
 
     private fun initView(context: Context, view: View) {
         val adapter: FamilyAdapter?
+        mContext = context
         val recyclerView: RecyclerView = view.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
         val realm = Realm.getDefaultInstance()
         val users = realm.where(User::class.java).findAll()
         adapter = FamilyAdapter(context, users)
         recyclerView.adapter = adapter
+        realm.close()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("Family","onResume")
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        Log.d("Family","onAttach")
     }
 }
