@@ -17,10 +17,10 @@ class FamilyApp : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
-        FamilyRealm.init(this,"family.realm")
         DaggerAppComponent.builder()
                 .application(this)
                 .build()
                 .inject(this)
+        FamilyRealm.init(this)
     }
 }

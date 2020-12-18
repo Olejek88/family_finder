@@ -1,10 +1,15 @@
 package ru.shtrm.familyfinder.ui.login.view
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import ru.shtrm.familyfinder.R
+import ru.shtrm.familyfinder.data.database.FamilyRealm
 import ru.shtrm.familyfinder.ui.base.view.BaseActivity
 import ru.shtrm.familyfinder.ui.login.interactor.LoginMVPInteractor
 import ru.shtrm.familyfinder.ui.login.presenter.LoginMVPPresenter
@@ -13,6 +18,7 @@ import ru.shtrm.familyfinder.ui.register.view.RegisterActivity
 import ru.shtrm.familyfinder.util.AppConstants
 import javax.inject.Inject
 
+
 class LoginActivity : BaseActivity(), LoginMVPView {
 
     @Inject
@@ -20,6 +26,8 @@ class LoginActivity : BaseActivity(), LoginMVPView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkPermission()
+        FamilyRealm.init(this,"family.realm")
         val str: String? = presenter.getUserName()
         if (presenter.checkUserLogin()) {
             openMainActivity()
@@ -64,5 +72,15 @@ class LoginActivity : BaseActivity(), LoginMVPView {
     private fun setOnClickListeners() {
         btnServerLogin.setOnClickListener { presenter.onServerLoginClicked(et_email.text.toString(), et_password.text.toString(), this) }
         btnServerRegisterLink.setOnClickListener { presenter.onServerRegisterClicked() }
+    }
+
+    private fun checkPermission() {
+        val EXTERNAL_STORAGE_ACCESS = 102
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (applicationContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION), EXTERNAL_STORAGE_ACCESS)
+                return
+            }
+        }
     }
 }

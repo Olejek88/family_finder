@@ -9,12 +9,14 @@ import android.util.Log
 class ForegroundService : Service() {
     private var sendGps: Handler? = null
     private var receiveLocations: Handler? = null
+    private var receiveUsers: Handler? = null
 
     override fun onCreate() {
         super.onCreate()
 
         Handler().postDelayed({ startSendLog() }, 0)
         Handler().postDelayed({ startReceiveLocation() }, 10000)
+        Handler().postDelayed({ familyService() }, 20000)
     }
 
     private fun startSendLog() {
@@ -46,6 +48,21 @@ class ForegroundService : Service() {
         }
         receiveLocations = Handler()
         receiveLocations!!.postDelayed(runnable, RECEIVE_INTERVAL)
+    }
+
+    private fun familyService() {
+        val runnable = object : Runnable {
+            override fun run() {
+                val serviceIntent: Intent
+                Log.d(TAG, "startFamilyService()")
+                val context = applicationContext
+                serviceIntent = Intent(context, FamilyService::class.java)
+                context.startService(serviceIntent)
+                receiveUsers!!.postDelayed(this, RECEIVE_INTERVAL)
+            }
+        }
+        receiveUsers = Handler()
+        receiveUsers!!.postDelayed(runnable, RECEIVE_INTERVAL)
     }
 
     override fun onBind(intent: Intent): IBinder? {

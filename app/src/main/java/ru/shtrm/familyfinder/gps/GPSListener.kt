@@ -23,7 +23,7 @@ class GPSListener : LocationListener {
 
     override fun onLocationChanged(location: Location?) {
         if (prevLocation != null) {
-            if (abs(prevLocation!!.latitude - location!!.latitude) >= 0.000 || abs(prevLocation!!.longitude - location.longitude) >= 0.000)
+            if (abs(prevLocation!!.latitude - location!!.latitude) >= 0.001 || abs(prevLocation!!.longitude - location.longitude) >= 0.001)
                 recordGPSData(location.latitude, location.longitude)
         }
         if (location != null) {

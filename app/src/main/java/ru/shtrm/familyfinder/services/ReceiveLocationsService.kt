@@ -39,7 +39,6 @@ class ReceiveLocationsService : Service() {
                             for (t in tokens) {
                                 value = value.plus(t).plus(',')
                                 if(count>5) {
-
                                     break
                                 }
                                 count++

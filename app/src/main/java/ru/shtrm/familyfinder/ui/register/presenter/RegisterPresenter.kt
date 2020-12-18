@@ -5,6 +5,9 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import io.reactivex.disposables.CompositeDisposable
+import io.realm.Realm
+import ru.shtrm.familyfinder.data.database.AuthorizedUser
+import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.data.network.RegisterResponse
 import ru.shtrm.familyfinder.ui.base.presenter.BasePresenter
 import ru.shtrm.familyfinder.ui.register.interactor.RegisterMVPInteractor
@@ -12,7 +15,6 @@ import ru.shtrm.familyfinder.ui.register.view.RegisterMVPView
 import ru.shtrm.familyfinder.util.AppConstants
 import ru.shtrm.familyfinder.util.SchedulerProvider
 import javax.inject.Inject
-
 
 
 class RegisterPresenter<V : RegisterMVPView, I : RegisterMVPInteractor> @Inject internal constructor(interactor: I, schedulerProvider: SchedulerProvider, disposable: CompositeDisposable) : BasePresenter<V, I>(interactor = interactor, schedulerProvider = schedulerProvider, compositeDisposable = disposable), RegisterMVPPresenter<V, I> {
@@ -59,6 +61,26 @@ class RegisterPresenter<V : RegisterMVPView, I : RegisterMVPInteractor> @Inject 
                                          loggedInMode: AppConstants.LoggedInMode) {
         Log.d("rest",registerResponse.statusCode)
         interactor?.updateRegisterSharedPref(registerResponse, loggedInMode)
-    }
 
+        val authUser = AuthorizedUser.instance;
+        authUser.login = registerResponse.userEmail
+        authUser.username = registerResponse.userName
+        authUser.token = registerResponse.accessToken
+        authUser._id = registerResponse.userId
+
+        val realm = Realm.getDefaultInstance()
+        val user = realm.where(User::class.java).equalTo("login", authUser.login).findFirst()
+        if (user == null) {
+            realm.executeTransactionAsync({ realmBg ->
+                val user_new = realmBg.createObject<User>(User::class.java, User.getLastId())
+                user_new.login = registerResponse.userEmail.toString()
+                user_new.username = registerResponse.userName!!
+                user_new.image = ""
+            }, {
+            }, { error ->
+                Log.d("user", error.message)
+            })
+        }
+        realm.close()
+    }
 }

@@ -13,6 +13,10 @@ import ru.shtrm.familyfinder.R
 object FamilyRealm {
     private val VERSION: Long = 2
 
+    fun init(context: Context) {
+        init(context, "family.realm")
+    }
+
     fun init(context: Context, dbName: String = "family.realm"): Boolean {
         var success = false
         var realmDB: Realm? = null
@@ -22,8 +26,12 @@ object FamilyRealm {
                 .schemaVersion(VERSION)
                 .build()
 
-        if (VERSION>0) Realm.migrateRealm(realmConfig, FamilyRealmMigration(context));
-        Realm.setDefaultConfiguration(realmConfig);
+        try {
+            if (VERSION>0) Realm.migrateRealm(realmConfig, FamilyRealmMigration(context));
+            Realm.setDefaultConfiguration(realmConfig);
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         try {
             realmDB = Realm.getDefaultInstance()
             Log.d("realm", "Realm DB schema version = " + realmDB.getVersion())
