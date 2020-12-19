@@ -35,7 +35,7 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
                                 toast.show()
                             }
                             .subscribe({ loginResponse ->
-                                if (loginResponse.statusCode === "0") {
+                                if (loginResponse.statusCode == "0") {
                                     updateUserInSharedPref(loginResponse = loginResponse,
                                             loggedInMode = AppConstants.LoggedInMode.LOGGED_IN_MODE_SERVER)
                                     getView()?.openMainActivity()
@@ -44,6 +44,7 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
                                 toast.setGravity(Gravity.BOTTOM, 0, 0)
                                 toast.show()
                                 getView()?.hideProgress()
+                                sendTokenRequest(loginResponse.userId!!)
                             }, { err -> println(err) }))
                 }
             }
