@@ -24,6 +24,10 @@ data class LoginResponse(@Expose
                          var userEmail: String? = null,
 
                          @Expose
+                         @SerializedName("password")
+                         var password: String? = null,
+
+                         @Expose
                          @SerializedName("server_profile_pic_url")
                          var serverProfilePicUrl: String? = null,
 

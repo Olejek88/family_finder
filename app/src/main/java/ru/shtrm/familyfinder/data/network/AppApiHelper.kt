@@ -66,7 +66,7 @@ class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHe
                 .addHeaders(apiHeader.protectedApiHeader)
                 .addHeaders("Authorization", bearer)
                 .addMultipartFile("image", file)
-                .addMultipartParameter("userId",request.user._id.toString())
+                .addMultipartParameter("userLogin",request.user.login.toString())
                 .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
                 .build()
                 .setUploadProgressListener(UploadProgressListener { bytesUploaded, totalBytes ->

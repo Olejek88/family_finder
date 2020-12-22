@@ -20,13 +20,9 @@ import java.util.*
 
 class FamilyAdapter internal constructor(private val context: Context, private val list: MutableList<User>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val inflater: LayoutInflater
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     private var listener: OnRecyclerViewItemClickListener? = null
-
-    init {
-        inflater = LayoutInflater.from(context)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return UserViewHolder(inflater.inflate(R.layout.family_user_item_row,
@@ -41,16 +37,20 @@ class FamilyAdapter internal constructor(private val context: Context, private v
         pvh.textViewName.setText(item.username)
         pvh.textViewName.setTypeface(null, Typeface.BOLD)
         pvh.textViewDistance.setText(item.location)
-        if (item.image!=null && item.image != "") {
+        if (item.image != "") {
             val path = FileUtils.getPicturesDirectory(this.context)
             val userBitmap: Bitmap? = FileUtils.getBitmapByPath(path, item.image)
             if (userBitmap!=null) {
                 pvh.circleImageView.setImageBitmap(FileUtils.getBitmapByPath(path, item.image))
             } else {
-                pvh.textViewImageText.text = item.username.substring(0, 1)
+                if(item.username.isNotEmpty()) {
+                    pvh.textViewImageText.text = item.username.substring(0, 1)
+                }
             }
         } else {
-            pvh.textViewImageText.text = item.username.substring(0, 1)
+            if(item.username.isNotEmpty()) {
+                pvh.textViewImageText.text = item.username.substring(0, 1)
+            }
         }
     }
 

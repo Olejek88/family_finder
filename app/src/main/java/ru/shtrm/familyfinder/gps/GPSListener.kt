@@ -23,7 +23,7 @@ class GPSListener : LocationListener {
 
     override fun onLocationChanged(location: Location?) {
         if (prevLocation != null) {
-            if (abs(prevLocation!!.latitude - location!!.latitude) >= 0.001 || abs(prevLocation!!.longitude - location.longitude) >= 0.001)
+            if (abs(prevLocation!!.latitude - location!!.latitude) >= 0.000 || abs(prevLocation!!.longitude - location.longitude) >= 0.000)
                 recordGPSData(location.latitude, location.longitude)
         }
         if (location != null) {
@@ -68,6 +68,7 @@ class GPSListener : LocationListener {
                         userR.changedAt = Date()
                     }
                     val userC = realm.copyFromRealm(userR)
+                    Log.d("rest","userUpload")
                     Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_USER_SEND)
                             .addHeaders(ApiHeader.ProtectedApiHeader(BuildConfig.API_KEY,user._id,user.token))
                             .addHeaders("Authorization", "bearer ".plus(user.token))

@@ -23,7 +23,7 @@ class LoginInteractor @Inject internal constructor(preferenceHelper: PreferenceH
         return preferenceHelper.getCurrentUserName()
     }
 
-    override fun makeTokenApiCall(userId: String): Observable<TokenResponse> =
-            apiHelper.performTokenRequest(TokenRequest.SendTokenRequest(userId = userId))
+    override fun makeTokenApiCall(userLogin: String): Observable<TokenResponse> =
+            apiHelper.performTokenRequest(TokenRequest.SendTokenRequest(userLogin = userLogin))
 
 }

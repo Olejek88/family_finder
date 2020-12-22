@@ -13,6 +13,7 @@ import java.io.IOException
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.min
 
 object FileUtils {
 
@@ -28,7 +29,10 @@ object FileUtils {
 
     fun getBitmapByPath(path: String, filename: String): Bitmap? {
         val imageFull = File(path + filename)
-        return BitmapFactory.decodeFile(imageFull.absolutePath)
+        if(imageFull.isFile)
+            return BitmapFactory.decodeFile(imageFull.absolutePath)
+        else
+            return null
     }
 
     fun getPicturesDirectory(context: Context): String {
@@ -63,10 +67,10 @@ object FileUtils {
         try {
             val fos = FileOutputStream(pictureFile)
             if (image != null) {
-                val height = (width * image.height.toFloat() / image.width.toFloat()).toInt()
-                if (height > 0) {
-                    val myBitmap = Bitmap.createScaledBitmap(image, width, height, false)
-                    myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+                val dimension = min(image.height,image.width)
+                if (dimension > 0) {
+                    val myBitmap = Bitmap.createScaledBitmap(image, dimension, dimension, false)
+                    myBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos)
                     fos.flush()
                     fos.close()
                     return myBitmap

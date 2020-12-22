@@ -14,5 +14,5 @@ interface LoginMVPInteractor : MVPInteractor {
 
     fun getUserName(): String
 
-    fun makeTokenApiCall(userId: String): Observable<TokenResponse>
+    fun makeTokenApiCall(userLogin: String): Observable<TokenResponse>
 }

@@ -32,7 +32,7 @@ class SendGPSService : Service() {
         }
 
         apiHelper = AppApiHelper(ApiHeader(ApiHeader.PublicApiHeader(BuildConfig.API_KEY),ApiHeader.ProtectedApiHeader(BuildConfig.API_KEY,user._id,user.token)))
-        apiHelper!!.performSendRoutes(SendRoutesRequest.SendRoutesRequest(userId = user._id.toString(), routes = routes),"bearer ".plus(user.token))
+        apiHelper!!.performSendRoutes(SendRoutesRequest.SendRoutesRequest(userLogin = user.login!!, routes = routes),"bearer ".plus(user.token))
                 .doOnError { t: Throwable ->
                     Log.e("performApiCall", t.message)
                 }

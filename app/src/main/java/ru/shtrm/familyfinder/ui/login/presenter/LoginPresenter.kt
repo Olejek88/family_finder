@@ -44,25 +44,28 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
                                 toast.setGravity(Gravity.BOTTOM, 0, 0)
                                 toast.show()
                                 getView()?.hideProgress()
-                                sendTokenRequest(loginResponse.userId!!)
+                                sendTokenRequest(loginResponse.userEmail!!)
                             }, { err -> println(err) }))
                 }
             }
         }
     }
 
-    override fun sendTokenRequest(userId: Long) {
+    override fun sendTokenRequest(userLogin: String) {
         interactor?.let {
-            compositeDisposable.add(it.makeTokenApiCall(userId.toString())
+            compositeDisposable.add(it.makeTokenApiCall(userLogin)
                     .compose(schedulerProvider.ioToMainObservableScheduler())
                     .doOnError { t: Throwable ->
                         Log.e("performApiCall", t.message)
+                        sendTokenRequest(userLogin)
                     }
                     .subscribe({ tokenResponse ->
-                        if (tokenResponse.statusCode === "0") {
+                        if (tokenResponse.statusCode == "0") {
                             Log.e("token", tokenResponse.token)
                             val authUser = AuthorizedUser.instance;
                             authUser.token = tokenResponse.token
+                        } else {
+                            sendTokenRequest(userLogin)
                         }
                     }, { err -> println(err) }))
             }
@@ -80,7 +83,7 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
             authUser.image = user.image
             authUser.location = user.location
 
-            sendTokenRequest(user._id)
+            sendTokenRequest(user.login)
             return true
         }
         return false
@@ -109,6 +112,7 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
                 val user_new = realmBg.createObject<User>(User::class.java, User.getLastId())
                 user_new.login = loginResponse.userEmail.toString()
                 user_new.username = loginResponse.userName!!
+                user_new.password = loginResponse.password!!
                 user_new.image = ""
                 //user_new._id = loginResponse.userId!!
                 if (loginResponse.serverProfilePicUrl != null) {

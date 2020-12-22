@@ -11,5 +11,5 @@ interface LoginMVPPresenter<V : LoginMVPView, I : LoginMVPInteractor> : MVPPrese
     fun onServerRegisterClicked(): Unit?
     fun checkUserLogin(): Boolean
     fun getUserName(): String?
-    fun sendTokenRequest(userId: Long)
+    fun sendTokenRequest(userLogin: String)
 }

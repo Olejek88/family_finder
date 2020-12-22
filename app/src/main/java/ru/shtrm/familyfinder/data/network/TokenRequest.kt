@@ -6,6 +6,6 @@ import com.google.gson.annotations.SerializedName
 class TokenRequest {
 
     data class SendTokenRequest internal constructor(@Expose
-                                                     @SerializedName("userId") internal val userId: String)
+                                                     @SerializedName("userLogin") internal val userLogin: String)
 
 }
