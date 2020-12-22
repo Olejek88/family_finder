@@ -21,7 +21,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:src="@drawable/profile_default_small"
+                android:src="@color/colorPrimary"
                 app:civ_border_color="@color/light_green"
                 app:civ_border_width="2dp"
                 android:id="@+id/card_user_image" />

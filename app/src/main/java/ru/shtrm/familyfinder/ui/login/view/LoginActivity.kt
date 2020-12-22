@@ -9,7 +9,6 @@ import android.support.v4.app.ActivityCompat
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import ru.shtrm.familyfinder.R
-import ru.shtrm.familyfinder.data.database.FamilyRealm
 import ru.shtrm.familyfinder.ui.base.view.BaseActivity
 import ru.shtrm.familyfinder.ui.login.interactor.LoginMVPInteractor
 import ru.shtrm.familyfinder.ui.login.presenter.LoginMVPPresenter
@@ -27,7 +26,6 @@ class LoginActivity : BaseActivity(), LoginMVPView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkPermission()
-        FamilyRealm.init(this,"family.realm")
         val str: String? = presenter.getUserName()
         if (presenter.checkUserLogin()) {
             openMainActivity()

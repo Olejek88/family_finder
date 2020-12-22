@@ -23,9 +23,7 @@ open class User : RealmObject() {
 
     val imageFilePath: String
         get() {
-            val dir: String
-            dir = imageRoot
-            return dir
+            return imageRoot
         }
 
     companion object {

@@ -64,10 +64,9 @@ class FamilyFragment : BaseFragment(), FamilyFragmentMVPView {
         val realm = Realm.getDefaultInstance()
         val users = realm.where(User::class.java).findAll()
         users.addChangeListener { results ->
-            recyclerView.adapter = FamilyAdapter(context, results)
+            recyclerView.swapAdapter(FamilyAdapter(context, results), false);
         }
-        adapter = FamilyAdapter(context, users)
-        recyclerView.adapter = adapter
+        recyclerView.adapter = FamilyAdapter(context, users)
         realm.close()
     }
 
