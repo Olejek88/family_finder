@@ -7,13 +7,13 @@ import io.realm.DynamicRealm
 import io.realm.RealmMigration
 import ru.shtrm.familyfinder.data.database.repository.migration.Migration1
 import ru.shtrm.familyfinder.data.database.repository.migration.Migration2
+import ru.shtrm.familyfinder.data.database.repository.migration.Migration3
 
 internal class FamilyRealmMigration(private val context: Context) : RealmMigration {
     private val TAG = "realm"
 
     override fun migrate(realm: DynamicRealm, oldVersion: Long, newVersion: Long) {
         var oldVersion = oldVersion
-        val schema = realm.getSchema()
         Log.d(TAG, "oldVersion = $oldVersion")
         Log.d(TAG, "newVersion = $newVersion")
 
@@ -29,5 +29,11 @@ internal class FamilyRealmMigration(private val context: Context) : RealmMigrati
             Migration2().migration(realm)
             oldVersion++
         }
+
+        if (oldVersion == 2L) {
+            Migration3().migration(realm)
+            oldVersion++
+        }
+
     }
 }

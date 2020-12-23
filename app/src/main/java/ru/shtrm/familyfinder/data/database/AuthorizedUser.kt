@@ -7,6 +7,8 @@ class AuthorizedUser {
     var password: String = ""
     var image: String? = ""
     var location: String? = ""
+    var isSent: Boolean = true
+    var isImageSent: Boolean = true
 
     var token: String? = null
 

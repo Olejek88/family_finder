@@ -42,18 +42,13 @@ class FamilyAdapter internal constructor(private val context: Context, private v
             val userBitmap: Bitmap? = FileUtils.getBitmapByPath(path, item.image)
             if (userBitmap!=null) {
                 pvh.circleImageView.setImageBitmap(FileUtils.getBitmapByPath(path, item.image))
-            } else {
-                if(item.username.isNotEmpty()) {
-                    pvh.circleImageView.setImageBitmap(null)
-                    pvh.textViewImageText.text = item.username.substring(0, 1)
-                }
             }
-        } else {
+        } /*else {
             if(item.username.isNotEmpty()) {
                 pvh.circleImageView.setImageBitmap(null)
                 pvh.textViewImageText.text = item.username.substring(0, 1)
             }
-        }
+        }*/
     }
 
     override fun getItemCount(): Int {

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import io.realm.Realm
 import ru.shtrm.familyfinder.data.database.FamilyRealm
 import ru.shtrm.familyfinder.di.component.DaggerAppComponent
 import javax.inject.Inject
@@ -21,6 +22,7 @@ class FamilyApp : Application(), HasActivityInjector {
                 .application(this)
                 .build()
                 .inject(this)
+        Realm.init(this)
         FamilyRealm.init(this)
     }
 }

@@ -16,9 +16,9 @@ import ru.shtrm.familyfinder.util.FileUtils
 import ru.shtrm.familyfinder.util.SchedulerProvider
 import java.io.FileNotFoundException
 import java.io.InputStream
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.concurrent.schedule
 
 class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inject internal constructor(interator: I, schedulerProvider: SchedulerProvider, compositeDisposable: CompositeDisposable) : BasePresenter<V, I>(interactor = interator, schedulerProvider = schedulerProvider, compositeDisposable = compositeDisposable), ProfileMVPPresenter<V, I> {
 
@@ -34,10 +34,12 @@ class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inj
                 val bitmap = BitmapFactory.decodeStream(inputStream)
                 if (bitmap != null) {
                     val authUser = AuthorizedUser.instance
-                    val imageName: String = authUser._id.toString().plus(".jpg")
+                    val timeStamp = SimpleDateFormat("ddMMyyyy_HHmm", Locale.US).format(Date())
+                    val imageName = "file_$timeStamp.jpg"
                     val userBitmap: Bitmap? = FileUtils.storeNewImage(bitmap, context,
-                            800, imageName)
+                            800, null)
                     authUser.image=imageName
+                    authUser.isImageSent=false
                     val realm = Realm.getDefaultInstance()
                     realm.executeTransaction { realmB ->
                         val user = realmB.where(User::class.java).equalTo("login", authUser.login).findFirst()
@@ -65,8 +67,10 @@ class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inj
                     .subscribe({ tokenResponse ->
                         if (tokenResponse.statusCode === "0") {
                             // TODO change user here!
+                            AuthorizedUser.instance.isSent=true
                         }
-                    }, { err -> println(err) }))
+                    }, {
+                    }))
         }
     }
 
@@ -80,10 +84,7 @@ class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inj
                     .subscribe({ tokenResponse ->
                         if (tokenResponse.statusCode === "0") {
                             // TODO change user here!
-                        } else {
-                            Timer().schedule(60000) {
-                                sendUserImageRequest(user,context, bearer)
-                            }
+                            AuthorizedUser.instance.isImageSent=true
                         }
                     }, { err -> println(err) }))
         }

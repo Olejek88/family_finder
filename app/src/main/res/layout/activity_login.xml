@@ -52,7 +52,6 @@
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:maxLength="50"
-                    android:text="olejek8@yandex.ru"
                     android:paddingBottom="10dp"
                     android:textColor="@color/black_effective"
                     android:textSize="18sp" />

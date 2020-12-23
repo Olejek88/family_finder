@@ -11,21 +11,19 @@ import io.realm.RealmConfiguration
 import ru.shtrm.familyfinder.R
 
 object FamilyRealm {
-    private val VERSION: Long = 2
+    private val VERSION: Long = 3
 
     fun init(context: Context) {
-        init(context, "family.realm")
+        init(context, "default.realm")
     }
 
-    fun init(context: Context, dbName: String = "family.realm"): Boolean {
+    fun init(context: Context, dbName: String = "default.realm"): Boolean {
         var success = false
         var realmDB: Realm? = null
-        Realm.init(context)
         val realmConfig = RealmConfiguration.Builder()
                 .name(dbName)
                 .schemaVersion(VERSION)
                 .build()
-
         try {
             if (VERSION>0) Realm.migrateRealm(realmConfig, FamilyRealmMigration(context));
             Realm.setDefaultConfiguration(realmConfig);

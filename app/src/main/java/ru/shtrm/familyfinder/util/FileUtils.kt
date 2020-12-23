@@ -3,6 +3,7 @@ package ru.shtrm.familyfinder.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.ThumbnailUtils
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
@@ -69,7 +70,7 @@ object FileUtils {
             if (image != null) {
                 val dimension = min(image.height,image.width)
                 if (dimension > 0) {
-                    val myBitmap = Bitmap.createScaledBitmap(image, dimension, dimension, false)
+                    val myBitmap = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
                     myBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos)
                     fos.flush()
                     fos.close()

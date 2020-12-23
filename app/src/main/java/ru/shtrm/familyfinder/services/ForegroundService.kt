@@ -10,6 +10,7 @@ class ForegroundService : Service() {
     private var sendGps: Handler? = null
     private var receiveLocations: Handler? = null
     private var receiveUsers: Handler? = null
+    private var sendUser: Handler? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -17,6 +18,7 @@ class ForegroundService : Service() {
         Handler().postDelayed({ startSendLog() }, 0)
         Handler().postDelayed({ startReceiveLocation() }, 10000)
         Handler().postDelayed({ familyService() }, 20000)
+        Handler().postDelayed({ userService() }, 30000)
     }
 
     private fun startSendLog() {
@@ -63,6 +65,21 @@ class ForegroundService : Service() {
         }
         receiveUsers = Handler()
         receiveUsers!!.postDelayed(runnable, RECEIVE_INTERVAL)
+    }
+
+    private fun userService() {
+        val runnable = object : Runnable {
+            override fun run() {
+                val serviceIntent: Intent
+                Log.d(TAG, "startUserService()")
+                val context = applicationContext
+                serviceIntent = Intent(context, UserService::class.java)
+                context.startService(serviceIntent)
+                sendUser!!.postDelayed(this, RECEIVE_INTERVAL)
+            }
+        }
+        sendUser = Handler()
+        sendUser!!.postDelayed(runnable, RECEIVE_INTERVAL)
     }
 
     override fun onBind(intent: Intent): IBinder? {

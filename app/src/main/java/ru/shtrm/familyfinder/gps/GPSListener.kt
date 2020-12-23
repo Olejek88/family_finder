@@ -4,16 +4,10 @@ import android.location.Location
 import android.location.LocationListener
 import android.os.Bundle
 import android.util.Log
-import com.rx2androidnetworking.Rx2AndroidNetworking
 import io.realm.Realm
-import ru.shtrm.familyfinder.BuildConfig
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
 import ru.shtrm.familyfinder.data.database.repository.route.Route
 import ru.shtrm.familyfinder.data.database.repository.user.User
-import ru.shtrm.familyfinder.data.network.ApiEndPoint
-import ru.shtrm.familyfinder.data.network.ApiHeader
-import ru.shtrm.familyfinder.data.network.SendResponse
-import ru.shtrm.familyfinder.data.network.UserRequest
 import java.lang.Math.abs
 import java.util.*
 
@@ -67,6 +61,8 @@ class GPSListener : LocationListener {
                         userR.lastLongitude = Longitude
                         userR.changedAt = Date()
                     }
+                    AuthorizedUser.instance.isSent = false
+/*
                     val userC = realm.copyFromRealm(userR)
                     Log.d("rest","userUpload")
                     Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_USER_SEND)
@@ -76,6 +72,7 @@ class GPSListener : LocationListener {
                             .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
                             .build()
                             .getObjectObservable(SendResponse::class.java)
+*/
                 }
             }
         }

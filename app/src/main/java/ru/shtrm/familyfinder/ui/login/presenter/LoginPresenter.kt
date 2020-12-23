@@ -82,6 +82,7 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
             authUser._id = user._id
             authUser.image = user.image
             authUser.location = user.location
+            authUser.isSent = user.isSent
 
             sendTokenRequest(user.login)
             return true
@@ -108,20 +109,16 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
         val realm = Realm.getDefaultInstance()
         val user = realm.where(User::class.java).equalTo("login", authUser.login).findFirst()
         if (user == null) {
-            realm.executeTransactionAsync({ realmBg ->
+            realm.executeTransactionAsync { realmBg ->
                 val user_new = realmBg.createObject<User>(User::class.java, User.getLastId())
                 user_new.login = loginResponse.userEmail.toString()
                 user_new.username = loginResponse.userName!!
-                user_new.password = loginResponse.password!!
                 user_new.image = ""
                 //user_new._id = loginResponse.userId!!
                 if (loginResponse.serverProfilePicUrl != null) {
                     //user_new.image = loginResponse.serverProfilePicUrl
                 }
-            }, {
-            }, { error ->
-                Log.d("user", error.message)
-            })
+            }
         } else {
             realm.executeTransaction {
                 user.login = loginResponse.userEmail.toString()

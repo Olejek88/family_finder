@@ -17,6 +17,7 @@ open class User : RealmObject() {
     var lastLongitude: Double = 0.0
     var createdAt: Date = Date()
     var changedAt: Date = Date()
+    var isSent: Boolean = true
 
     val imageFile: String
         get() = image

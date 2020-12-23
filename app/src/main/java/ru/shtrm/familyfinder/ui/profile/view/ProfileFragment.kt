@@ -66,11 +66,13 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
         view.user_text_name.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 authUser.username = s.toString()
+                authUser.isSent = false
                 val realm = Realm.getDefaultInstance()
-                realm.executeTransaction { realmB ->
+                realm.executeTransactionAsync { realmB ->
                     val user = realmB.where(User::class.java).equalTo("login", authUser.login).findFirst()
                     if (user != null) {
                         user.username = s.toString()
+                        user.isSent = false
                     }
                 }
                 val user = realm.where(User::class.java).equalTo("login", authUser.login).findFirst()
