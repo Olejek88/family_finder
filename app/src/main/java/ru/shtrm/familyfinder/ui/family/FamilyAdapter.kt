@@ -3,7 +3,6 @@ package ru.shtrm.familyfinder.ui.family
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Typeface
-import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.RecyclerView
 import android.view.ContextMenu
 import android.view.LayoutInflater
@@ -73,7 +72,6 @@ class FamilyAdapter internal constructor(private val context: Context, private v
         internal var textViewName: TextView
         internal var textViewDistance: TextView
         internal var textViewTime: TextView
-        internal var textViewImageText: AppCompatTextView
         internal var circleImageView: CircleImageView
 
         init {
@@ -81,7 +79,6 @@ class FamilyAdapter internal constructor(private val context: Context, private v
             textViewName = itemView.findViewById(R.id.card_user_name)
             textViewDistance = itemView.findViewById(R.id.card_user_distance)
             textViewTime = itemView.findViewById(R.id.card_user_time)
-            textViewImageText = itemView.findViewById(R.id.card_user_image_text)
             itemView.setOnClickListener(this)
             itemView.setOnCreateContextMenuListener(this)
         }

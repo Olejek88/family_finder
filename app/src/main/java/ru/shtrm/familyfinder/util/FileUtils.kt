@@ -68,10 +68,13 @@ object FileUtils {
         try {
             val fos = FileOutputStream(pictureFile)
             if (image != null) {
-                val dimension = min(image.height,image.width)
+                var dimension = min(image.height,image.width)
+                if(dimension>800) {
+                    dimension = 800
+                }
                 if (dimension > 0) {
                     val myBitmap = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
-                    myBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos)
+                    myBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos)
                     fos.flush()
                     fos.close()
                     return myBitmap
