@@ -39,4 +39,8 @@
     <string name="version">"version"</string>
     <string name="later">Later</string>
     <string name="submit">Submit</string>
+    <string name="sync_data">Load update</string>
+    <string name="update">Update</string>
+    <string name="update_error">Update error! Failed to download update.</string>
+
 </resources>

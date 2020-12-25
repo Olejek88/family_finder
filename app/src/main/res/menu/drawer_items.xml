@@ -19,6 +19,10 @@
     <group android:id="@+id/second_group"
         android:checkableBehavior="none">
         <item
+            android:id="@+id/nav_update"
+            android:icon="@drawable/baseline_get_app_black_24dp"
+            android:title="@string/update" />
+        <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_info_24px"
             android:title="@string/about" />

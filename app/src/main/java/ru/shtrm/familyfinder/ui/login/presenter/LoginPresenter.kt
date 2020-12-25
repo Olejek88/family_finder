@@ -64,6 +64,10 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
                             Log.e("token", tokenResponse.token)
                             val authUser = AuthorizedUser.instance;
                             authUser.token = tokenResponse.token
+                            if (!AuthorizedUser.instance.isAcraInit) {
+                                getView()!!.initAcra()
+                                AuthorizedUser.instance.isAcraInit = true
+                            }
                         } else {
                             sendTokenRequest(userLogin)
                         }

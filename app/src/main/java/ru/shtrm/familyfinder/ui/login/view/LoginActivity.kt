@@ -8,7 +8,14 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
+import org.acra.ACRA
+import org.acra.config.CoreConfigurationBuilder
+import org.acra.config.HttpSenderConfigurationBuilder
+import org.acra.data.StringFormat
+import org.acra.sender.HttpSender
+import ru.shtrm.familyfinder.BuildConfig
 import ru.shtrm.familyfinder.R
+import ru.shtrm.familyfinder.data.database.AuthorizedUser
 import ru.shtrm.familyfinder.ui.base.view.BaseActivity
 import ru.shtrm.familyfinder.ui.login.interactor.LoginMVPInteractor
 import ru.shtrm.familyfinder.ui.login.presenter.LoginMVPPresenter
@@ -80,5 +87,22 @@ class LoginActivity : BaseActivity(), LoginMVPView {
                 return
             }
         }
+    }
+
+    override fun initAcra() {
+        val token = AuthorizedUser.instance.token
+        val login = AuthorizedUser.instance.login
+        if (token == null || login == null) {
+            return
+        }
+
+        val builder = CoreConfigurationBuilder(application)
+                .setBuildConfigClass(BuildConfig::class.java)
+                .setReportFormat(StringFormat.JSON)
+        builder.getPluginConfigurationBuilder(HttpSenderConfigurationBuilder::class.java)
+                .setUri(BuildConfig.BASE_URL.plus("crash?XDEBUG_SESSION_START=xdebug&token=").plus(token).plus("&apiuser=").plus(login))
+                .setHttpMethod(HttpSender.Method.POST)
+                .setEnabled(true)
+        ACRA.init(application, builder)
     }
 }

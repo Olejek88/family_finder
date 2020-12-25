@@ -9,6 +9,7 @@ class AuthorizedUser {
     var location: String? = ""
     var isSent: Boolean = true
     var isImageSent: Boolean = true
+    var isAcraInit: Boolean = false
 
     var token: String? = null
 

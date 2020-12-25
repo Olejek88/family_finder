@@ -1,6 +1,7 @@
 package ru.shtrm.familyfinder.ui.main.view
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,6 +9,7 @@ import android.graphics.Bitmap
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
@@ -22,9 +24,11 @@ import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_navigation.*
 import kotlinx.android.synthetic.main.nav_header_navigation.view.*
+import ru.shtrm.familyfinder.BuildConfig
 import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
 import ru.shtrm.familyfinder.gps.GPSListener
+import ru.shtrm.familyfinder.services.Downloader
 import ru.shtrm.familyfinder.services.ForegroundService
 import ru.shtrm.familyfinder.ui.about.view.AboutFragment
 import ru.shtrm.familyfinder.ui.base.view.BaseActivity
@@ -37,6 +41,7 @@ import ru.shtrm.familyfinder.ui.profile.view.ProfileFragment
 import ru.shtrm.familyfinder.util.FileUtils
 import ru.shtrm.familyfinder.util.extension.addFragment
 import ru.shtrm.familyfinder.util.extension.removeFragment
+import java.io.File
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationItemSelectedListener,
@@ -144,6 +149,9 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
             }
             R.id.nav_about -> {
                 presenter.onDrawerOptionAboutClick()
+            }
+            R.id.nav_update -> {
+                updateApk()
             }
             R.id.nav_logout -> {
                 presenter.onDrawerOptionLogoutClick(this)
@@ -285,6 +293,22 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
         if (mapFragment!!.isAdded) {
             supportFragmentManager.putFragment(outState, "MapFragment", mapFragment)
         }
+    }
+
+    private fun updateApk() {
+        val builder = AlertDialog.Builder(applicationContext)
+        builder.setCancelable(false)
+        builder.setView(R.layout.layout_loading_dialog)
+        val dialog = builder.create()
+        val downloaderTask = Downloader(dialog)
+        dialog.setOnCancelListener { downloaderTask.cancel(true) }
+
+        val fileName = "family.apk"
+        val updateUrl = BuildConfig.SITE_URL.plus("app/").plus(fileName)
+        val file = applicationContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+        val outputFile = File(file, fileName)
+        downloaderTask.execute(updateUrl, outputFile.toString())
+        dialog.show()
     }
 
 }
