@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_margin="50dp"
+    android:background="@drawable/shape">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/bubble_image"
+            android:layout_marginEnd="10dp"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/profile_default_small"
+                app:civ_border_color="@color/light_green"
+                app:civ_border_width="2dp"
+                android:id="@+id/bubble_user_image" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/bubble_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/bubble_image"
+            android:padding="1dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/bubble_user_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bubble_user_name"
+            android:layout_toEndOf="@id/bubble_image"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            android:maxLines="3"
+            android:padding="1dp"
+            android:textColor="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+</LinearLayout>
