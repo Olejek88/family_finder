@@ -42,6 +42,7 @@ object FamilyRealm {
                 toast.show()
                 success = true
             }
+            realmDB.close()
         } catch (e: Exception) {
             val toast = Toast.makeText(context, context.getString(R.string.toast_db_error),
                     Toast.LENGTH_LONG)

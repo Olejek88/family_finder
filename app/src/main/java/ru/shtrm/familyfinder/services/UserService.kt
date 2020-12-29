@@ -42,6 +42,7 @@ class UserService : Service() {
                             }
                         })
             }
+            realm.close()
         }
 
         if (!AuthorizedUser.instance.isImageSent) {
@@ -67,6 +68,7 @@ class UserService : Service() {
                             }
                         })
             }
+            realm.close()
         }
         stopSelf()
     }

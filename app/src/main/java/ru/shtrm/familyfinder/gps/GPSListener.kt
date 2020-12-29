@@ -63,6 +63,7 @@ class GPSListener : LocationListener {
                     }
                     AuthorizedUser.instance.isSent = false
                 }
+                realm.close()
             }
         }
     }

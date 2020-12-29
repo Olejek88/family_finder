@@ -112,18 +112,13 @@ class MapFragment : BaseFragment(), MapMVPView {
         //play around with these values to get the location on screen in the right place for your applicatio
         mScaleBarOverlay.setScaleBarOffset(200, 10)
         view.gps_mapview.overlays.add(mScaleBarOverlay)
-    }
-
-    override fun onDestroy() {
-        //presenter.onDetach()
-        super.onDestroy()
+        realm.close()
     }
 
     private fun getLastKnownLocation(context: Context): Location? {
         var bestLocation: Location? = null
 
-        val mLocationManager: LocationManager?
-        mLocationManager = context.getSystemService(LOCATION_SERVICE) as LocationManager?
+        val mLocationManager: LocationManager? = context.getSystemService(LOCATION_SERVICE) as LocationManager?
         val permission = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
         if (mLocationManager != null && permission == PackageManager.PERMISSION_GRANTED) {
             val providers = mLocationManager.getProviders(true)

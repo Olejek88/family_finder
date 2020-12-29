@@ -48,6 +48,7 @@ class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inj
                             sendUserImageRequest(user, context, "bearer ".plus(authUser.token))
                         }
                     }
+                    realm.close()
                     return userBitmap
                 }
             } catch (e: FileNotFoundException) {

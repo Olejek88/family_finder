@@ -77,6 +77,7 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
                 if (user != null) {
                     presenter.sendUserRequest(realm.copyFromRealm(user), "bearer ".plus(authUser.token))
                 }
+                realm.close()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
