@@ -10,5 +10,4 @@ interface RegisterMVPInteractor : MVPInteractor {
     fun doServerRegisterApiCall(email: String, password: String, username: String): Observable<RegisterResponse>
 
     fun updateRegisterSharedPref(registerResponse: RegisterResponse, loggedInMode: AppConstants.LoggedInMode)
-
 }

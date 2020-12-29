@@ -78,7 +78,7 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
     override fun checkUserLogin(): Boolean {
         val authUser = AuthorizedUser.instance
         val realm = Realm.getDefaultInstance()
-        val user = realm.where(User::class.java).findFirst()
+        val user = realm.where(User::class.java).equalTo("login",interactor?.getUserLogin()).findFirst()
         if (user != null) {
             authUser.login = user.login
             authUser.username = user.username
@@ -114,21 +114,18 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
         val user = realm.where(User::class.java).equalTo("login", authUser.login).findFirst()
         if (user == null) {
             realm.executeTransactionAsync { realmBg ->
-                val user_new = realmBg.createObject<User>(User::class.java, User.getLastId())
-                user_new.login = loginResponse.userEmail.toString()
-                user_new.username = loginResponse.userName!!
-                user_new.image = ""
-                //user_new._id = loginResponse.userId!!
-                if (loginResponse.serverProfilePicUrl != null) {
-                    //user_new.image = loginResponse.serverProfilePicUrl
-                }
+                val userNew = realmBg.createObject<User>(User::class.java, User.getLastId())
+                userNew.login = loginResponse.userEmail.toString()
+                userNew.username = loginResponse.userName!!
+                userNew.image = ""
             }
         } else {
             realm.executeTransaction {
                 user.login = loginResponse.userEmail.toString()
                 user.username = loginResponse.userName!!
                 user._id = loginResponse.userId!!
-                user.image = loginResponse.serverProfilePicUrl!!
+                //user.image = loginResponse.serverProfilePicUrl!!
+                interactor?.updateUserInSharedPrefAfterLogin(user)
             }
         }
         realm.close()

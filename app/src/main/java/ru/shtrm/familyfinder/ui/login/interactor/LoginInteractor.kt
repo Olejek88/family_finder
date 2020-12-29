@@ -1,6 +1,7 @@
 package ru.shtrm.familyfinder.ui.login.interactor
 
 import io.reactivex.Observable
+import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.data.network.*
 import ru.shtrm.familyfinder.data.preferences.PreferenceHelper
 import ru.shtrm.familyfinder.ui.base.interactor.BaseInteractor
@@ -19,8 +20,19 @@ class LoginInteractor @Inject internal constructor(preferenceHelper: PreferenceH
                 it.setCurrentUserLoggedInMode(loggedInMode)
             }
 
+    override fun updateUserInSharedPrefAfterLogin(user: User) =
+            preferenceHelper.let {
+                it.setCurrentUserId(user._id)
+                it.setCurrentUserName(user.username)
+                it.setCurrentUserEmail(user.login)
+            }
+
     override fun getUserName(): String {
         return preferenceHelper.getCurrentUserName()
+    }
+
+    override fun getUserLogin(): String {
+        return preferenceHelper.getCurrentUserEmail()
     }
 
     override fun makeTokenApiCall(userLogin: String): Observable<TokenResponse> =

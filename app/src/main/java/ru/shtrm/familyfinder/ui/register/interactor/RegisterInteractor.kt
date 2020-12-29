@@ -17,6 +17,8 @@ class RegisterInteractor @Inject internal constructor(preferenceHelper: Preferen
             preferenceHelper.let {
                 it.setCurrentUserId(registerResponse.userId)
                 it.setAccessToken(registerResponse.accessToken)
+                it.setCurrentUserEmail(registerResponse.userEmail)
+                it.setCurrentUserName(registerResponse.userName)
                 it.setCurrentUserLoggedInMode(loggedInMode)
             }
 
