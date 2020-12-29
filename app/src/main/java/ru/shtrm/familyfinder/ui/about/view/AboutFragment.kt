@@ -11,7 +11,7 @@ class AboutFragment : BaseFragment() {
 
     companion object {
 
-        internal val TAG = "AboutFragment"
+        internal const val TAG = "AboutFragment"
 
         fun newInstance(): AboutFragment {
             return AboutFragment()

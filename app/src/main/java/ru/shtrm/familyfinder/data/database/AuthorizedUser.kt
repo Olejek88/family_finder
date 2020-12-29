@@ -13,11 +13,6 @@ class AuthorizedUser {
 
     var token: String? = null
 
-    fun reset() {
-        login = null
-        token = null
-    }
-
     companion object {
 
         private var mInstance: AuthorizedUser? = null

@@ -116,8 +116,8 @@ class Downloader(private val dialog: AlertDialog) : AsyncTask<String, Int, Strin
     companion object {
 
         fun isAPK(file: File?): Boolean {
-            var fis: FileInputStream?
-            var zipIs: ZipInputStream?
+            val fis: FileInputStream?
+            val zipIs: ZipInputStream?
             var zEntry: ZipEntry?
             val dexFile = "classes.dex"
             val manifestFile = "AndroidManifest.xml"

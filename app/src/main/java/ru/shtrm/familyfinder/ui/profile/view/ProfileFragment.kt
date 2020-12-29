@@ -27,12 +27,12 @@ import ru.shtrm.familyfinder.util.FileUtils
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
-    private val CAMERA_REQUEST = 103
-    private val ACTIVITY_PHOTO = 101
+    private val cameraRequest = 103
+    private val activityPhoto = 101
     private var mainContext: Context? = null
 
     companion object {
-        internal val TAG = "ProfileFragment"
+        internal const val TAG = "ProfileFragment"
 
         fun newInstance(): ProfileFragment {
             return ProfileFragment()
@@ -41,8 +41,6 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
 
     @Inject
     internal lateinit var presenter: ProfileMVPPresenter<ProfileFragmentMVPView, ProfileMVPInterator>
-
-    private val TAG = "ProfileFragment"
 
     override fun setUp() {}
 
@@ -53,9 +51,9 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
         super.onViewCreated(view, savedInstanceState)
         mainContext = this.context
         val authUser = AuthorizedUser.instance
-        view.email_text.setText(authUser.login)
+        view.email_text.text = authUser.login
         view.user_text_name.setText(authUser.username)
-        view.user_text_location.setText(authUser.location)
+        view.user_text_location.text = authUser.location
 
         val path = FileUtils.getPicturesDirectory(this.context!!)
         val avatar = authUser.image
@@ -99,23 +97,23 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
     private fun checkPermissionCamera(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (context.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST)
+                requestPermissions(arrayOf(Manifest.permission.CAMERA), cameraRequest)
                 return
             } else {
                 val intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.type = "image/*"
-                startActivityForResult(intent, ACTIVITY_PHOTO)
+                startActivityForResult(intent, activityPhoto)
             }
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray) {
-        if (requestCode == CAMERA_REQUEST) {
+        if (requestCode == cameraRequest) {
             if (permissions[0] == Manifest.permission.CAMERA && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 try {
                     val intent = Intent(Intent.ACTION_GET_CONTENT)
                     intent.type = "image/*"
-                    startActivityForResult(intent, ACTIVITY_PHOTO)
+                    startActivityForResult(intent, activityPhoto)
                 } catch (e: ActivityNotFoundException) {
                     e.printStackTrace()
                 }
@@ -132,7 +130,7 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            ACTIVITY_PHOTO -> if (resultCode == RESULT_OK) {
+            activityPhoto -> if (resultCode == RESULT_OK) {
                 val userBitmap: Bitmap? = presenter.storeImage (this.context!!,data)
                 if (userBitmap!=null)
                     view!!.user_image.setImageBitmap(userBitmap)

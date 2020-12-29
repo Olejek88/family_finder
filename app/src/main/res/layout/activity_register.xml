@@ -4,7 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_design">
+    android:background="@drawable/about_logo">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"

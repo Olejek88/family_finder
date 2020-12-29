@@ -8,6 +8,6 @@ import ru.shtrm.familyfinder.ui.about.view.AboutFragment
 abstract class AboutFragmentProvider {
 
     @ContributesAndroidInjector
-    abstract internal fun provideAboutFragment(): AboutFragment
+    internal abstract fun provideAboutFragment(): AboutFragment
 
 }

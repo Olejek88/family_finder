@@ -61,10 +61,8 @@ object FileUtils {
             val timeStamp = SimpleDateFormat("ddMMyyyy_HHmm", Locale.US).format(Date())
             imageName = "file_$timeStamp.jpg"
         }
-        // Create a media file name
         val pictureFile: File
         pictureFile = File(mediaStorageDir.path + File.separator + imageName)
-
         try {
             val fos = FileOutputStream(pictureFile)
             if (image != null) {

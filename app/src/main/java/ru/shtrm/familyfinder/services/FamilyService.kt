@@ -36,11 +36,10 @@ class FamilyService : Service() {
                 .build()
                 .getAsJSONArray(object : JSONArrayRequestListener {
                     override fun onResponse(response: JSONArray?) {
-                        val jsonArray = response
                         val realmD = Realm.getDefaultInstance()
-                        if (!realmD.isClosed && jsonArray != null && jsonArray.length() > 0) {
-                            for (i in 0 until jsonArray.length()) {
-                                val user = jsonArray.getJSONObject(i)
+                        if (!realmD.isClosed && response != null && response.length() > 0) {
+                            for (i in 0 until response.length()) {
+                                val user = response.getJSONObject(i)
                                 val serverDate = user.getString("updated_at")
                                 val userPresent = realmD.where(User::class.java).equalTo("login", user.getString("email")).findFirst()
                                 if (userPresent == null) {
@@ -102,7 +101,7 @@ class FamilyService : Service() {
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject?) {
-                        val authUser = AuthorizedUser.instance;
+                        val authUser = AuthorizedUser.instance
                         authUser.token = response?.get("token").toString()
                     }
 

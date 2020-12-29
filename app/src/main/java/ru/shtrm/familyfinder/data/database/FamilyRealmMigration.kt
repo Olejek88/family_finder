@@ -10,12 +10,12 @@ import ru.shtrm.familyfinder.data.database.repository.migration.Migration2
 import ru.shtrm.familyfinder.data.database.repository.migration.Migration3
 
 internal class FamilyRealmMigration(private val context: Context) : RealmMigration {
-    private val TAG = "realm"
+    private val tag = "realm"
 
     override fun migrate(realm: DynamicRealm, oldVersion: Long, newVersion: Long) {
         var oldVersion = oldVersion
-        Log.d(TAG, "oldVersion = $oldVersion")
-        Log.d(TAG, "newVersion = $newVersion")
+        Log.d(tag, "oldVersion = $oldVersion")
+        Log.d(tag, "newVersion = $newVersion")
 
         if (oldVersion == newVersion) {
             return

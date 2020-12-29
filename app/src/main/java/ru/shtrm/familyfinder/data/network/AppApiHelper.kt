@@ -1,7 +1,6 @@
 package ru.shtrm.familyfinder.data.network
 
 import android.content.Context
-import com.androidnetworking.interfaces.UploadProgressListener
 import com.rx2androidnetworking.Rx2AndroidNetworking
 import io.reactivex.Observable
 import ru.shtrm.familyfinder.util.FileUtils
@@ -66,12 +65,12 @@ class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHe
                 .addHeaders(apiHeader.protectedApiHeader)
                 .addHeaders("Authorization", bearer)
                 .addMultipartFile("image", file)
-                .addMultipartParameter("userLogin",request.user.login.toString())
+                .addMultipartParameter("userLogin",request.user.login)
                 .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
                 .build()
-                .setUploadProgressListener(UploadProgressListener { bytesUploaded, totalBytes ->
+                .setUploadProgressListener { bytesUploaded, totalBytes ->
                     // do anything with progress
-                })
+                }
                 .getObjectObservable(SendResponse::class.java)
     }
 }

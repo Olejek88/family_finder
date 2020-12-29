@@ -31,8 +31,7 @@ class ReceiveLocationsService : Service() {
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
-                            val jsonObject = response
-                            var value = jsonObject!!.getString("display_name")
+                            var value = response!!.getString("display_name")
                             var count = 0
                             val tokens = value.split("/")
                             value = ""

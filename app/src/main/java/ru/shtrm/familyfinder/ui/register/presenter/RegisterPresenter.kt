@@ -14,6 +14,7 @@ import ru.shtrm.familyfinder.ui.register.interactor.RegisterMVPInteractor
 import ru.shtrm.familyfinder.ui.register.view.RegisterMVPView
 import ru.shtrm.familyfinder.util.AppConstants
 import ru.shtrm.familyfinder.util.SchedulerProvider
+import java.util.*
 import javax.inject.Inject
 
 
@@ -62,7 +63,7 @@ class RegisterPresenter<V : RegisterMVPView, I : RegisterMVPInteractor> @Inject 
         Log.d("rest",registerResponse.statusCode)
         interactor?.updateRegisterSharedPref(registerResponse, loggedInMode)
 
-        val authUser = AuthorizedUser.instance;
+        val authUser = AuthorizedUser.instance
         authUser.login = registerResponse.userEmail
         authUser.username = registerResponse.userName
         authUser.token = registerResponse.accessToken
@@ -72,10 +73,12 @@ class RegisterPresenter<V : RegisterMVPView, I : RegisterMVPInteractor> @Inject 
         val user = realm.where(User::class.java).equalTo("login", authUser.login).findFirst()
         if (user == null) {
             realm.executeTransactionAsync({ realmBg ->
-                val user_new = realmBg.createObject<User>(User::class.java, User.getLastId())
-                user_new.login = registerResponse.userEmail.toString()
-                user_new.username = registerResponse.userName!!
-                user_new.image = ""
+                val userNew = realmBg.createObject<User>(User::class.java, User.getLastId())
+                userNew.login = registerResponse.userEmail.toString()
+                userNew.username = registerResponse.userName!!
+                userNew.image = ""
+                userNew.createdAt = Date()
+                userNew.changedAt = Date()
             }, {
             }, { error ->
                 Log.d("user", error.message)

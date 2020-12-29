@@ -42,13 +42,13 @@ class GPSListener : LocationListener {
             if (Latitude > 1.0 && Longitude > 1.0) {
                 val realm = Realm.getDefaultInstance()
                 realm.executeTransactionAsync({ realmBg ->
-                    val route_new = realmBg.createObject<Route>(Route::class.java)
-                    route_new.userId = user._id!!
-                    route_new.latitude = Latitude
-                    route_new.longitude = Longitude
+                    val routeNew = realmBg.createObject<Route>(Route::class.java)
+                    routeNew.userId = user._id!!
+                    routeNew.latitude = Latitude
+                    routeNew.longitude = Longitude
                     Log.d("route", "L:".plus(Latitude).plus(" L:").plus(Longitude))
-                    route_new.isSent = false
-                    route_new.date = Date()
+                    routeNew.isSent = false
+                    routeNew.date = Date()
                 }, {
                 }, { error ->
                     Log.d("route", error.message)
@@ -62,17 +62,6 @@ class GPSListener : LocationListener {
                         userR.changedAt = Date()
                     }
                     AuthorizedUser.instance.isSent = false
-/*
-                    val userC = realm.copyFromRealm(userR)
-                    Log.d("rest","userUpload")
-                    Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_USER_SEND)
-                            .addHeaders(ApiHeader.ProtectedApiHeader(BuildConfig.API_KEY,user._id,user.token))
-                            .addHeaders("Authorization", "bearer ".plus(user.token))
-                            .addApplicationJsonBody(UserRequest.SendUserRequest(userC))
-                            .addQueryParameter("XDEBUG_SESSION_START", "xdebug")
-                            .build()
-                            .getObjectObservable(SendResponse::class.java)
-*/
                 }
             }
         }

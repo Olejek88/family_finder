@@ -11,30 +11,30 @@ import io.realm.RealmConfiguration
 import ru.shtrm.familyfinder.R
 
 object FamilyRealm {
-    private val VERSION: Long = 3
+    private const val VERSION: Long = 3
 
     fun init(context: Context) {
         init(context, "default.realm")
     }
 
-    fun init(context: Context, dbName: String = "default.realm"): Boolean {
-        var success = false
-        var realmDB: Realm? = null
+    private fun init(context: Context, dbName: String = "default.realm"): Boolean {
+        var success: Boolean
+        val realmDB: Realm?
         val realmConfig = RealmConfiguration.Builder()
                 .name(dbName)
                 .schemaVersion(VERSION)
                 .build()
         try {
-            if (VERSION>0) Realm.migrateRealm(realmConfig, FamilyRealmMigration(context));
-            Realm.setDefaultConfiguration(realmConfig);
+            if (VERSION>0) Realm.migrateRealm(realmConfig, FamilyRealmMigration(context))
+            Realm.setDefaultConfiguration(realmConfig)
         } catch (e: Exception) {
             e.printStackTrace()
         }
         try {
             realmDB = Realm.getDefaultInstance()
-            Log.d("realm", "Realm DB schema version = " + realmDB.getVersion())
-            Log.d("realm", "db.version=" + realmDB.getVersion())
-            if (realmDB.getVersion() == 0.toLong()) {
+            Log.d("realm", "Realm DB schema version = " + realmDB.version)
+            Log.d("realm", "db.version=" + realmDB.version)
+            if (realmDB.version == 0.toLong()) {
                 success = true
             } else {
                 val toast = Toast.makeText(context, context.getString(R.string.toast_db_actual), Toast.LENGTH_SHORT)
@@ -56,7 +56,7 @@ object FamilyRealm {
                 Stetho.newInitializerBuilder(context)
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(context))
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(context).build())
-                        .build());
+                        .build())
         return success
     }
 }
