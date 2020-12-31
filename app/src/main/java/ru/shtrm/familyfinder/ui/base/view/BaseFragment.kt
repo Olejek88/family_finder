@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.View
+import android.widget.ProgressBar
 import dagger.android.support.AndroidSupportInjection
 import ru.shtrm.familyfinder.util.CommonUtil
 
@@ -12,6 +13,7 @@ abstract class BaseFragment : Fragment(), MVPView {
 
     private var parentActivity: BaseActivity? = null
     private var progressDialog: ProgressDialog? = null
+    private var progressBar: ProgressBar? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -34,14 +36,15 @@ abstract class BaseFragment : Fragment(), MVPView {
     }
 
     override fun hideProgress() {
-        if (progressDialog != null && progressDialog?.isShowing!!) {
-            progressDialog?.cancel()
+        if (progressBar != null && progressBar?.visibility == View.VISIBLE) {
+            progressBar?.visibility == View.GONE
         }
     }
 
     override fun showProgress() {
         hideProgress()
-        progressDialog = CommonUtil.showLoadingDialog(this.context)
+        //progressDialog = CommonUtil.showLoadingDialog(this.context)
+        progressBar = CommonUtil.showProgressBar(this.context, parentActivity!!.window)
     }
 
     fun getBaseActivity() = parentActivity

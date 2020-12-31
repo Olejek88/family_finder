@@ -34,7 +34,7 @@
     <string name="title_activity_navigation">NavigationActivity</string>
 
     <string name="project_info">The Family App is intended for displaying on the map the current position of family members or a certain, pre-formed group. App consist from server side with API and this App. App implements MVP architecture using Dagger2, RealmDB, RxJava, FastAndroidNetworking and OSMDroid</string>
-    <string name="contact">Oleg I. [http://olejek.site]</string>
+    <string name="contact">Oleg R. [http://olejek.site]</string>
     <string name="repo">http://github.com/Olejek88</string>
     <string name="version">"version"</string>
     <string name="later">Later</string>

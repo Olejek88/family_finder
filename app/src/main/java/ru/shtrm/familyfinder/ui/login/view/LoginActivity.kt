@@ -33,7 +33,6 @@ class LoginActivity : BaseActivity(), LoginMVPView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkPermission()
-        val str: String? = presenter.getUserName()
         if (presenter.checkUserLogin()) {
             openMainActivity()
         }

@@ -57,7 +57,6 @@ class FamilyFragment : BaseFragment(), FamilyFragmentMVPView {
     }
 
     private fun initView(context: Context, view: View) {
-        val adapter: FamilyAdapter?
         mContext = context
         val recyclerView: RecyclerView = view.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)

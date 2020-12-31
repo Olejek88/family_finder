@@ -131,7 +131,7 @@ class Downloader(private val dialog: AlertDialog) : AsyncTask<String, Int, Strin
                     zEntry = zipIs.nextEntry
                     if (zEntry==null)
                         break
-                    if (zEntry!!.name.equals(dexFile, ignoreCase = true)) {
+                    if (zEntry.name.equals(dexFile, ignoreCase = true)) {
                         hasDex = true
                     } else if (zEntry.name.equals(manifestFile, ignoreCase = true)) {
                         hasManifest = true

@@ -13,26 +13,26 @@ internal class FamilyRealmMigration(private val context: Context) : RealmMigrati
     private val tag = "realm"
 
     override fun migrate(realm: DynamicRealm, oldVersion: Long, newVersion: Long) {
-        var oldVersion = oldVersion
+        var oldVersionCheck = oldVersion
         Log.d(tag, "oldVersion = $oldVersion")
         Log.d(tag, "newVersion = $newVersion")
 
-        if (oldVersion == newVersion) {
+        if (oldVersionCheck == newVersion) {
             return
         }
-        if (oldVersion == 0L) {
+        if (oldVersionCheck == 0L) {
             Migration1().migration(realm)
-            oldVersion++
+            oldVersionCheck++
         }
 
-        if (oldVersion == 1L) {
+        if (oldVersionCheck == 1L) {
             Migration2().migration(realm)
-            oldVersion++
+            oldVersionCheck++
         }
 
-        if (oldVersion == 2L) {
+        if (oldVersionCheck == 2L) {
             Migration3().migration(realm)
-            oldVersion++
+            oldVersionCheck++
         }
 
     }
