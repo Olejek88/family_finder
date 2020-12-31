@@ -6,6 +6,6 @@ App consist from server side with API (present on different repository on my acc
 Some screenshots:
 <br/>
 <img src="screen/screen511.png" align="left" alt="" />
-<img src="screen/screen512.png" alt="" /><br/>
+<img src="screen/screen512.png" alt="" />
 <img src="screen/screen513.png" align="left" alt="" />
 <img src="screen/screen514.png" alt="" />
