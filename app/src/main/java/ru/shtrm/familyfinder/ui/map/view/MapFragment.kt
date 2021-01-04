@@ -12,11 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.realm.Realm
+import io.realm.RealmChangeListener
 import kotlinx.android.synthetic.main.fragment_map.view.*
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.ScaleBarOverlay
@@ -27,8 +29,6 @@ import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
 import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.ui.base.view.BaseFragment
-import java.util.*
-
 
 class MapFragment : BaseFragment(), MapMVPView {
 
@@ -50,8 +50,6 @@ class MapFragment : BaseFragment(), MapMVPView {
     override fun setUp() {}
 
     private fun initMap(context: Context, view: View) {
-        var curLatitude: Double
-        var curLongitude: Double
 
         OpenStreetMapTileProviderConstants.setUserAgentValue(BuildConfig.APPLICATION_ID)
         view.gps_mapview.setTileSource(TileSourceFactory.MAPNIK)
@@ -60,25 +58,11 @@ class MapFragment : BaseFragment(), MapMVPView {
         val mapController = view.gps_mapview.controller
         mapController.setZoom(17)
 
-        val waypoints = ArrayList<GeoPoint>()
-
         val realm = Realm.getDefaultInstance()
         val users = realm.where(User::class.java).findAll()
         for (user in users) {
-            curLatitude = user.lastLatitude
-            curLongitude = user.lastLongitude
-            val endPoint = GeoPoint(curLatitude, curLongitude)
-            waypoints.add(endPoint)
-
-            val infoWindow = UserInfoWindow(R.layout.bubble, view.gps_mapview, user)
-            val marker = Marker(view.gps_mapview)
-            marker.infoWindow = infoWindow
-            marker.position = endPoint
-            marker.setIcon(context.getDrawable(R.drawable.location))
-            marker.setAnchor(Marker.ANCHOR_CENTER, 1.0f)
-            marker.infoWindow = infoWindow
+            val marker = formMarker(user, view.gps_mapview)
             view.gps_mapview.overlays.add(marker)
-            marker.title = user.username
 
             val mReceive = object : MapEventsReceiver {
                 override fun singleTapConfirmedHelper(p: GeoPoint): Boolean {
@@ -91,17 +75,16 @@ class MapFragment : BaseFragment(), MapMVPView {
             }
             view.gps_mapview.overlays.add(MapEventsOverlay(mReceive))
 
-            marker.setOnMarkerClickListener { click_marker, mapView ->
-                InfoWindow.closeAllInfoWindowsOn(view.gps_mapview)
-                click_marker.showInfoWindow()
-                mapView.controller.animateTo(marker.position)
-                true
-            }
-
             if (user.login==AuthorizedUser.instance.login) {
-                val point2 = GeoPoint(curLatitude, curLongitude)
+                val point2 = GeoPoint(user.lastLatitude, user.lastLongitude)
                 mapController.setCenter(point2)
             }
+
+            user.addChangeListener(RealmChangeListener { userC ->
+                view.gps_mapview.overlays.remove(marker)
+                formMarker(userC as User, view.gps_mapview)
+                view.gps_mapview.invalidate()
+            })
         }
 
         val compassOverlay = CompassOverlay(context, view.gps_mapview)
@@ -113,6 +96,25 @@ class MapFragment : BaseFragment(), MapMVPView {
         mScaleBarOverlay.setScaleBarOffset(200, 10)
         view.gps_mapview.overlays.add(mScaleBarOverlay)
         realm.close()
+    }
+
+    private fun formMarker(user: User, mapView: MapView): Marker {
+        val infoWindow = UserInfoWindow(R.layout.bubble, mapView, user)
+        val marker = Marker(mapView)
+        marker.infoWindow = infoWindow
+        marker.position = GeoPoint(user.lastLatitude, user.lastLongitude)
+        marker.setIcon(mapView.context.getDrawable(R.drawable.location))
+        marker.setAnchor(Marker.ANCHOR_CENTER, 1.0f)
+        marker.infoWindow = infoWindow
+        marker.title = user.username
+
+        marker.setOnMarkerClickListener { click_marker, _ ->
+            InfoWindow.closeAllInfoWindowsOn(mapView)
+            click_marker.showInfoWindow()
+            mapView.controller.animateTo(marker.position)
+            true
+        }
+        return marker
     }
 
     private fun getLastKnownLocation(context: Context): Location? {
