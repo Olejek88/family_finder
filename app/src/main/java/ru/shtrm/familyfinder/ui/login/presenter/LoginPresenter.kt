@@ -14,6 +14,7 @@ import ru.shtrm.familyfinder.ui.login.interactor.LoginMVPInteractor
 import ru.shtrm.familyfinder.ui.login.view.LoginMVPView
 import ru.shtrm.familyfinder.util.AppConstants
 import ru.shtrm.familyfinder.util.SchedulerProvider
+import java.util.*
 import javax.inject.Inject
 
 class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal constructor(interactor: I, schedulerProvider: SchedulerProvider, disposable: CompositeDisposable) : BasePresenter<V, I>(interactor = interactor, schedulerProvider = schedulerProvider, compositeDisposable = disposable), LoginMVPPresenter<V, I> {
@@ -78,8 +79,15 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
     override fun checkUserLogin(): Boolean {
         val authUser = AuthorizedUser.instance
         val realm = Realm.getDefaultInstance()
-        val user = realm.where(User::class.java).equalTo("login",interactor?.getUserLogin()).findFirst()
+        val userLogin = interactor?.getUserLogin()
+        val user: User?
+        if (userLogin!="")
+            user = realm.where(User::class.java).equalTo("login",interactor?.getUserLogin()).findFirst()
+        else
+            user = realm.where(User::class.java).findFirst()
         if (user != null) {
+            if (user.changedAt.before(Date(System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 7))))
+                return false
             authUser.login = user.login
             authUser.username = user.username
             authUser.token = ""
@@ -123,7 +131,8 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
             realm.executeTransaction {
                 user.login = loginResponse.userEmail.toString()
                 user.username = loginResponse.userName!!
-                user._id = loginResponse.userId!!
+                user.changedAt = Date()
+                //user._id = loginResponse.userId!!
                 //user.image = loginResponse.serverProfilePicUrl!!
                 interactor?.updateUserInSharedPrefAfterLogin(user)
             }
