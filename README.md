@@ -4,7 +4,8 @@ The Family Finder App is intended for displaying on the map the current position
 App consist from server side with API (present on different repository on my account) and this App. App implements MVP architecture using Dagger2, RealmDB, RxJava, FastAndroidNetworking and OSMDroid.
 <br/>
 Some screenshots:
-<img src="screen/screen511.jpg" alt="" /><br/>
-<img src="screen/screen512.jpg" alt="" /><br/>
-<img src="screen/screen513.jpg" alt="" />
-<img src="screen/screen514.jpg" alt="" />
+<br/>
+<img src="screen/screen511.png" align="left" alt="" />
+<img src="screen/screen512.png" alt="" />
+<img src="screen/screen513.png" align="left" alt="" />
+<img src="screen/screen514.png" alt="" />
