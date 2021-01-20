@@ -3,6 +3,7 @@ package ru.shtrm.familyfinder.ui.register.presenter
 import android.content.Context
 import android.util.Log
 import android.view.Gravity
+import android.widget.ProgressBar
 import android.widget.Toast
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
@@ -20,20 +21,20 @@ import javax.inject.Inject
 
 class RegisterPresenter<V : RegisterMVPView, I : RegisterMVPInteractor> @Inject internal constructor(interactor: I, schedulerProvider: SchedulerProvider, disposable: CompositeDisposable) : BasePresenter<V, I>(interactor = interactor, schedulerProvider = schedulerProvider, compositeDisposable = disposable), RegisterMVPPresenter<V, I> {
 
-    override fun onServerRegisterClicked(email: String, password: String, username: String, context: Context) {
+    override fun onServerRegisterClicked(email: String, password: String, username: String, context: Context, progressBar: ProgressBar) {
         when {
             email.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_EMAIL_ERROR)
             password.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_PASSWORD_ERROR)
             username.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_NAME_ERROR)
             else -> {
-                getView()?.showProgress()
+                getView()?.showProgress(progressBar)
                 interactor?.let {
                     compositeDisposable.add(
                             it.doServerRegisterApiCall(email, password, username)
                             .compose(schedulerProvider.ioToMainObservableScheduler())
                                     .doOnError {
                                         t: Throwable -> Log.e("performApiCall", t.message)
-                                        getView()?.hideProgress()
+                                        getView()?.hideProgress(progressBar)
                                         val toast = Toast.makeText(context, t.message, Toast.LENGTH_LONG)
                                         toast.setGravity(Gravity.BOTTOM, 0, 0)
                                         toast.show()
@@ -48,7 +49,7 @@ class RegisterPresenter<V : RegisterMVPView, I : RegisterMVPInteractor> @Inject 
                                 val toast = Toast.makeText(context, registerResponse.message, Toast.LENGTH_LONG)
                                 toast.setGravity(Gravity.BOTTOM, 0, 0)
                                 toast.show()
-                                getView()?.hideProgress()
+                                getView()?.hideProgress(progressBar)
                             }, { err -> println(err) }))
                 }
 

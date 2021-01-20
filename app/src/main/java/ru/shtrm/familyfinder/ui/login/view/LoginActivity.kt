@@ -33,7 +33,7 @@ class LoginActivity : BaseActivity(), LoginMVPView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkPermission()
-        if (!presenter.checkUserLogin()) {
+        if (presenter.checkUserLogin()) {
             openMainActivity()
         }
         setContentView(R.layout.activity_login)
@@ -74,7 +74,7 @@ class LoginActivity : BaseActivity(), LoginMVPView {
     }
 
     private fun setOnClickListeners() {
-        btnServerLogin.setOnClickListener { presenter.onServerLoginClicked(et_email.text.toString(), et_password.text.toString(), this) }
+        btnServerLogin.setOnClickListener { presenter.onServerLoginClicked(et_email.text.toString(), et_password.text.toString(), this, progress_Bar) }
         btnServerRegisterLink.setOnClickListener { presenter.onServerRegisterClicked() }
     }
 

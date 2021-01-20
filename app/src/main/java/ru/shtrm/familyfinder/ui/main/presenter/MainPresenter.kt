@@ -27,14 +27,12 @@ class MainPresenter<V : MainMVPView, I : MainMVPInteractor> @Inject internal con
     override fun onDrawerOptionFamilyClick() = getView()?.openFamilyFragment()
 
     override fun onDrawerOptionLogoutClick(context: Context) {
-        getView()?.showProgress()
         interactor?.let {
             compositeDisposable.add(
                     it.makeLogoutApiCall()
                             .compose(schedulerProvider.ioToMainObservableScheduler())
                             .doOnError {
                                 t: Throwable -> Log.e("performApiCall", t.message)
-                                getView()?.hideProgress()
                                 val toast = Toast.makeText(context, t.message, Toast.LENGTH_LONG)
                                 toast.setGravity(Gravity.BOTTOM, 0, 0)
                                 toast.show()
@@ -43,7 +41,6 @@ class MainPresenter<V : MainMVPView, I : MainMVPInteractor> @Inject internal con
                                 if (logoutResponse.statusCode === "0") {
                                     interactor?.performUserLogout()
                                     getView()?.let {
-                                        it.hideProgress()
                                         it.openLoginActivity()
                                     }
                                 } else {

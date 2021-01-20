@@ -9,28 +9,19 @@ import ru.shtrm.familyfinder.util.CommonUtil
 
 abstract class BaseActivity : AppCompatActivity(), MVPView, BaseFragment.CallBack {
 
-    //private var progressDialog: ProgressDialog? = null
-    private var progressBar: ProgressBar? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         performDI()
         super.onCreate(savedInstanceState)
     }
 
-//    override fun hideProgress() {
-//        progressDialog?.let { if (it.isShowing) it.cancel() }
-//    }
-
-    override fun hideProgress() {
-        if (progressBar != null && progressBar?.visibility == View.VISIBLE) {
-            progressBar?.visibility == View.GONE
+    override fun hideProgress(progressBar: ProgressBar) {
+        if (progressBar.visibility == View.VISIBLE) {
+            progressBar.visibility = View.GONE
         }
     }
 
-    override fun showProgress() {
-        hideProgress()
-        //progressDialog = CommonUtil.showLoadingDialog(this)
-        progressBar = CommonUtil.showProgressBar(this, this.window)
+    override fun showProgress(progressBar: ProgressBar) {
+        CommonUtil.showProgressBar(this.window, progressBar)
     }
 
     private fun performDI() = AndroidInjection.inject(this)

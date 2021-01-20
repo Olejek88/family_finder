@@ -7,8 +7,8 @@ import ru.shtrm.familyfinder.util.FileUtils
 import java.io.File
 import javax.inject.Inject
 
-
-class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHelper {
+//@Module(includes = {NetworkingClientModule.class})
+public class AppApiHelper @Inject constructor(private val apiHeader: ApiHeader) : ApiHelper {
     override fun performServerLogin(request: LoginRequest.ServerLoginRequest): Observable<LoginResponse> =
             Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_SERVER_LOGIN)
                     .addHeaders(apiHeader.publicApiHeader)

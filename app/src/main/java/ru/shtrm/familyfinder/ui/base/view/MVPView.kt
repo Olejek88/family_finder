@@ -1,9 +1,11 @@
 package ru.shtrm.familyfinder.ui.base.view
 
+import android.widget.ProgressBar
+
 interface MVPView {
 
-    fun showProgress()
+    fun showProgress(progressBar : ProgressBar)
 
-    fun hideProgress()
+    fun hideProgress(progressBar: ProgressBar)
 
 }

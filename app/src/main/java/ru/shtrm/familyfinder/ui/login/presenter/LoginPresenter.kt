@@ -3,6 +3,7 @@ package ru.shtrm.familyfinder.ui.login.presenter
 import android.content.Context
 import android.util.Log
 import android.view.Gravity
+import android.widget.ProgressBar
 import android.widget.Toast
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
@@ -19,18 +20,18 @@ import javax.inject.Inject
 
 class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal constructor(interactor: I, schedulerProvider: SchedulerProvider, disposable: CompositeDisposable) : BasePresenter<V, I>(interactor = interactor, schedulerProvider = schedulerProvider, compositeDisposable = disposable), LoginMVPPresenter<V, I> {
 
-    override fun onServerLoginClicked(email: String, password: String, context: Context) {
+    override fun onServerLoginClicked(email: String, password: String, context: Context, progressBar : ProgressBar) {
         when {
             email.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_EMAIL_ERROR)
             password.isEmpty() -> getView()?.showValidationMessage(AppConstants.EMPTY_PASSWORD_ERROR)
             else -> {
-                getView()?.showProgress()
+                getView()?.showProgress(progressBar)
                 interactor?.let {
                     compositeDisposable.add(it.doServerLoginApiCall(email, password)
                             .compose(schedulerProvider.ioToMainObservableScheduler())
                             .doOnError { t: Throwable ->
                                 Log.e("performApiCall", t.message)
-                                getView()?.hideProgress()
+                                getView()?.hideProgress(progressBar)
                                 val toast = Toast.makeText(context, t.message, Toast.LENGTH_LONG)
                                 toast.setGravity(Gravity.BOTTOM, 0, 0)
                                 toast.show()
@@ -44,7 +45,7 @@ class LoginPresenter<V : LoginMVPView, I : LoginMVPInteractor> @Inject internal 
                                 val toast = Toast.makeText(context, loginResponse.message, Toast.LENGTH_LONG)
                                 toast.setGravity(Gravity.BOTTOM, 0, 0)
                                 toast.show()
-                                getView()?.hideProgress()
+                                getView()?.hideProgress(progressBar)
                                 sendTokenRequest(loginResponse.userEmail!!)
                             }, { err -> println(err) }))
                 }

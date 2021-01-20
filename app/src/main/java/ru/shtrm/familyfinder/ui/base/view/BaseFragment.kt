@@ -35,16 +35,14 @@ abstract class BaseFragment : Fragment(), MVPView {
         setUp()
     }
 
-    override fun hideProgress() {
-        if (progressBar != null && progressBar?.visibility == View.VISIBLE) {
-            progressBar?.visibility == View.GONE
+    override fun hideProgress(progressBar: ProgressBar) {
+        if (progressBar.visibility == View.VISIBLE) {
+            progressBar.visibility == View.GONE
         }
     }
 
-    override fun showProgress() {
-        hideProgress()
-        //progressDialog = CommonUtil.showLoadingDialog(this.context)
-        progressBar = CommonUtil.showProgressBar(this.context, parentActivity!!.window)
+    override fun showProgress(progressBar : ProgressBar) {
+        CommonUtil.showProgressBar(parentActivity!!.window, progressBar)
     }
 
     fun getBaseActivity() = parentActivity
