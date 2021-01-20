@@ -15,14 +15,14 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:id="@+id/framelayout_image"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:src="@drawable/profile_default_small"
-                app:civ_border_color="@color/light_green"
+                android:src="@drawable/profile_small"
+                app:civ_border_color="@color/colorPrimary"
                 app:civ_border_width="2dp"
                 android:id="@+id/card_user_image" />
 

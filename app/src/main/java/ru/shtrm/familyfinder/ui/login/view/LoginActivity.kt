@@ -33,7 +33,7 @@ class LoginActivity : BaseActivity(), LoginMVPView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkPermission()
-        if (presenter.checkUserLogin()) {
+        if (!presenter.checkUserLogin()) {
             openMainActivity()
         }
         setContentView(R.layout.activity_login)

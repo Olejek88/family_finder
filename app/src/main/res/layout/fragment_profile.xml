@@ -21,8 +21,8 @@
             android:layout_marginTop="10dp"
             android:layout_height="200dp"
             android:gravity="top"
-            android:src="@drawable/profile2"
-            app:civ_border_color="@color/light_green"
+            android:src="@drawable/profile_small"
+            app:civ_border_color="@color/colorPrimary"
             app:civ_border_width="2dp" />
 
         <EditText
