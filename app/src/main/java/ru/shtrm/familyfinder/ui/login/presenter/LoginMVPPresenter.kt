@@ -10,7 +10,6 @@ interface LoginMVPPresenter<V : LoginMVPView, I : LoginMVPInteractor> : MVPPrese
 
     fun onServerLoginClicked(email: String, password: String, context: Context, progressBar: ProgressBar)
     fun onServerRegisterClicked(): Unit?
-    fun checkUserLogin(): Boolean
     fun getUserName(): String?
-    fun sendTokenRequest(userLogin: String)
+    fun checkUserLogin(): Boolean
 }

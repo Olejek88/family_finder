@@ -65,6 +65,7 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
             override fun afterTextChanged(s: Editable?) {
                 authUser.username = s.toString()
                 authUser.isSent = false
+
                 val realm = Realm.getDefaultInstance()
                 realm.executeTransactionAsync { realmB ->
                     val user = realmB.where(User::class.java).equalTo("login", authUser.login).findFirst()

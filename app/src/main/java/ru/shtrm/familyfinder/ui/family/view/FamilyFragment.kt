@@ -69,11 +69,9 @@ class FamilyFragment : BaseFragment(), FamilyFragmentMVPView {
 
     override fun onResume() {
         super.onResume()
-        Log.d("Family","onResume")
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        Log.d("Family","onAttach")
     }
 }

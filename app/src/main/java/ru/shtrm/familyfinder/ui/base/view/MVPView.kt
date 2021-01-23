@@ -7,5 +7,4 @@ interface MVPView {
     fun showProgress(progressBar : ProgressBar)
 
     fun hideProgress(progressBar: ProgressBar)
-
 }

@@ -1,5 +1,6 @@
 package ru.shtrm.familyfinder.ui.register.interactor
 
+import android.app.Application
 import ru.shtrm.familyfinder.data.network.ApiHelper
 import ru.shtrm.familyfinder.data.network.RegisterRequest
 import ru.shtrm.familyfinder.data.network.RegisterResponse
@@ -8,7 +9,7 @@ import ru.shtrm.familyfinder.ui.base.interactor.BaseInteractor
 import ru.shtrm.familyfinder.util.AppConstants
 import javax.inject.Inject
 
-class RegisterInteractor @Inject internal constructor(preferenceHelper: PreferenceHelper, apiHelper: ApiHelper) : BaseInteractor(preferenceHelper, apiHelper), RegisterMVPInteractor {
+class RegisterInteractor @Inject internal constructor(preferenceHelper: PreferenceHelper, apiHelper: ApiHelper, application: Application) : BaseInteractor(preferenceHelper, apiHelper, application), RegisterMVPInteractor {
 
     override fun doServerRegisterApiCall(email: String, password: String, username: String) =
             apiHelper.performServerRegister(RegisterRequest.ServerRegisterRequest(email = email, password = password, username = username))
