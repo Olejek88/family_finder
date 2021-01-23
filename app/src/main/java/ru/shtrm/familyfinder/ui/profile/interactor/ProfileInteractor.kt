@@ -2,6 +2,8 @@ package ru.shtrm.familyfinder.ui.profile.interactor
 
 import android.content.Context
 import io.reactivex.Observable
+import io.realm.Realm
+import ru.shtrm.familyfinder.data.database.AuthorizedUser
 import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.data.network.ApiHelper
 import ru.shtrm.familyfinder.data.network.SendResponse
@@ -18,4 +20,20 @@ class ProfileInteractor @Inject internal constructor(apiHelper: ApiHelper, prefe
     override fun alterImage(user: User, context: Context, bearer: String) =
             apiHelper.performUserImageSendRequest(UserRequest.SendImageRequest(user = user), context = context, bearer = bearer)
 
+    override fun storeImageInDb(imageName: String, context: Context): Boolean {
+        val realm = Realm.getDefaultInstance()
+        val authUser = AuthorizedUser.instance
+        realm.executeTransaction { realmB ->
+            val user = realmB.where(User::class.java).equalTo("login", authUser.login).findFirst()
+            if (user != null) {
+                user.image = imageName
+                sendUserImageRequest(user, context, "bearer ".plus(authUser.token))
+            }
+        }
+        realm.close()
+        return true
+    }
+
+    private fun sendUserImageRequest(user: User, context: Context, bearer: String) {
+    }
 }

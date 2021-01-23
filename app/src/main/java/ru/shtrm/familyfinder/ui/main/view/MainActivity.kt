@@ -215,6 +215,10 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
         navView.setNavigationItemSelectedListener(this)
     }
 
+    override fun setDrawerBitmap(userBitmap : Bitmap) {
+        this.navView.getHeaderView(0).user_image.setImageBitmap(userBitmap)
+    }
+
     private fun setUpBottomBar() {
         bottomBar.setOnTabSelectListener { tabId ->
             val tr = supportFragmentManager.beginTransaction()
@@ -310,5 +314,4 @@ class MainActivity : BaseActivity(), MainMVPView, NavigationView.OnNavigationIte
         downloaderTask.execute(updateUrl, outputFile.toString())
         dialog.show()
     }
-
 }

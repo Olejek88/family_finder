@@ -22,33 +22,34 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_image"
-            android:layout_width="fill_parent"
-            android:layout_height="200dp"
-            android:gravity="top"
-            android:src="@drawable/profile_default_small"
-            app:civ_border_color="@color/light_green"
-            app:civ_border_width="2dp" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/menu_layout_image"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="@dimen/profile_width"
-            android:layout_height="@dimen/profile_height"
-            android:contentDescription="@string/app_name"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
-            app:srcCompat="@android:drawable/sym_def_app_icon" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:src="@drawable/profile_small"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="2dp"
+                android:id="@+id/user_image" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/nav_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:textColor="@color/colorPrimary"
+            android:paddingTop="10dp" />
 
         <TextView
             android:id="@+id/nav_email"
             android:layout_width="wrap_content"
+            android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content" />
 
     </LinearLayout>

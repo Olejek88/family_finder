@@ -8,10 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_family.view.*
 import ru.shtrm.familyfinder.R
-import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.ui.base.view.BaseFragment
 import ru.shtrm.familyfinder.ui.family.FamilyAdapter
 import ru.shtrm.familyfinder.ui.family.interactor.FamilyMVPInterator
@@ -60,13 +58,13 @@ class FamilyFragment : BaseFragment(), FamilyFragmentMVPView {
         mContext = context
         val recyclerView: RecyclerView = view.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val realm = Realm.getDefaultInstance()
-        val users = realm.where(User::class.java).findAll()
-        users.addChangeListener { results ->
-            recyclerView.swapAdapter(FamilyAdapter(context, results), false);
+        val users = presenter.getUsers()
+        if(users!=null) {
+            users.addChangeListener { results ->
+                recyclerView.swapAdapter(FamilyAdapter(context, results), false);
+            }
+            recyclerView.adapter = FamilyAdapter(context, users)
         }
-        recyclerView.adapter = FamilyAdapter(context, users)
-        realm.close()
     }
 
     override fun onResume() {

@@ -9,4 +9,5 @@ import ru.shtrm.familyfinder.ui.base.interactor.MVPInteractor
 interface ProfileMVPInterator : MVPInteractor {
     fun alterInfo(user: User, bearer: String): Observable<SendResponse>
     fun alterImage(user: User, context: Context, bearer: String): Observable<SendResponse>
+    fun storeImageInDb(imageName: String, context: Context): Boolean
 }

@@ -1,6 +1,8 @@
 package ru.shtrm.familyfinder.ui.family.presenter
 
 import io.reactivex.disposables.CompositeDisposable
+import io.realm.RealmResults
+import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.ui.base.presenter.BasePresenter
 import ru.shtrm.familyfinder.ui.family.interactor.FamilyMVPInterator
 import ru.shtrm.familyfinder.ui.family.view.FamilyFragmentMVPView
@@ -13,5 +15,12 @@ class FamilyPresenter<V : FamilyFragmentMVPView, I : FamilyMVPInterator> @Inject
     }
 
     override fun onSubmitClicked() = interactor?.let {
+    }
+
+    override fun getUsers(): RealmResults<User>? {
+        interactor?.let {
+            return it.getUsers()
+        }
+        return null
     }
 }

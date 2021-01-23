@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_image"
+            android:id="@+id/profile_user_image"
             android:layout_width="fill_parent"
             android:layout_marginTop="10dp"
             android:layout_height="200dp"
@@ -29,7 +29,7 @@
             android:id="@+id/user_text_name"
             android:layout_width="fill_parent"
             android:layout_height="45dp"
-            android:layout_below="@+id/user_image"
+            android:layout_below="@+id/profile_user_image"
             android:adjustViewBounds="true"
             android:hint="@string/username"
             android:inputType="textPersonName"

@@ -1,6 +1,5 @@
 package ru.shtrm.familyfinder.ui.base.view
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,8 +11,6 @@ import ru.shtrm.familyfinder.util.CommonUtil
 abstract class BaseFragment : Fragment(), MVPView {
 
     private var parentActivity: BaseActivity? = null
-    private var progressDialog: ProgressDialog? = null
-    private var progressBar: ProgressBar? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

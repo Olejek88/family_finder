@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import io.reactivex.disposables.CompositeDisposable
-import io.realm.Realm
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
 import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.ui.base.presenter.BasePresenter
@@ -40,15 +39,8 @@ class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inj
                             800, null)
                     authUser.image=imageName
                     authUser.isImageSent=false
-                    val realm = Realm.getDefaultInstance()
-                    realm.executeTransaction { realmB ->
-                        val user = realmB.where(User::class.java).equalTo("login", authUser.login).findFirst()
-                        if (user != null) {
-                            user.image = imageName
-                            sendUserImageRequest(user, context, "bearer ".plus(authUser.token))
-                        }
-                    }
-                    realm.close()
+
+                    interactor?.storeImageInDb(imageName, context)
                     return userBitmap
                 }
             } catch (e: FileNotFoundException) {

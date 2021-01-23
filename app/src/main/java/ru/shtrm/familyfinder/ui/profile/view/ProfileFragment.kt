@@ -58,9 +58,9 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
         val path = FileUtils.getPicturesDirectory(this.context!!)
         val avatar = authUser.image
         if (avatar!=null && avatar != "") {
-            view.user_image.setImageBitmap(FileUtils.getBitmapByPath(path, avatar))
+            view.profile_user_image.setImageBitmap(FileUtils.getBitmapByPath(path, avatar))
         }
-        view.user_image.setOnClickListener { checkPermissionCamera(this.context!!) }
+        view.profile_user_image.setOnClickListener { checkPermissionCamera(this.context!!) }
         view.user_text_name.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 authUser.username = s.toString()
@@ -133,8 +133,10 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
         when (requestCode) {
             activityPhoto -> if (resultCode == RESULT_OK) {
                 val userBitmap: Bitmap? = presenter.storeImage (this.context!!,data)
-                if (userBitmap!=null)
-                    view!!.user_image.setImageBitmap(userBitmap)
+                if (userBitmap!=null) {
+                    view!!.profile_user_image.setImageBitmap(userBitmap)
+                    //navView.getHeaderView(0).user_image.setImageBitmap(userBitmap)
+                }
             }
         }
     }

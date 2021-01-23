@@ -1,5 +1,6 @@
 package ru.shtrm.familyfinder.data.network
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -9,13 +10,13 @@ import java.util.concurrent.TimeUnit
 
 
 @Module
-class NetworkingClientModule {
+public class NetworkingClientModule {
+
     @Provides
-    fun okHttpClient(cache: Cache) : OkHttpClient? {
+    public fun okHttpClient() : OkHttpClient? {
         return OkHttpClient().newBuilder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
-                .cache(cache)
                 .writeTimeout(20, TimeUnit.SECONDS)
                 .build()
     }
@@ -23,5 +24,12 @@ class NetworkingClientModule {
     @Provides
     fun cache(cacheFile: File): Cache {
         return Cache(cacheFile, 10 * 1000 * 1000) //10 MB
+    }
+
+    @Provides
+    fun file(context: Context): File {
+        val file = File(context.getCacheDir(), "HttpCache")
+        file.mkdirs()
+        return file
     }
 }

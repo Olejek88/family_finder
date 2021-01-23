@@ -3,6 +3,7 @@ package ru.shtrm.familyfinder.data.network
 import android.content.Context
 import io.reactivex.Observable
 
+//@Component(modules = {NetworkingClientModule.class})
 interface ApiHelper {
 
     fun performServerLogin(request: LoginRequest.ServerLoginRequest): Observable<LoginResponse>
