@@ -6,5 +6,7 @@ interface MVPInteractor {
 
     fun performUserLogout()
 
+    fun onDetach()
+
     fun initAcra()
 }

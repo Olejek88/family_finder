@@ -3,6 +3,7 @@ package ru.shtrm.familyfinder.ui.login.interactor
 import android.app.Application
 import android.util.Log
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
 import ru.shtrm.familyfinder.data.database.repository.user.User
@@ -10,10 +11,11 @@ import ru.shtrm.familyfinder.data.network.*
 import ru.shtrm.familyfinder.data.preferences.PreferenceHelper
 import ru.shtrm.familyfinder.ui.base.interactor.BaseInteractor
 import ru.shtrm.familyfinder.util.AppConstants
+import ru.shtrm.familyfinder.util.SchedulerProvider
 import java.util.*
 import javax.inject.Inject
 
-class LoginInteractor @Inject internal constructor(preferenceHelper: PreferenceHelper, apiHelper: ApiHelper, application: Application) : BaseInteractor(preferenceHelper, apiHelper, application), LoginMVPInteractor {
+class LoginInteractor @Inject internal constructor(apiHelper: ApiHelper, preferenceHelper: PreferenceHelper, application: Application, compositeDisposable: CompositeDisposable, schedulerProvider: SchedulerProvider) : BaseInteractor(apiHelper = apiHelper, preferenceHelper = preferenceHelper, application = application, compositeDisposable = compositeDisposable, schedulerProvider = schedulerProvider), LoginMVPInteractor {
 
     override fun doServerLoginApiCall(email: String, password: String) =
             apiHelper.performServerLogin(LoginRequest.ServerLoginRequest(email = email, password = password))

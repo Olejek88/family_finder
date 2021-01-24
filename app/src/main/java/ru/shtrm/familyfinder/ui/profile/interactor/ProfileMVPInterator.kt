@@ -11,4 +11,6 @@ interface ProfileMVPInterator : MVPInteractor {
     fun alterImage(user: User, context: Context, bearer: String): Observable<SendResponse>
     fun storeImageInDb(imageName: String, context: Context): Boolean
     fun storeUsername(name: String)
+    fun sendUserRequest(user: User, bearer: String)
+    fun sendUserImageRequest(user: User, context: Context, bearer: String)
 }

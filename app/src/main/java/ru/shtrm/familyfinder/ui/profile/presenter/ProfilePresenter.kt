@@ -4,10 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import io.reactivex.disposables.CompositeDisposable
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
-import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.ui.base.presenter.BasePresenter
 import ru.shtrm.familyfinder.ui.profile.interactor.ProfileMVPInterator
 import ru.shtrm.familyfinder.ui.profile.view.ProfileFragmentMVPView
@@ -50,36 +48,7 @@ class ProfilePresenter<V : ProfileFragmentMVPView, I : ProfileMVPInterator> @Inj
         return null
     }
 
-    override fun sendUserRequest(user: User, bearer: String) {
-        interactor?.let {
-            compositeDisposable.add(it.alterInfo(user, bearer)
-                    .compose(schedulerProvider.ioToMainObservableScheduler())
-                    .doOnError { t: Throwable ->
-                        Log.e("performApiCall", t.message)
-                    }
-                    .subscribe({ tokenResponse ->
-                        if (tokenResponse.statusCode === "0") {
-                            // TODO change user here!
-                            AuthorizedUser.instance.isSent=true
-                        }
-                    }, {
-                    }))
-        }
-    }
-
-    override fun sendUserImageRequest(user: User, context: Context, bearer: String) {
-        interactor?.let {
-            compositeDisposable.add(it.alterImage(user, context, bearer)
-                    .compose(schedulerProvider.ioToMainObservableScheduler())
-                    .doOnError { t: Throwable ->
-                        Log.e("performApiCall", t.message)
-                    }
-                    .subscribe({ tokenResponse ->
-                        if (tokenResponse.statusCode === "0") {
-                            // TODO change user here!
-                            AuthorizedUser.instance.isImageSent=true
-                        }
-                    }, { err -> println(err) }))
-        }
+    override fun storeUsername(name: String) {
+        interactor?.storeUsername(name)
     }
 }

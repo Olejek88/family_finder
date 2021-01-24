@@ -15,11 +15,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import ru.shtrm.familyfinder.R
 import ru.shtrm.familyfinder.data.database.AuthorizedUser
-import ru.shtrm.familyfinder.data.database.repository.user.User
 import ru.shtrm.familyfinder.ui.base.view.BaseFragment
 import ru.shtrm.familyfinder.ui.profile.interactor.ProfileMVPInterator
 import ru.shtrm.familyfinder.ui.profile.presenter.ProfileMVPPresenter
@@ -63,22 +61,7 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMVPView {
         view.profile_user_image.setOnClickListener { checkPermissionCamera(this.context!!) }
         view.user_text_name.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                authUser.username = s.toString()
-                authUser.isSent = false
-
-                val realm = Realm.getDefaultInstance()
-                realm.executeTransactionAsync { realmB ->
-                    val user = realmB.where(User::class.java).equalTo("login", authUser.login).findFirst()
-                    if (user != null) {
-                        user.username = s.toString()
-                        user.isSent = false
-                    }
-                }
-                val user = realm.where(User::class.java).equalTo("login", authUser.login).findFirst()
-                if (user != null) {
-                    presenter.sendUserRequest(realm.copyFromRealm(user), "bearer ".plus(authUser.token))
-                }
-                realm.close()
+                presenter.storeUsername(s.toString())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

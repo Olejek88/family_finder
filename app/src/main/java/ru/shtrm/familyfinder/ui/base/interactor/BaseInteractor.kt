@@ -1,6 +1,7 @@
 package ru.shtrm.familyfinder.ui.base.interactor
 
 import android.app.Application
+import io.reactivex.disposables.CompositeDisposable
 import org.acra.ACRA
 import org.acra.config.CoreConfigurationBuilder
 import org.acra.config.HttpSenderConfigurationBuilder
@@ -11,17 +12,22 @@ import ru.shtrm.familyfinder.data.database.AuthorizedUser
 import ru.shtrm.familyfinder.data.network.ApiHelper
 import ru.shtrm.familyfinder.data.preferences.PreferenceHelper
 import ru.shtrm.familyfinder.util.AppConstants
+import ru.shtrm.familyfinder.util.SchedulerProvider
 
 open class BaseInteractor() : MVPInteractor {
 
     protected lateinit var preferenceHelper: PreferenceHelper
     protected lateinit var apiHelper: ApiHelper
     protected lateinit var application: Application
+    protected lateinit var compositeDisposable: CompositeDisposable
+    protected lateinit var schedulerProvider: SchedulerProvider
 
-    constructor(preferenceHelper: PreferenceHelper, apiHelper: ApiHelper, application: Application) : this() {
+    constructor(preferenceHelper: PreferenceHelper, apiHelper: ApiHelper, application: Application, compositeDisposable: CompositeDisposable, schedulerProvider: SchedulerProvider) : this() {
         this.preferenceHelper = preferenceHelper
         this.apiHelper = apiHelper
         this.application = application
+        this.compositeDisposable = compositeDisposable
+        this.schedulerProvider = schedulerProvider
     }
 
     override fun isUserLoggedIn() = this.preferenceHelper.getCurrentUserLoggedInMode() != AppConstants.LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT.type
@@ -54,5 +60,9 @@ open class BaseInteractor() : MVPInteractor {
                 .setHttpMethod(HttpSender.Method.POST)
                 .setEnabled(true)
         ACRA.init(application, builder)
+    }
+
+    override fun onDetach() {
+        compositeDisposable.dispose()
     }
 }
